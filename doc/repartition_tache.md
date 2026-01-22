@@ -5,7 +5,7 @@
 <summary>Tâches</summary>
 
 	- S'occuper de la RTC de la rasberypi
-	- S'occuper du module web de la raberypi
+	- S'occuper du serveur web de la raberypi
 	- Conception de l'IHM sur la partie de saisie des paramètres de l'utilisateur
 	- Conception de l'IHM sur la partie de visualisation des donnée pour l'utilisateur
 	- Sauvegarde des paramètres de l'utilisateur pour une séche
@@ -24,14 +24,12 @@
 	Assurer la persistance de l’heure après une coupure d’alimentation
 	Assurer la fiabilité de l’horodatage sur la durée
 	Documenter l’installation, la configuration et de câblage de la RTC
-### Module Web
+### Serveur Web
 	Installer l’environnement serveur web sur la Raspberry Pi
 	Configurer le service web
 	Permettre la communication entre le serveur web et la base de données
-	Permettre le routage du service web sur inthernet
-	Assurer l’accessibilité du service web depuis différents navigateurs
-	Assurer la stabilité et les performances du service web
-	Documenter la configuration et les instructions pour déployer le module web
+	Assurer la stabilité et les performances du serveur web
+	Documenter la configuration et les instructions pour déployer le serveur web
 ### IHM de saisie des paramètres de l'utilisateur
 	Définir les paramètres utilisateur nécessaires au processus de séchage
 	Concevoir une interface de saisie claire et intuitive
@@ -119,7 +117,7 @@
 	- Mise en oeuvre de l'alerte visuelle
 	- Mise en oeuvre et gestion de la base de données
 	- Développement de l'IHM web (mobile)
-	- S'occuper du module BDD de la rasberypi
+	- S'occuper du serveur BDD de la rasberypi
 </details>
 
 <details>
@@ -210,13 +208,13 @@
 	- Associer les étages aux cycles de séchage en cours
 
 
-###	Module BDD
+###	Serveur BDD
 	Choisir le système de base de données adapté au projet
 	Installer et configurer le service de base de données sur la Raspberry Pi
 	Définir les conventions de nommage et de stockage
 	Assurer la communication entre la base de données et l’application web
 	Assurer la connectivité et la fiabilité des échanges de données
-	Assurer la fiabilité des échanges de données entre le module web et BDD
+	Assurer la fiabilité des échanges de données entre le serveur web et BDD
 	Documenter la configuration de la BDD et les conventions de nommage et de stockage
 
 ---
