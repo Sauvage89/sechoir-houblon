@@ -100,6 +100,7 @@
 #### Étudiant 3
 <details>
 <summary>Tâches</summary>
+	
 	- Contrôler le séchage
 	- Alerter en fin de cycle
 	- Ajouter la masse de houblon
