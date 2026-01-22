@@ -6,7 +6,6 @@
 
 	- S'occuper de la RTC de la rasberypi
 	- S'occuper du module web de la raberypi
-	- S'occuper du module BDD de la rasberypi
 	- Conception de l'IHM sur la partie de saisie des paramètres de l'utilisateur
 	- Conception de l'IHM sur la partie de visualisation des donnée pour l'utilisateur
 	- Sauvegarde des paramètres de l'utilisateur pour une séche
@@ -33,14 +32,6 @@
 	Assurer l’accessibilité du service web depuis différents navigateurs
 	Assurer la stabilité et les performances du service web
 	Documenter la configuration et les instructions pour déployer le module web
-### Module BDD
-	Choisir le système de base de données adapté au projet
-	Installer et configurer le service de base de données sur la Raspberry Pi
-	Définir les conventions de nommage et de stockage
-	Assurer la communication entre la base de données et l’application web
-	Assurer la connectivité et la fiabilité des échanges de données
-	Assurer la fiabilité des échanges de données entre le module web et BDD
-	Documenter la configuration de la BDD et les conventions de nommage et de stockage
 ### IHM de saisie des paramètres de l'utilisateur
 	Définir les paramètres utilisateur nécessaires au processus de séchage
 	Concevoir une interface de saisie claire et intuitive
