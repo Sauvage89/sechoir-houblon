@@ -109,4 +109,115 @@
 ---
 #### Étudiant 3
 
+<details>
+<summary>Tâches</summary>
+	
+	- Contrôler le séchage
+	- Alerter en fin de cycle
+	- Ajouter la masse de houblon
+	- Mise en oeuvre du point d'accès WiFi
+	- Mise en oeuvre de l'alerte visuelle
+	- Mise en oeuvre et gestion de la base de données
+	- Développement de l'IHM web (mobile)
+	- S'occuper du module BDD de la rasberypi
+</details>
+
+<details>
+<summary>Tâches détaillées</summary>
+
+### Infrastructure & Réseau
+	1.1 Point d'accès WiFI
+		- Installer le point d'accès WiFi sur le Raspberry Pi 4
+		- Paramétrer le réseau (SSID, sécurité, IP)
+		- Permettre la connexion directe d'un smartphone au séchoir
+		- Tester la stabilité et la portée du réseau
+
+### Alerte visuelle (fin de cycle)
+	2.1 Choix du voyant
+		- Etudier les solutions possibles (LED haute luminosité, gyrophare, voyant industriel)
+		- Vérifier la visibilité à 10 mètres
+		- Choisir une technologie adaptée (12V/24V/230V)
+	2.2 Interface de puissance
+		- Choisir une interface de puissance (relais, optocoupleur, module ToR)
+		- Assurer l'isolation entre le Raspberry Pi et le voyant
+		- Réaliser le câblage et les tests électriques
+	2.3 Pilotage logiciel de l'alerte
+		- Déclencher l'alerte visuelle en fin de cycle
+		- Gérer l'extinction manuelle ou automatique de l'alerte
+		- Tester le fonctionnement complet (simulation de fin cycle)
+
+### Base de donnée (BDD)
+	3.1 Conception de la base de donnée
+		- Définir les tables: 
+			• Cycles de séchage (date, heure début/fin, durée)
+			• Températures enregistrées
+			• Variétés de houblon
+			• Masses produites par variété
+			• Etats marche/arrêt
+		- Définir les relations entre les tables
+	3.2 Mise en oeuvre
+		- Installer le SGBD (ex : SQLite / MySQL)
+		- Créer les tables et schémas
+		- Tester l'insertion et la lecture des données
+
+### Cas d'utilisation : Contrôler le séchage
+	4.1 Acquisititon des données
+		- Récupérer les températures des 6 capteurs
+		- Calculer la température moyenne
+		- Lire l'état du chauffage et de la ventilation
+		- Gérer l'heure de début et le temps restant du cycle
+	4.2 IHM - Page "Contrôler le séchage"
+		- Afficher :
+			• Les 6 températures
+			• La température moyenne
+			• L'état chauffage / ventilation
+			• L'heure actuelle
+			• Le temps restant du cycle
+			• Les alertes éventuelles
+		- Ajouter :
+			• Bouton Arrêter le chauffage
+			• Bouton Démarrer le chauffage
+		- Adapter l'interface à un affichage mobile
+	4.3 Actions utilisateurs
+		- Depuis le téléphone:
+			• Démarrer le cycle de séchage
+			• Arrêter le cycle de séchage
+		- Sauvegarder chaque action dans la BDD (date, heure, action)
+
+### Cas d'utilisation : Alerter en fin de cycle
+	- Détecter la fin d'un cycle de séchage
+	- Déclencher l'alerte visuelle
+	- Afficher l'alerte sur l'interface WEB
+	- Permettre l'acquittement de l'alerte
+	- Enregistrer l'événement dans la BDD
+
+### Cas d'utilisation : Ajouter la masse du houblon
+	6.1 IHM - Ajout de masse
+		- Créer une page web dédiée
+		- Sélection de la varitété de houblon
+		- Saisie de la masse produite
+		- Validation et confirmation utilisateur
+	6.2 Gestion des données
+		- Enregistrer les masses dans la base de données
+		- Associer chaque masse à une variété
+		- Vérifier la cohérence des données saisies
+
+### Visualisation des étages & variétés
+	- Afficher sur le téléphone :
+		• Les 4 étages du séchoir
+		• La variété de houblon présente à chaque étage
+	- Mettre à jour l'affichage lors du changement d'étage
+	- Associer les étages aux cycles de séchage en cours
+
+
+###	Module BDD
+	Choisir le système de base de données adapté au projet
+	Installer et configurer le service de base de données sur la Raspberry Pi
+	Définir les conventions de nommage et de stockage
+	Assurer la communication entre la base de données et l’application web
+	Assurer la connectivité et la fiabilité des échanges de données
+	Assurer la fiabilité des échanges de données entre le module web et BDD
+	Documenter la configuration de la BDD et les conventions de nommage et de stockage
+
 ---
+
