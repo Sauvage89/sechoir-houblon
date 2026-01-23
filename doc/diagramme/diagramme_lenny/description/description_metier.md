@@ -7,7 +7,7 @@ Elle débute au lancement du cycle de sèche et se termine à son arrêt complet
 
 Une session de sèche peut être lancer pour une multitude de variété d'houblon.
 
-	Le lancement d'une session de sèche est indépendante par rapport au variété qu'on veut y insérer
+	Le lancement d'une session de sèche est indépendante par rapport aux variétés qu'on veut y insérer
 
 <details>
 <summary>Caractéristique</summary>
