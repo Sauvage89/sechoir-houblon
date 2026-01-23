@@ -7,7 +7,7 @@
 	- S'occuper de la RTC de la rasberypi
 	- S'occuper du serveur web de la raberypi
 	- Conception de l'IHM sur la partie de saisie des paramètres de l'utilisateur
-	- Conception de l'IHM sur la partie de visualisation des donnée pour l'utilisateur
+	- Définir les données a visualiser pour l'utilisateur
 	- Sauvegarde des paramètres de l'utilisateur pour une séche
 	- Exportation des donnée d'une seche en format CSV depuis l'application web
 </details>
@@ -40,13 +40,7 @@
 	Documenter le fonctionnement de l’IHM pour les utilisateurs et les développeurs
 ### IHM de visualisation des données lors de la séche
 	Définir les données à afficher pour l’utilisateur
-	Concevoir une interface de visualisation lisible et structurée
-	Mettre en place l’affichage dynamique des données en temps réel
-	Relier l’interface de saisie à la base de données
-	Assurer la lisibilité et la compréhension des informations affichées
-	Assurer la clarté et la compréhension des informations affichées
-	Assurer l’affichage avec des données réelles
-	Documenter l’interface et ses fonctionnalités pour les utilisateurs et les développeurs
+	Documenter les données à afficher
 ### Sauvegarde de saisie des paramètres de l'utilisateur
 	Definir la structure de la base de données pour la sauvegarde des paramétre utilisateur
 	Enregistrer les paramètres automatiquement dans la base de données
@@ -116,6 +110,7 @@
 	- Mise en oeuvre du point d'accès WiFi
 	- Mise en oeuvre de l'alerte visuelle
 	- Mise en oeuvre et gestion de la base de données
+	- Conception de l'IHM sur la partie de visualisation des donnée pour l'utilisateur
 	- Développement de l'IHM web (mobile)
 	- S'occuper du serveur BDD de la rasberypi
 </details>
@@ -207,6 +202,14 @@
 	- Mettre à jour l'affichage lors du changement d'étage
 	- Associer les étages aux cycles de séchage en cours
 
+### IHM de visualisation des données lors de la séche
+	Concevoir une interface de visualisation lisible et structurée
+	Mettre en place l’affichage dynamique des données en temps réel
+	Relier l’interface de saisie à la base de données
+	Assurer la lisibilité et la compréhension des informations affichées
+	Assurer la clarté et la compréhension des informations affichées
+	Assurer l’affichage avec des données réelles
+	Documenter l’interface et ses fonctionnalités pour les utilisateurs et les développeurs
 
 ###	Serveur BDD
 	Choisir le système de base de données adapté au projet
