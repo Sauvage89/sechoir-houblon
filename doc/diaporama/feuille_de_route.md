@@ -5,9 +5,9 @@
 	4 - Synoptique pour faire visualiser le projet
 	5 - Use case ???
 	6 - deploiment ???
-	7 - Diagramme d'exigeance, interessant de parler de la clock, interessant de parler du fichier contenant la définition des élément important
-	8 - Présentation du cahier des recettes, il faut être exhaustif sur lui
-	9 - Présentation du matériel du projet qui permetras de faire...
+	7 - Diagramme d'exigeance, interessant de parler de la clock, interessant de parler du serveur web et de 2/3 carractéristique de lui
+	8 - Présentation du cahier des recettes, sa permet de montrer du doigt les tache qu'on doit faire réellement dans le projet, il faut parler de 2 tache puis passer a la suite
+	9 - Présentation du matériel du projet qui est utile pour faire x ou y choses
 	10 - Présentation des logiciels et des langages utilisé et leurs contexte d'utilisation
 	11 - Présentation des outils sur lequel on collabore, git, github
 	12 - Planning prévisionnel
