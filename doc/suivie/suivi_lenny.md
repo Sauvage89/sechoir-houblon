@@ -1,6 +1,6 @@
 ## Suivie Lénny
 ### Janvier
-	semaine 1 : 21 - 23	:
+	semaine 1 : 21 - 23	: mes truc
 	semaine 2 : 28 - 30	:
 ### Février
 	semaine 3 : 4 - 6	:
