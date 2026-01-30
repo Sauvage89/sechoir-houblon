@@ -62,40 +62,43 @@
 <details>
 <summary>Tâches</summary>
 
-	- Choisir et mettre en œuvre les capteurs
-	- Choisir et mettre en œuvre la sirène
-	- Choisir et mettre en œuvre les interfaces de puissance pour le séchage et l’alerte sonore
-	- Developer le cas d’utilisation Mesurer
-	- Developer le cas d’utilisation Alerter dépassement température
-	- Developer le cas d’utilisation Chauffer
+	- Choisir et mettre en œuvre les capteurs de température.
+	- Choisir et mettre en œuvre la sirène.
+	- Choisir et mettre en œuvre les interfaces de puissance pour le séchage et l’alerte sonore.
+	- Developper la partie Mesurer.
+	- Developper la partie Alerter en cas de dépassement température.
+	- Developper le cas d’utilisation Chauffer.
+	- Sauvegarder dans la BDD.
 </details>
 
 <details>
 <summary>Tâches détaillées</summary>
 
 ### Capteurs
-	Les capteurs de température sont à choisir.
-	Il faut 6 capteurs de température
-	Les capteurs doivent être étanches.
-	Les capteurs doivent être peu onéreux. 
-	Les capteurs doivent être anti-poussière.
-	Les capteurs doivent avoir une longueur de fil environ 5m pour permettre une connexion directe au Raspberry.
+	Choisir les capteurs de température.
+	Prévoir 6 capteurs de température
+	Choisir des capteurs de température étanches.
+	Choisir des capteurs de température peu cher. 
+	Choisir des capteurs anti-poussière.
+	Définir la longueur de fil entre les capteurs de température et la Raspberry d'environ 5m.
 ### Sirène
-	La sirène est à choisir.
-	Interface de puissance à choisir dans le catalogue du lycée.
-	Elle doit se déclencher lorsque deux mesures successives sont supérieures à 60°C.
-### Developer le cas d’utilisation Mesurer
-	Les capteurs de température doivent avoir une précision minimum de +/- 0,5°C dans la zone utile pour le contrôle du séchage.
-### Alerter  en cas de dépassement  de la température
-	L’alerte s’effectuera via un signal sonore.
-### Developer le cas d’utilisation Chauffer
-	Le pilotage du brûleur doit être effectué en fonction des températures configurées.
-	La température moyenne doit être située entre 50 et 55°C.
-	Le chauffage démarre quand la température devient inférieure à 50°C.
-	Le chauffage s’arrête quand la température devient supérieure à 60°C.
-	Il est nécessaire de choisir une commande compatible avec le Raspberry.
+	Choisir la sirène d'alerte.
+	Choisir une interface de puissance dans le catalogue du lycée.
+	Déclencher la sirène d'alerte lorsque deux mesures successives sont supérieures à 60°C.
+### Mesurer
+	Apporter une précision minimum de +/- 0,5°C au capteurs de températures dans la zone utile pour le contrôle du séchage.
+	Alerter lorsque deux mesures successives sont inférieures à 50°C (hors-démarrage).
+	Démarrer le chauffage quand la température devient inférieure à 50°C. (hors-démarrage)
+	Alerter lorsque deux mesures successives sont supérieures à 55°C.
+	Stopper Le chauffage quand la température devient supérieure à 60°C. 
+### Alerter en cas de dépassement de la température
+	Alerter via un signal sonore.	
+### Chauffer
+	Piloter le brûleur en fonction des températures configurées.
+	Contrôler la température moyenne pour qu’elle reste entre 50 et 55 °C.
+	Choisir une commande compatible avec le Raspberry.
 ### BDD
-	Les informations sur les températures, les heures, les commandes ou pas de chauffage, les alertes éventuelles sont sauvegardées dans la BDD.
+	Sauvegarder les informations sur les températures, les heures, les commandes de chauffage et les alertes éventuelles dans la BDD.
 </details>
 
 ---
