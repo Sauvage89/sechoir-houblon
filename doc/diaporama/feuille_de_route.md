@@ -23,3 +23,8 @@
 	qu'on a 1 tache de sauvegarder des donnée des session de sèche des houblons,
 	qu'on a 1 tache de messurer l'état d'une séche du houblon,
 	qu'on a 1 tache web ou l'on fait visualiser et controler les sessions de sèche
+
+### Repartition parole
+	Lénny	-> 1,
+	Adam	->
+	Ayoub	->
