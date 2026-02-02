@@ -1,9 +1,9 @@
 ## Suivie Lénny
 ### Janvier
-	semaine 1 : 21 - 23	: mes truc
-	semaine 2 : 28 - 30	:
+	semaine 1 : 21 - 23	: apropriation du projet, repartition des taches, creation de diagramme, documentation
+	semaine 2 : 28 - 30	: creation d'une carte sd avec l'os Rasberry Pi 3 b+, creation de diagramme, documentation, coordination des taches a faire avec les camarades, appropriation du projet
 ### Février
-	semaine 3 : 4 - 6	:
+	semaine 3 : 4 - 6	: revue de projet, modification du diaporama, modification des diagrammes
 	semaine 4 : 25 - 27	:
 ### Mars
 	semaine 5 : 4 - 6	:
