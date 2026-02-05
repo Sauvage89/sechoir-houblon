@@ -1,7 +1,6 @@
 # Installation du serveur web Apache 2
 
-### Note
-	5 étapes en tout
+> Note : 5 étapes principales
 
 ## 1. Installation du serveur web  
    - Mettre à jour la liste des paquets :
@@ -46,17 +45,17 @@
                   └─1240 /usr/sbin/apache2 -k start
      ```
    - Après l’installation, Apache crée automatiquement l’utilisateur système `www-data` pour exécuter le serveur.
-   Cette utilisateur n'a pas de mot de passe est n'est pas "accesible"
+   Cet utilisateur n'a pas de mot de passe et n'est pas accessible
 
    - Répertoires créés par Apache 2 :
      - **Répertoire racine** du site web `/var/www/html`  
      C’est ici que sont les fichiers du site (`index.html`, etc.).  
      Plusieurs fichiers HTML peuvent coexister pour représenter les différentes pages d'un site.
-     - **Répertoire configuration** principale `/etc/apache2/`  
+     - **Répertoire de configuration principale** `/etc/apache2/`  
      `apache2.conf` → fichier de configuration globale  
      `ports.conf` → définit les ports d’écoute (80 pour HTTP, 443 pour HTTPS)  
-     `mods-available/` et `mods-enabled/` → modules Apache disponibles et activés (non utilisé dans le projet)    
-     `sites-available/` et `sites-enabled/` → configuration des sites (non utilisé dans le projet)
+     `mods-available/` et `mods-enabled/` → modules Apache disponibles et activés (non utilisés dans le projet)    
+     `sites-available/` et `sites-enabled/` → configuration des sites (non utilisés dans le projet)
      - **Répertoire log** `/var/log/apache2/`   
      `access.log` → journal des accès   
      `error.log` → journal des erreurs
@@ -88,52 +87,102 @@ Après modification de fichiers de configuration, il est utile de savoir recharg
 Pour vérifier que le serveur fonctionne correctement, ouvre un navigateur web et tape : [http://localhost](http://localhost)   
 Si tout est correct, tu devrais voir la page par défaut d’Apache (`index.html`) s’afficher.
 
-## 5.  Bonnes pratiques 
+## 5. Bonnes pratiques
 - Vérifier que tous les fichiers et dossiers du site appartiennent à `www-data` ou ont des permissions suffisantes pour être lus par ce compte.
 - Utiliser `chown` et `chmod` pour gérer les droits des fichiers
 
+# Droits d'accès du serveur web
+
+## Pour l'utilisateur `www-data`
+
+- **/var/www/html**  
+  - Propriétaire : `www-data:www-data`  
+  - Droits : `500` → `dr-x------`  
+    - Le **droit d’exécution** permet à `www-data` d’entrer dans le dossier.  
+    - Le **droit de lecture** permet à `www-data` de parcourir le dossier et ses sous-dossiers.
+
+- **/var/www/html/sous-dossiers**  
+  - Propriétaire : `www-data:www-data`  
+  - Droits : `500` → `dr-x------`  
+    - Le **droit d’exécution** permet à `www-data` d’entrer dans le dossier.  
+    - Le **droit de lecture** permet à `www-data` de parcourir le dossier et ses sous-dossiers.
+
+- **/var/www/html/fichiers**  
+  - Propriétaire : `www-data:www-data`  
+  - Droits : `400` → `-r--------`  
+    - Le **droit de lecture** permet à `www-data` de lire les fichiers.  
+    - Les fichiers dans les sous-dossiers ont les mêmes droits.
+
+- **/var/log/apache2/access.log**  
+  - Propriétaire : `www-data:www-data`  
+  - Droits : `600` → `-rw-------`  
+    - Le **droit de lecture** permet à `www-data` de lire le fichier.  
+    - Le **droit d’écriture** permet à `www-data` d’écrire dans le fichier.
+
+- **/var/log/apache2/error.log**  
+  - Propriétaire : `www-data:www-data`  
+  - Droits : `600` → `-rw-------`  
+    - Le **droit de lecture** permet à `www-data` de lire le fichier.  
+    - Le **droit d’écriture** permet à `www-data` d’écrire dans le fichier.
+
+## Pour l'utilisateur `root`
+
+- **/etc/apache2/ -R**  
+  - Propriétaire : `root:root`  
+  - Droits : `700` → `drwx------`  
+    - Le **droit d’exécution** permet à `root` d’entrer dans le dossier.  
+    - Le **droit de lecture** permet à `root` de parcourir le dossier et ses sous-dossiers.  
+    - Le **droit d’écriture** permet à `root` d’écrire dans les fichiers.  
+  - Les droits sont appliqués **récursivement** sur tous les fichiers et sous-dossiers.
+
 # Configuration du serveur web
 
-## Liste des droit d'accès du serveur web de `www-data`
+Le serveur web Apache utilise un **fichier de configuration de site** (VirtualHost) pour décrire **comment un site web est servi**.  
+Dans la configuration actuelle, un seul site web est servi.
 
-- `/var/www/html` :  
-  - Propriétaire : `utilisateur:groupe` → `www-data:www-data`  
-  - Droits : `500` → `dr-x------`  
-    Le **droit d’exécution** permet à `www-data` d’entrer dans le dossier.  
-    Le **droit de lecture** permet à `www-data` de parcourir le dossier et ses sous-dossiers.
+---
 
-- `/var/www/html/sous-dossiers` :  
-  - Propriétaire : `utilisateur:groupe` → `www-data:www-data`  
-  - Droits : `500` → `dr-x------`  
-    Le **droit d’exécution** permet à `www-data` d’entrer dans le dossier.  
-    Le **droit de lecture** permet à `www-data` de parcourir le dossier et ses sous-dossiers.
+### Fichiers de configuration du site
 
-- `/var/www/html/fichiers` :  
-  - Propriétaire : `utilisateur:groupe` → `www-data:www-data`  
-  - Droits : `400` → `-r--------`  
-    Le **droit de lecture** permet à `www-data` de lire les fichiers.
-  - Les fichier peuvent être dans les sous-dossiers avec ces meme droits.
+- Les configurations des sites **disponibles** sont stockées dans :  
+  `/etc/apache2/sites-available/`
+- Les configurations des sites **actifs** sont stockées dans :  
+  `/etc/apache2/sites-enabled/`
 
-- `/var/log/apache2/access.log` :  
-  - Propriétaire : `utilisateur:groupe` → `www-data:www-data`  
-  - Droits : `600` → `-rw-------`  
-    Le **droit de lecture** permet à `www-data` de lire le fichier.  
-    Le **droit d’écriture** permet à `www-data` d’écrire dans le fichier.
+> Cette distinction permet de préparer des sites web dans `sites-available` sans qu’ils soient accessibles, et de n’activer que ceux que l’on souhaite via `sites-enabled`.  
+> Les fichiers présents dans `sites-enabled` sont en réalité des **liens symboliques** vers les fichiers dans `sites-available`.
 
-- `/var/log/apache2/error.log` :  
-  - Propriétaire : `utilisateur:groupe` → `www-data:www-data`  
-  - Droits : `600` → `-rw-------`  
-    Le **droit de lecture** permet à `www-data` de lire le fichier.  
-    Le **droit d’écriture** permet à `www-data` d’écrire dans le fichier.
+---
 
-## Liste des droit d'accès du serveur web de `root`
+### Contenu d’un fichier de configuration
 
-- `/etc/apache2/ -R` :  
-  - Propriétaire : `utilisateur:groupe` → `root:root`  
-  - Droits : `700` → `drwx------`  
-    Le **droit d’exécution** permet à `root` d’entrer dans le dossier.  
-    Le **droit de lecture** permet à `root` de parcourir le dossier et ses sous-dossiers.
-    Le **droit d’écriture** permet à `root` d’écrire dans les fichiers.
-  - Les droits sont mis en récursif pour appliquer sur tout les fichier et sous-dossiers ses même droits.
+Un fichier de configuration définit notamment :
+- le **port d’écoute** du serveur,
+- le **répertoire racine du site web**,
+- les **fichiers de journaux**,
+- le **comportement global du site**.
 
-## 
+Dans notre cas :
+- 1 fichier de configuration **disponible**
+- 1 fichier de configuration **actif**
+
+---
+
+### Note sur le fichier actif
+
+Le fichier de configuration actif est un **lien symbolique** vers un fichier disponible.  
+Il faut donc **modifier uniquement le fichier disponible** pour que les changements soient pris en compte.
+
+---
+
+### Configuration du site (`000-default.conf`)
+
+Le fichier `000-default.conf` définit :
+- le port d’écoute : **80**
+- le répertoire racine du site :
+  - `DocumentRoot /var/www/html`
+- les fichiers de logs :
+  - `/var/log/apache2/access.log`
+  - `/var/log/apache2/error.log`
+
+---
