@@ -94,7 +94,7 @@ Si tout est correct, tu devrais voir la page par défaut d’Apache (`index.html
 
 # Configuration du serveur web
 
-## Liste des droit d'accès de `www-data`
+## Liste des droit d'accès du serveur web de `www-data`
 
 - `/var/www/html` :  
   - Propriétaire : `utilisateur:groupe` → `www-data:www-data`  
@@ -126,3 +126,12 @@ Si tout est correct, tu devrais voir la page par défaut d’Apache (`index.html
     Le **droit de lecture** permet à `www-data` de lire le fichier.  
     Le **droit d’écriture** permet à `www-data` d’écrire dans le fichier.
 
+## Liste des droit d'accès du serveur web de `root`
+
+- `/etc/apache2/ -R` :  
+  - Propriétaire : `utilisateur:groupe` → `root:root`  
+  - Droits : `700` → `drwx------`  
+    Le **droit d’exécution** permet à `root` d’entrer dans le dossier.  
+    Le **droit de lecture** permet à `root` de parcourir le dossier et ses sous-dossiers.
+    Le **droit d’écriture** permet à `root` d’écrire dans les fichiers.
+  - Les droits sont mis en récursif pour appliquer sur tout les fichier et sous-dossiers ses même droits.
