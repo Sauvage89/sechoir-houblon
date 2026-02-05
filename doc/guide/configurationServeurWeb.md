@@ -46,6 +46,7 @@
                   └─1240 /usr/sbin/apache2 -k start
      ```
    - Après l’installation, Apache crée automatiquement l’utilisateur système `www-data` pour exécuter le serveur.
+   Cette utilisateur n'a pas de mot de passe est n'est pas "accesible"
 
    - Répertoires créés par Apache 2 :
      - **Répertoire racine** du site web `/var/www/html`  
@@ -77,10 +78,10 @@ Pour que le serveur démarre automatiquement au boot :
 
 Après modification de fichiers de configuration, il est utile de savoir recharger Apache sans couper le service :
 
-```bash
-$ sudo systemctl reload apache2   # recharge la configuration sans arrêter le service
-$ sudo systemctl restart apache2  # redémarre complètement Apache
-```
+   ```bash
+   $ sudo systemctl reload apache2   # recharge la configuration sans arrêter le service
+   $ sudo systemctl restart apache2  # redémarre complètement Apache
+   ```
 
 ## 4. Test de fonctionnement avec localhost via navigateur
 
@@ -89,8 +90,39 @@ Si tout est correct, tu devrais voir la page par défaut d’Apache (`index.html
 
 ## 5.  Bonnes pratiques 
 - Vérifier que tous les fichiers et dossiers du site appartiennent à `www-data` ou ont des permissions suffisantes pour être lus par ce compte.
-- Utiliser `chown` et `chmod` pour gérer les droits des fichiers :
-   ```bash
-   $ sudo chown -R www-data:www-data /var/www/html
-   $ sudo chmod -R 755 /var/www/html
-   ```
+- Utiliser `chown` et `chmod` pour gérer les droits des fichiers
+
+# Configuration du serveur web
+
+## Liste des droit d'accès de `www-data`
+
+- `/var/www/html` :  
+  - Propriétaire : `utilisateur:groupe` → `www-data:www-data`  
+  - Droits : `500` → `dr-x------`  
+    Le **droit d’exécution** permet à `www-data` d’entrer dans le dossier.  
+    Le **droit de lecture** permet à `www-data` de parcourir le dossier et ses sous-dossiers.
+
+- `/var/www/html/sous-dossiers` :  
+  - Propriétaire : `utilisateur:groupe` → `www-data:www-data`  
+  - Droits : `500` → `dr-x------`  
+    Le **droit d’exécution** permet à `www-data` d’entrer dans le dossier.  
+    Le **droit de lecture** permet à `www-data` de parcourir le dossier et ses sous-dossiers.
+
+- `/var/www/html/fichiers` :  
+  - Propriétaire : `utilisateur:groupe` → `www-data:www-data`  
+  - Droits : `400` → `-r--------`  
+    Le **droit de lecture** permet à `www-data` de lire les fichiers.
+  - Les fichier peuvent être dans les sous-dossiers avec ces meme droits.
+
+- `/var/log/apache2/access.log` :  
+  - Propriétaire : `utilisateur:groupe` → `www-data:www-data`  
+  - Droits : `600` → `-rw-------`  
+    Le **droit de lecture** permet à `www-data` de lire le fichier.  
+    Le **droit d’écriture** permet à `www-data` d’écrire dans le fichier.
+
+- `/var/log/apache2/error.log` :  
+  - Propriétaire : `utilisateur:groupe` → `www-data:www-data`  
+  - Droits : `600` → `-rw-------`  
+    Le **droit de lecture** permet à `www-data` de lire le fichier.  
+    Le **droit d’écriture** permet à `www-data` d’écrire dans le fichier.
+
