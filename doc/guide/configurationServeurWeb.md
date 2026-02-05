@@ -135,3 +135,5 @@ Si tout est correct, tu devrais voir la page par défaut d’Apache (`index.html
     Le **droit de lecture** permet à `root` de parcourir le dossier et ses sous-dossiers.
     Le **droit d’écriture** permet à `root` d’écrire dans les fichiers.
   - Les droits sont mis en récursif pour appliquer sur tout les fichier et sous-dossiers ses même droits.
+
+## 
