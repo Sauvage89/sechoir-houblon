@@ -189,12 +189,51 @@ Le fichier `000-default.conf` définit :
 
 Le site web est composé de plusieurs fichiers situés dans :
 
-```bash
 /var/www/html
-```
 
-Le fichier principal, index.html, intègre des fonctionnalités définies dans d’autres fichiers présents dans le même dossier ou dans les sous-dossiers.
+Le fichier principal, `index.html`, intègre des fonctionnalités définies dans d’autres fichiers présents dans le même dossier ou dans les sous-dossiers.  
+Le site utilise les technologies suivantes : **HTML**, **PHP** et **JavaScript**.
+
+---
+
+### Utilisation du HTML
+
+Le site repose principalement sur des fichiers HTML pour la structure et la navigation :
+
+- `index.html`
+- `page_parametrageSechoir.html`
+- `page_visualiserSechoir.html`
+- ...
+
+Le fichier `index.html` sert de point d’entrée et intègre les autres pages selon la navigation.
+Puisque plusieurs personnes travaillent sur le site web, cela permet de créer de la modularité de diviser le site en plusieurs sous-fichiers.
+
+---
+
+### Utilisation du PHP
+
+Le PHP permet d’exécuter des commandes sur la Raspberry Pi.  
+Des scripts PHP sont appelés via des boutons ou des formulaires présents dans les fichiers HTML.  
+
+Exemples de fichiers PHP dédiés à des actions spécifiques :
+
+- `saveParametre.php`
+- `messurerTemperature.php`
+- ...
+
+Ces fichiers PHP servent d’interface entre le front-end et le système de la Raspberry Pi. Ils exécutent des commandes, récupèrent ou modifient des données, et/ou renvoient les résultats au navigateur pour que l’interface se mette à jour.
+
+---
+
+### Utilisation du JavaScript
+
+Le JavaScript est utilisé principalement pour :
+
+- Appeler les scripts PHP sans recharger la page (AJAX / fetch)
+- Mettre à jour dynamiquement certaines parties de l’interface selon les réponses des scripts PHP
+
+Son utilisation est donc limitée à la communication avec le back-end PHP.
 
 # Versionnage et suivi du site web
 
-La configuration, le site web, et sa documentation est gérer dans un projet git dans le dossier `serveur_web`.
+La configuration, le site web et sa documentation sont gérés dans un projet **Git** dans le dossier `serveur_web`.
