@@ -209,6 +209,13 @@ Le fichier `index.html` sert de point d’entrée et intègre les autres pages s
 Les autres fichier html sont dans le dossier `site/`.   
 Puisque plusieurs personnes travaillent sur le site web, cela permet de créer de la modularité de diviser le site en plusieurs sous-fichiers.
 
+### Utilisation du CSS
+
+Les fichier html utilise des fichier css pour styliser leur page web, 1 fichier html = 1 fichier css AU MAXIMUN.   
+Les fichier css doivent avoir le meme nom que les fichier html.   
+
+Les fichier css ce trouve dans le dossier `/css`
+
 ---
 
 ### Utilisation du PHP
@@ -225,6 +232,12 @@ Exemples de fichiers PHP dédiés à des actions spécifiques :
 Ces fichiers PHP sont organisés dans des dossiers correspondant à leur fonctionnalité.   
 Ils servent d’interface entre le front-end et le système de la Raspberry Pi.   
 Ils exécutent des commandes, récupèrent ou modifient des données, et renvoient les résultats au navigateur pour que l’interface se mette à jour.
+
+---
+
+### Utilisation d'image
+
+Si un fichier html a besoin d'image, ces images sont dans le dossier `/asset`
 
 ---
 
