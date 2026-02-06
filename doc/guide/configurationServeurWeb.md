@@ -201,11 +201,12 @@ Le site utilise les technologies suivantes : **HTML**, **PHP** et **JavaScript**
 Le site repose principalement sur des fichiers HTML pour la structure et la navigation :
 
 - `index.html`
-- `page_parametrageSechoir.html`
-- `page_visualiserSechoir.html`
+- `site/page_parametrageSechoir.html`
+- `site/page_visualiserSechoir.html`
 - ...
 
 Le fichier `index.html` sert de point d’entrée et intègre les autres pages selon la navigation.
+Les autres fichier html sont dans le dossier `site/`
 Puisque plusieurs personnes travaillent sur le site web, cela permet de créer de la modularité de diviser le site en plusieurs sous-fichiers.
 
 ---
