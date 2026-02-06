@@ -201,12 +201,12 @@ Le site utilise les technologies suivantes : **HTML**, **PHP** et **JavaScript**
 Le site repose principalement sur des fichiers HTML pour la structure et la navigation :
 
 - `index.html`
-- `site/page_parametrageSechoir.html`
-- `site/page_visualiserSechoir.html`
+- `page_parametrageSechoir.html`
+- `page_visualiserSechoir.html`
 - ...
 
-Le fichier `index.html` sert de point d’entrée et intègre les autres pages selon la navigation.
-Les autres fichier html sont dans le dossier `site/`
+Le fichier `index.html` sert de point d’entrée et intègre les autres pages selon la navigation, il se trouve à la racine du dossier `html`.  
+Les autres fichier html sont dans le dossier `site/`.   
 Puisque plusieurs personnes travaillent sur le site web, cela permet de créer de la modularité de diviser le site en plusieurs sous-fichiers.
 
 ---
@@ -222,7 +222,9 @@ Exemples de fichiers PHP dédiés à des actions spécifiques :
 - `messurerTemperature.php`
 - ...
 
-Ces fichiers PHP servent d’interface entre le front-end et le système de la Raspberry Pi. Ils exécutent des commandes, récupèrent ou modifient des données, et/ou renvoient les résultats au navigateur pour que l’interface se mette à jour.
+Ces fichiers PHP sont organisés dans des dossiers correspondant à leur fonctionnalité.   
+Ils servent d’interface entre le front-end et le système de la Raspberry Pi.   
+Ils exécutent des commandes, récupèrent ou modifient des données, et renvoient les résultats au navigateur pour que l’interface se mette à jour.
 
 ---
 
@@ -233,7 +235,17 @@ Le JavaScript est utilisé principalement pour :
 - Appeler les scripts PHP sans recharger la page (AJAX / fetch)
 - Mettre à jour dynamiquement certaines parties de l’interface selon les réponses des scripts PHP
 
+Ces fichiers js sont organisés dans des dossiers correspondant à leur fonctionnalité.   
 Son utilisation est donc limitée à la communication avec le back-end PHP.
+
+---
+
+### Exemple de structure
+
+Un dossier de strucure décrit une structure du dossier `/var/www/html`.   
+Il ce situe dans `/doc/exemple_structure_web`.   
+
+Ce meme dossier est accesible via un lien symbolique dans le dossier : `/serveur_web`   
 
 # Versionnage et suivi du site web
 
