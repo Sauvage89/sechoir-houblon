@@ -3,8 +3,8 @@
 	semaine 1 : 21 - 23	: apropriation du projet, repartition des taches, creation de diagramme, documentation
 	semaine 2 : 28 - 30	: creation d'une carte sd avec l'os Rasberry Pi 3 b+, creation de diagramme, documentation, coordination des taches a faire avec les camarades, appropriation du projet
 ### Février
-	semaine 3 : 4 - 6	: modification du diaporama revu1, modification des diagrammes, revue de projet, structuration de l'architecture du projet, Documentation du serveur web, Implémentation du serveur web sur la Raspberry Pi par rapport a la documentation; ajout d'une structure théorique pour le dossier html.
-	semaine 4 : 25 - 27	:
+	semaine 3 : 4 - 6	: modification du diaporama revu1, modification des diagrammes, revue de projet, structuration de l'architecture du projet, Documentation du serveur web, Implémentation du serveur web sur la Raspberry Pi par rapport a la documentation; ajout d'une structure théorique pour le dossier html. Fin de la conception du serveur web
+	semaine 4 : 25 - 27	: 
 ### Mars
 	semaine 5 : 4 - 6	:
 	semaine 6 : 11 - 13	:
