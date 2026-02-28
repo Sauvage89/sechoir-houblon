@@ -24,7 +24,7 @@
      Compiled using: APR 1.7.0, APR-UTIL 1.6.1
      Architecture:   64-bit
      ```
-   - Vérifier l’état du service Apache :
+   - Vérifier l’état du service Apache 2 :
      ```bash
      $ systemctl status apache2
      ```
@@ -49,12 +49,11 @@
 
    - Répertoires créés par Apache 2 :
      - **Répertoire racine** du site web `/var/www/html`  
-     C’est ici que sont les fichiers du site (`index.html`, etc.).  
+     C’est ici que sont les fichiers du site (`index.php`, etc.).  
      Plusieurs fichiers HTML peuvent coexister pour représenter les différentes pages d'un site.
      - **Répertoire de configuration principale** `/etc/apache2/`  
      `apache2.conf` → fichier de configuration globale  
      `ports.conf` → définit les ports d’écoute (80 pour HTTP, 443 pour HTTPS)  
-     `mods-available/` et `mods-enabled/` → modules Apache disponibles et activés (non utilisés dans le projet)    
      `sites-available/` et `sites-enabled/` → configuration des sites (non utilisés dans le projet)
      - **Répertoire log** `/var/log/apache2/`   
      `access.log` → journal des accès   
@@ -66,14 +65,40 @@
      `/var/www/html` → fichiers du site  
      `/var/log/apache2` → fichiers de logs
 
-## 2. Activation au démarrage
+## 2. Installation du serveur php
+   - Mettre à jour la liste des paquets :
+     ```bash
+     $ sudo apt update
+     ```
+   - Installer php et le module php de apache2 :
+     ```bash
+     $ sudo apt install php8.4 libapache2-mod-php8.4
+     ```
+   - Vérifier que le paquet est bien installé :
+     ```bash
+     $ php8.4 -v
+     ```
+     Sortie typique :
+     ```texte
+     PHP 8.4.xx (cli) (built: Jan  7 2026 08:40:32) (NTS)
+     Copyright (c) The PHP Group
+     Zend Engine v4.3.6, Copyright (c) Zend Technologies
+     with Zend OPcache v8.3.6, Copyright (c), by Zend Technologies
+     ```
+   - Activer le module PHP dans Apache
+     ```bash
+     $ sudo a2enmod php8.4
+     $ sudo systemctl restart apache2
+     ```
+
+## 3. Activation au démarrage
 
 Pour que le serveur démarre automatiquement au boot :
    ```bash
    $ sudo systemctl enable apache2
    ```
 
-## 3. Redémarrage / rechargement après modification
+## 4. Redémarrage / rechargement après modification
 
 Après modification de fichiers de configuration, il est utile de savoir recharger Apache sans couper le service :
 
@@ -82,12 +107,12 @@ Après modification de fichiers de configuration, il est utile de savoir recharg
    $ sudo systemctl restart apache2  # redémarre complètement Apache
    ```
 
-## 4. Test de fonctionnement avec localhost via navigateur
+## 5. Test de fonctionnement avec localhost via navigateur
 
 Pour vérifier que le serveur fonctionne correctement, ouvre un navigateur web et tape : [http://localhost](http://localhost)   
-Si tout est correct, tu devrais voir la page par défaut d’Apache (`index.html`) s’afficher.
+Si tout est correct, tu devrais voir la page par défaut d’Apache (`index.html`) s’afficher. (ATTENTION PLUS TARD CE FICHIER SERAS `index.php`)
 
-## 5. Bonnes pratiques
+## 6. Bonnes pratiques
 - Vérifier que tous les fichiers et dossiers du site appartiennent à `www-data` ou ont des permissions suffisantes pour être lus par ce compte.
 - Utiliser `chown` et `chmod` pour gérer les droits des fichiers
 
@@ -193,8 +218,14 @@ Le site web est composé de plusieurs fichiers situés dans :
 /var/www/html
 ```
 
-Le fichier principal, index.html, intègre des fonctionnalités définies dans d’autres fichiers présents dans le même dossier ou dans les sous-dossiers.
+Le fichier principal, index.php, intègre des fonctionnalités définies dans d’autres fichiers présents dans le même dossier ou dans les sous-dossiers.
+Les fichiers décrivant le site sont tous du php.
 
 # Versionnage et suivi du site web
 
-La configuration, le site web, et sa documentation est gérer dans un projet git dans le dossier `serveur_web`.
+La configuration, le site web, et sa documentation est gérés dans un projet git dans le dossier `serveur_web`.
+
+
+# ATTENTION !!!
+
+Les droits d'accés sont trés restrectif.
