@@ -4,98 +4,81 @@
 
 ## 1. Présentation
 
-La base de données permet de stocker les informations nécessaires au fonctionnement du système de contrôle du séchage du houblon.
+> La base de données sert à stocker toutes les informations nécessaires au fonctionnement du système de contrôle du séchage du houblon.
 
-Elle est utilisée par :
+Elle est utilisée par l'utilisateur **www:data**
 
-* le **site web de supervision**
-* le **contrôleur Raspberry Pi**
-* les **scripts PHP de l’API**
+- ### Objectifs principaux
 
-Les données enregistrées permettent de :
+  - #### Paraphrase
 
-* visualiser les **températures des capteurs**
-* suivre les **cycles de séchage**
-* enregistrer les **alertes**
-* stocker la **production de houblon par variété**
+	Lors d’un cycle de séchage, les températures relevées par les différents capteurs sont enregistrées, ainsi que les événements pouvant survenir.  
+	À la fin du cycle, la masse de houblon produite est enregistrée en étant associée au cycle correspondant.
 
-Base de données utilisée : **MySQL / MariaDB**
+  - Les données enregistrées permettent de :  
+    - Visualiser les **températures des capteurs**  
+    - Suivre les **cycles de séchage**  
+    - Enregistrer les **événements**  
+    - Stocker la **production de houblon par variété**  
 
----
+- ### Technologie
+
+  - Base de données : **MySQL**
 
 # 2. Schéma global de la base
 
-La base de données est composée des tables suivantes :
-
-| Table                | Description                              |
-| -------------------- | ---------------------------------------- |
-| `temperatures`       | Stocke les mesures des capteurs          |
-| `cycles_sechage`     | Enregistre les cycles de séchage         |
-| `alertes`            | Enregistre les alertes du système        |
-| `masses_houblon` | Enregistre la masse produite par variété |
-
----
+| Table			| Description					|
+| --------------------- | --------------------------------------------- |
+| `cycles_sechage`	| Enregistre les cycles de séchage		|
+| `capteurs`		| Informations sur les capteurs installés	|
+| `temperatures`	| Stocke les mesures des capteurs		|
+| `evenements`		| Enregistre les alertes du système		|
+| `masses_houblon`	| Enregistre la masse produite par variété	|
 
 # 3. Table : temperatures
 
 ## Description
 
-Cette table enregistre les mesures de température provenant des capteurs présents dans le séchoir.
-
+Cette table enregistre les mesures de température provenant des capteurs présents dans le séchoir.  
 Chaque capteur envoie régulièrement une mesure qui est enregistrée avec sa date.
 
 ## Structure
 
-| Champ       | Type     | Description                |
-| ----------- | -------- | -------------------------- |
-| id          | INT (PK) | Identifiant unique         |
-| capteur     | INT      | Numéro du capteur (1 à 6)  |
-| valeur      | FLOAT    | Température mesurée        |
-| date_mesure | DATETIME | Date et heure de la mesure |
+| Champ			| Type		| Description			|
+| --------------------- | ------------- | ----------------------------- |
+| id_temp		| INT (PK)	| Identifiant unique		|
+| temp_capteur		| INT (FK)	| Reférence a l'id d'un capteur	|
+| temp_valeur		| FLOAT		| Température mesurée		|
+| temp_date_mesure	| DATETIME	| Date et heure de la mesure	|
 
 ## Exemple de données
 
-| id | capteur | valeur | date_mesure         |
-| -- | ------- | ------ | ------------------- |
-| 1  | 1       | 52.3   | 2026-03-05 10:12:00 |
-| 2  | 2       | 53.1   | 2026-03-05 10:12:00 |
-
-## Utilisation
-
-Cette table permet de :
-
-* afficher les **températures en temps réel**
-* calculer la **température moyenne**
-* analyser l'historique thermique du séchage
-
----
+| id_temp	| temp_capteur	| temp_valeur	| temp_date_mesure	|
+| ------------- | ------------- | ------------- | --------------------- |
+| 1		| 4		| 52.3		| 2026-03-05 10:12:00	|
+| 2		| 2		| 53.1		| 2026-03-05 10:12:00	|
 
 # 4. Table : cycles_sechage
 
 ## Description
 
-Cette table enregistre les cycles de séchage du houblon.
-
+Cette table enregistre les cycles de séchage du houblon.  
 Un cycle correspond à une période pendant laquelle le système de séchage est actif.
 
 ## Structure
 
-| Champ      | Type     | Description                     |
-| ---------- | -------- | ------------------------------- |
-| id         | INT (PK) | Identifiant du cycle            |
-| date_debut | DATETIME | Date et heure de démarrage      |
-| date_fin   | DATETIME | Date et heure d'arrêt           |
-| etat       | VARCHAR  | Etat du cycle (actif / inactif) |
+| Champ			| Type		| Description			|
+| --------------------- | ------------- | ----------------------------- |
+| id_cyc_sech		| INT (PK)	| Identifiant du cycle		|
+| cyc_sech_date_debut	| DATETIME	| Date et heure de démarrage	|
+| cyc_sech_date_fin	| DATETIME	| Date et heure d'arrêt		|
 
-## Utilisation
+## Exemple de données
 
-Cette table permet de :
-
-* connaître l’état actuel du séchage
-* enregistrer les **démarrages et arrêts**
-* calculer la **durée d'un cycle**
-
----
+| id_cyc_sech	| cyc_sech_date_debut	| cyc_sech_date_fin	|
+| ------------- | --------------------- | --------------------- |
+| 1		| 2026-03-05 10:12:00	| 2026-03-05 15:12:00	|
+| 2		| 2026-15-17 9:20:00	| 2026-15-17 14:20:00	|
 
 # 5. Table : alertes
 
