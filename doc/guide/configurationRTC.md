@@ -123,6 +123,72 @@ la RTC interne.
 
 </details>
 
+<details>
+<summary>Exemple de trame I2C d'une RTC externe</summary>
+
+---
+
+## Connexion matérielle
+
+| Module DS1307 | Raspberry Pi 3 B+ (GPIO) |
+|---------------|--------------------------|
+| VCC           | 3.3V (Pin 1)             |
+| GND           | GND (Pin 6)              |
+| SDA           | GPIO2 (Pin 3)            |
+| SCL           | GPIO3 (Pin 5)            |
+
+### Commande utilisée
+```bash
+$ sudo hwclock -r	# demande la date et l'heure a la RTC
+```
+
+### Trame I²C observée
+```bash
+TRAM : 0x68 0x00 RESTART 0x68 0x03
+```
+
+- Interprétation :
+  - 0x68 → Adresse I²C du périphérique  
+  - 0x00 → Registre des secondes  
+  - RESTART → Repeated START I²C  
+  - 0x68 → Adresse I²C (lecture)  
+  - 0x03 → Valeur retournée par la RTC (secondes)
+
+---
+
+## Décomposition de la communication
+
+### TRAME 1 — Adresse + écriture
+  - 7 bit pour l'addr `1101000` : master  
+  - 1 bit R/W `0` (Write) : master  
+  - 1 bit ACK `0` : slave  
+
+### TRAME 2 — Sélection du registre
+  - 8 bits registre : `00000000` : master
+  - 1 bit ACK : `0` : slave  
+
+### TRAME 3 — Repeated START
+  - SDA passe à `1`
+  - SCL passe à `1`
+  - SDA passe à `0`
+  - SCL passe à `0`
+
+### TRAME 4 — Adresse + lecture
+  - 7 bits adresse : `1101000` : slave  
+  - 1 bit R/W : `1` (Read) : slave  
+  - 1 bit ACK : `0` : master
+
+### TRAME 5 — Donnée retournée par la RTC
+  - 8 bits data : `00000011` : slave  
+  - 1 bit ACK : `0` : master  
+  → le master souhaite continuer la communication
+
+`SUITE NON DECODER`  
+
+Les 5 tram ce situe dans le dossier `doc/img/`  
+
+</details>
+
 ---
 
 # Configuration d'une RTC
