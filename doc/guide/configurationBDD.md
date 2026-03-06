@@ -175,13 +175,62 @@ Les données sont saisies par l'utilisateur depuis l'interface web.
 
 # 3. Utilisation par l'application
 
-La base de données est utilisée par les scripts PHP du projet :
+La base de données est accédée par des scripts PHP.  
+Chaque script réalise une fonction spécifique et renvoie les données au site web au format JSON, afin qu’elles puissent être exploitées par le JavaScript.
 
-| Script               | Fonction                                     |
-| -------------------- | -------------------------------------------- |
-| `get_status.php`     | Récupère les températures et l'état du cycle |
-| `start_cycle.php`    | Démarre un cycle de séchage                  |
-| `stop_cycle.php`     | Arrête un cycle de séchage                   |
-| `add_production.php` | Ajoute une production de houblon             |
+## Script :
 
-Les données sont renvoyées au site web sous forme de **JSON** afin d’être exploitées par le JavaScript.
+- `get_temperature.php`
+  - Récupère les dernières mesures de température de tous les capteurs venant d'un meme cycle de sèchage.  
+  → Arguments : aucun.  
+  → On cherche jusqu'au 50 dernière prise de température pour ne pas chercher a l'infini. Le retour est donc un JSON NULL.  
+  → Retour : liste des dernières températures par capteur, au format JSON.  
+  → Exemple retour :  
+  ```JSON
+  [  
+  {"id_capt": 1, "temp_valeur": 52.3, "temp_date_mesure": "2026-03-05 10:12:00"},  
+  {"id_capt": 2, "temp_valeur": 53.1, "temp_date_mesure": "2026-03-05 10:12:00"},  
+  {"id_capt": 3, "temp_valeur": 51.8, "temp_date_mesure": "2026-03-05 10:12:00"}  
+  ]  
+  ```
+
+- `start_cycle.php`
+  - Démarre un nouveau cycle de séchage.  
+  → Arguments : aucun.  
+  → Retour : confirmation du démarrage du cycle et identifiant du cycle créé, au format JSON.  
+  → Exemple retour :  
+  ```JSON
+  {
+  "id_cyc_sech": 4,
+  "status": "Cycle démarré",
+  "cyc_sech_date_debut": "2026-03-06 08:00:00"
+  }
+  ```
+
+- `stop_cycle.php`
+  - Arrête le cycle en cours.  
+  → Arguments : aucun.  
+  → Retour : confirmation de l’arrêt et mise à jour de la date de fin, au format JSON.  
+  → Exemple retour :  
+  ```JSON
+  {
+  "id_cyc_sech": 4,
+  "status": "Cycle arrêté",
+  "cyc_sech_date_debut": "2026-03-06 14:00:00"
+  }
+  ```
+
+- `add_production.php`
+  - Enregistre la masse produite de houblon d'un cycle de sèchage.  
+  → Arguments : Arguments : `m_houbl_variete`, `m_houbl_masse`, `id_cyc_sech`.  
+  → Retour : confirmation de l’ajout, au format JSON.  
+  → Exemple retour :  
+  ```JSON
+  {
+  "id_m_houbl": 7,
+  "status": "Production ajoutée",
+  "m_houbl_variete": "Cascade",
+  "m_houbl_masse": 12.5,
+  "m_houbl_date": "2026-03-06 14:00:00"
+  }
+  ```
