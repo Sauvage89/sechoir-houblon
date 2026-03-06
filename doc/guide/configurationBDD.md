@@ -105,6 +105,7 @@ Chaque capteur envoie régulièrement une mesure qui est enregistrée avec sa da
 | Champ			| Type		| Description					|
 | --------------------- | ------------- | --------------------------------------------- |
 | id_temp		| INT (PK)	| Identifiant unique				|
+| temp_cyc_sech		| INT (FK)	| Référence à l'identifiant d'un cyle de sèche	|
 | temp_capteur		| INT (FK)	| Référence à l'identifiant d'un capteur	|
 | temp_valeur		| FLOAT		| Température mesurée				|
 | temp_date_mesure	| DATETIME	| Date et heure de la mesure			|
@@ -130,12 +131,13 @@ Un événement peut être lié soit au système lui-même, soit à un composant 
 
 ### Structure
 
-| Champ		| Type		| Description						|
-| ------------- | ------------- | ----------------------------------------------------- |
-| id_event	| INT (PK)	| Identifiant de l'evenements				|
-| event_type	| VARCHAR	| Type d'evenements					|
-| event_date	| DATETIME	| Date et heure de l'evenements				|
-| event_src	| INT (FK)	| Identifiant du composant concerné (0 si système)	|
+| Champ			| Type		| Description						|
+| --------------------- | ------------- | ----------------------------------------------------- |
+| id_event		| INT (PK)	| Identifiant de l'evenements				|
+| event_cyc_sech	| INT (FK)	| Référence à l'identifiant d'un cyle de sèche		|
+| event_src		| INT (FK)	| Identifiant du composant concerné (0 si système)	|
+| event_type		| VARCHAR	| Type d'evenements					|
+| event_date		| DATETIME	| Date et heure de l'evenements				|
 
 ### Exemple
 
@@ -159,12 +161,13 @@ Les données sont saisies par l'utilisateur depuis l'interface web.
 
 ### Structure
 
-| Champ			| Type		| Description				|
-| --------------------- | ------------- | ------------------------------------- |
-| id_m_houbl		| INT (PK)	| Identifiant de l'enregistrement	|
-| m_houbl_variete	| VARCHAR	| Nom de la variété de houblo		|
-| m_houbl_masse		| FLOAT		| Masse produite			|
-| m_houbl_date_saisie	| DATETIME	| Date et heure de l'enregistrement	|
+| Champ			| Type		| Description						|
+| --------------------- | ------------- | ----------------------------------------------------- |
+| id_m_houbl		| INT (PK)	| Identifiant de l'enregistrement			|
+| m_houbl_cyc_sech	| INT (FK)	| Référence à l'identifiant d'un cyle de sèche		|
+| m_houbl_variete	| VARCHAR	| Nom de la variété de houblon				|
+| m_houbl_masse		| FLOAT		| Masse produite					|
+| m_houbl_date_saisie	| DATETIME	| Date et heure de l'enregistrement			|
 
 </details>
 
@@ -182,14 +185,3 @@ La base de données est utilisée par les scripts PHP du projet :
 | `add_production.php` | Ajoute une production de houblon             |
 
 Les données sont renvoyées au site web sous forme de **JSON** afin d’être exploitées par le JavaScript.
-
-# 4. Perspectives d'amélioration
-
-Améliorations possibles :
-
-* ajout d'une table **capteurs**
-* ajout d'un historique détaillé des **cycles de séchage**
-* ajout d'une table **utilisateurs**
-* archivage des données anciennes
-
----
