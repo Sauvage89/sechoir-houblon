@@ -66,6 +66,7 @@
      `/var/log/apache2` → fichiers de logs
 
 ## 2. Installation du serveur php
+
    - Mettre à jour la liste des paquets :
      ```bash
      $ sudo apt update
