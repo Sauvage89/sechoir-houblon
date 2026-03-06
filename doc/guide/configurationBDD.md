@@ -35,107 +35,142 @@ Elle est utilisée par l'utilisateur **www:data**
 | `evenements`		| Enregistre les alertes du système		|
 | `masses_houblon`	| Enregistre la masse produite par variété	|
 
-# 3. Table : temperatures
+# 3. Structure des tables de la base
 
-## Description
+<details>
+<summary>Table : cycles_sechage</summary>
 
-Cette table enregistre les mesures de température provenant des capteurs présents dans le séchoir.  
-Chaque capteur envoie régulièrement une mesure qui est enregistrée avec sa date.
+## Table : cycles_sechage
 
-## Structure
+### Description
+
+Cette table enregistre les cycles de séchage du houblon.  
+Un cycle correspond à une période pendant laquelle le système de séchage est actif.
+
+### Structure
+
+| Champ			| Type			| Description						|
+| --------------------- | --------------------- | ----------------------------------------------------- |
+| id_cyc_sech		| INT (PK)		| Identifiant du cycle					|
+| cyc_sech_date_debut	| DATETIME		| Date et heure de démarrage				|
+| cyc_sech_date_fin	| DATETIME (NULL)	| Date et heure d'arrêt (NULL si cycle en cours)	|
+
+### Exemple de données
+
+| id_cyc_sech	| cyc_sech_date_debut	| cyc_sech_date_fin	|
+| ------------- | --------------------- | --------------------- |
+| 1		| 2026-03-05 10:12:00	| 2026-03-05 15:12:00	|
+| 2		| 2026-12-17 09:20:00	| 2026-15-17 14:20:00	|
+
+</details>
+
+<details>
+<summary>Table : capteur</summary>
+
+## Table : capteur
+
+### Description
+
+Cette table enregistre les capteurs utilisés par le système.  
+Elle sert uniquement de table de référence afin d'identifier les capteurs et d'éviter l'utilisation de valeurs numériques arbitraires dans les tables de mesures.
+
+### Structure
 
 | Champ			| Type		| Description			|
 | --------------------- | ------------- | ----------------------------- |
-| id_temp		| INT (PK)	| Identifiant unique		|
-| temp_capteur		| INT (FK)	| Reférence a l'id d'un capteur	|
-| temp_valeur		| FLOAT		| Température mesurée		|
-| temp_date_mesure	| DATETIME	| Date et heure de la mesure	|
+| id_capt		| INT (PK)	| Identifiant unique du capteur	|
 
-## Exemple de données
+### Exemple de données
+
+| id_capt	|
+| ------------- |
+| 1		|
+| 2		|
+| 3		|
+
+</details>
+
+<details>
+<summary>Table : temperatures</summary>
+
+## Table : temperatures
+
+### Description
+
+Cette table enregistre les mesures de température provenant des capteurs présents dans le séchoir.  
+Chaque capteur envoie régulièrement une mesure qui est enregistrée avec sa date et son heure.
+
+### Structure
+
+| Champ			| Type		| Description					|
+| --------------------- | ------------- | --------------------------------------------- |
+| id_temp		| INT (PK)	| Identifiant unique				|
+| temp_capteur		| INT (FK)	| Référence à l'identifiant d'un capteur	|
+| temp_valeur		| FLOAT		| Température mesurée				|
+| temp_date_mesure	| DATETIME	| Date et heure de la mesure			|
+
+### Exemple de données
 
 | id_temp	| temp_capteur	| temp_valeur	| temp_date_mesure	|
 | ------------- | ------------- | ------------- | --------------------- |
 | 1		| 4		| 52.3		| 2026-03-05 10:12:00	|
 | 2		| 2		| 53.1		| 2026-03-05 10:12:00	|
 
-# 4. Table : cycles_sechage
+</details>
 
-## Description
+<details>
+<summary>Table : evenements</summary>
 
-Cette table enregistre les cycles de séchage du houblon.  
-Un cycle correspond à une période pendant laquelle le système de séchage est actif.
+## Table : evenements
 
-## Structure
+### Description
 
-| Champ			| Type		| Description			|
-| --------------------- | ------------- | ----------------------------- |
-| id_cyc_sech		| INT (PK)	| Identifiant du cycle		|
-| cyc_sech_date_debut	| DATETIME	| Date et heure de démarrage	|
-| cyc_sech_date_fin	| DATETIME	| Date et heure d'arrêt		|
+Cette table enregistre les événements générés par le système.  
+Un événement peut être lié soit au système lui-même, soit à un composant du système.
 
-## Exemple de données
+### Structure
 
-| id_cyc_sech	| cyc_sech_date_debut	| cyc_sech_date_fin	|
-| ------------- | --------------------- | --------------------- |
-| 1		| 2026-03-05 10:12:00	| 2026-03-05 15:12:00	|
-| 2		| 2026-15-17 9:20:00	| 2026-15-17 14:20:00	|
+| Champ		| Type		| Description						|
+| ------------- | ------------- | ----------------------------------------------------- |
+| id_event	| INT (PK)	| Identifiant de l'evenements				|
+| event_type	| VARCHAR	| Type d'evenements					|
+| event_date	| DATETIME	| Date et heure de l'evenements				|
+| event_src	| INT (FK)	| Identifiant du composant concerné (0 si système)	|
 
-# 5. Table : alertes
+### Exemple
 
-## Description
+| id_event	| event_type		| event_date		| event_src	|
+| ------------- | --------------------- | --------------------- | ------------- |
+| 1		| "Fin de cycle"	| 2026-03-05 14:00:00	| 0		|
+| 2		| "Demarage du cycle"	| 2026-15-05 14:00:00	| 0		|
+| 3		| "Capteur trop chaud"	| 2026-15-05 14:00:00	| 3		|
 
-Cette table enregistre les alertes générées par le système.
+</details>
 
-Les alertes peuvent être par exemple :
+<details>
+<summary>Table : masses_houblon</summary>
 
-* fin de cycle de séchage
-* température trop élevée
-* problème système
+## Table : masses_houblon
 
-## Structure
+### Description
 
-| Champ       | Type     | Description               |
-| ----------- | -------- | ------------------------- |
-| id          | INT (PK) | Identifiant de l'alerte   |
-| type        | VARCHAR  | Type d'alerte             |
-| date_alerte | DATETIME | Date et heure de l'alerte |
-| etat        | VARCHAR  | Etat de l'alerte          |
-
-## Exemple
-
-| id | type         | date_alerte         |
-| -- | ------------ | ------------------- |
-| 1  | Fin de cycle | 2026-03-05 14:00:00 |
-
----
-
-# 6. Table : masses_houblon
-
-## Description
-
-Cette table permet d’enregistrer la masse produite de chaque variété de houblon à la fin de la saison.
-
+Cette table enregistre la masse produite pour chaque variété de houblon à la fin d'un cycle de séchage.  
 Les données sont saisies par l'utilisateur depuis l'interface web.
 
-## Structure
+### Structure
 
-| Champ       | Type     | Description           |
-| ----------- | -------- | --------------------- |
-| id          | INT (PK) | Identifiant           |
-| variete     | VARCHAR  | Nom de la variété     |
-| masse       | FLOAT    | Masse produite        |
-| date_saisie | DATETIME | Date d'enregistrement |
+| Champ			| Type		| Description				|
+| --------------------- | ------------- | ------------------------------------- |
+| id_m_houbl		| INT (PK)	| Identifiant de l'enregistrement	|
+| m_houbl_variete	| VARCHAR	| Nom de la variété de houblo		|
+| m_houbl_masse		| FLOAT		| Masse produite			|
+| m_houbl_date_saisie	| DATETIME	| Date et heure de l'enregistrement	|
 
-## Utilisation
-
-Cette table permet de :
-
-* suivre la production annuelle
-* conserver un **historique des récoltes**
+</details>
 
 ---
 
-# 7. Utilisation par l'application
+# 3. Utilisation par l'application
 
 La base de données est utilisée par les scripts PHP du projet :
 
@@ -148,9 +183,7 @@ La base de données est utilisée par les scripts PHP du projet :
 
 Les données sont renvoyées au site web sous forme de **JSON** afin d’être exploitées par le JavaScript.
 
----
-
-# 8. Perspectives d'amélioration
+# 4. Perspectives d'amélioration
 
 Améliorations possibles :
 
