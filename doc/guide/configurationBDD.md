@@ -4,176 +4,233 @@
 
 ## 1. Présentation
 
-La base de données permet de stocker les informations nécessaires au fonctionnement du système de contrôle du séchage du houblon.
+> La base de données sert à stocker toutes les informations nécessaires au fonctionnement du système de contrôle du séchage du houblon.
 
-Elle est utilisée par :
+Elle est utilisée par l'utilisateur **www:data**
 
-* le **site web de supervision**
-* le **contrôleur Raspberry Pi**
-* les **scripts PHP de l’API**
+- ### Objectifs principaux
 
-Les données enregistrées permettent de :
+  - #### Paraphrase
 
-* visualiser les **températures des capteurs**
-* suivre les **cycles de séchage**
-* enregistrer les **alertes**
-* stocker la **production de houblon par variété**
+	Lors d’un cycle de séchage, les températures relevées par les différents capteurs sont enregistrées, ainsi que les événements pouvant survenir.  
+	À la fin du cycle, la masse de houblon produite est enregistrée en étant associée au cycle correspondant.
 
-Base de données utilisée : **MySQL / MariaDB**
+  - Les données enregistrées permettent de :  
+    - Visualiser les **températures des capteurs**  
+    - Suivre les **cycles de séchage**  
+    - Enregistrer les **événements**  
+    - Stocker la **production de houblon par variété**  
 
----
+- ### Technologie
+
+  - Base de données : **MySQL**
 
 # 2. Schéma global de la base
 
-La base de données est composée des tables suivantes :
+| Table			| Description					|
+| --------------------- | --------------------------------------------- |
+| `cycles_sechage`	| Enregistre les cycles de séchage		|
+| `capteurs`		| Informations sur les capteurs installés	|
+| `temperatures`	| Stocke les mesures des capteurs		|
+| `evenements`		| Enregistre les alertes du système		|
+| `masses_houblon`	| Enregistre la masse produite par variété	|
 
-| Table                | Description                              |
-| -------------------- | ---------------------------------------- |
-| `temperatures`       | Stocke les mesures des capteurs          |
-| `cycles_sechage`     | Enregistre les cycles de séchage         |
-| `alertes`            | Enregistre les alertes du système        |
-| `masses_houblon` | Enregistre la masse produite par variété |
+# 3. Structure des tables de la base
 
----
+<details>
+<summary>Table : cycles_sechage</summary>
 
-# 3. Table : temperatures
+## Table : cycles_sechage
 
-## Description
+### Description
 
-Cette table enregistre les mesures de température provenant des capteurs présents dans le séchoir.
-
-Chaque capteur envoie régulièrement une mesure qui est enregistrée avec sa date.
-
-## Structure
-
-| Champ       | Type     | Description                |
-| ----------- | -------- | -------------------------- |
-| id          | INT (PK) | Identifiant unique         |
-| capteur     | INT      | Numéro du capteur (1 à 6)  |
-| valeur      | FLOAT    | Température mesurée        |
-| date_mesure | DATETIME | Date et heure de la mesure |
-
-## Exemple de données
-
-| id | capteur | valeur | date_mesure         |
-| -- | ------- | ------ | ------------------- |
-| 1  | 1       | 52.3   | 2026-03-05 10:12:00 |
-| 2  | 2       | 53.1   | 2026-03-05 10:12:00 |
-
-## Utilisation
-
-Cette table permet de :
-
-* afficher les **températures en temps réel**
-* calculer la **température moyenne**
-* analyser l'historique thermique du séchage
-
----
-
-# 4. Table : cycles_sechage
-
-## Description
-
-Cette table enregistre les cycles de séchage du houblon.
-
+Cette table enregistre les cycles de séchage du houblon.  
 Un cycle correspond à une période pendant laquelle le système de séchage est actif.
 
-## Structure
+### Structure
 
-| Champ      | Type     | Description                     |
-| ---------- | -------- | ------------------------------- |
-| id         | INT (PK) | Identifiant du cycle            |
-| date_debut | DATETIME | Date et heure de démarrage      |
-| date_fin   | DATETIME | Date et heure d'arrêt           |
-| etat       | VARCHAR  | Etat du cycle (actif / inactif) |
+| Champ			| Type			| Description						|
+| --------------------- | --------------------- | ----------------------------------------------------- |
+| id_cyc_sech		| INT (PK)		| Identifiant du cycle					|
+| cyc_sech_date_debut	| DATETIME		| Date et heure de démarrage				|
+| cyc_sech_date_fin	| DATETIME (NULL)	| Date et heure d'arrêt (NULL si cycle en cours)	|
 
-## Utilisation
+### Exemple de données
 
-Cette table permet de :
+| id_cyc_sech	| cyc_sech_date_debut	| cyc_sech_date_fin	|
+| ------------- | --------------------- | --------------------- |
+| 1		| 2026-03-05 10:12:00	| 2026-03-05 15:12:00	|
+| 2		| 2026-12-17 09:20:00	| 2026-15-17 14:20:00	|
 
-* connaître l’état actuel du séchage
-* enregistrer les **démarrages et arrêts**
-* calculer la **durée d'un cycle**
+</details>
 
----
+<details>
+<summary>Table : capteur</summary>
 
-# 5. Table : alertes
+## Table : capteur
 
-## Description
+### Description
 
-Cette table enregistre les alertes générées par le système.
+Cette table enregistre les capteurs utilisés par le système.  
+Elle sert uniquement de table de référence afin d'identifier les capteurs et d'éviter l'utilisation de valeurs numériques arbitraires dans les tables de mesures.
 
-Les alertes peuvent être par exemple :
+### Structure
 
-* fin de cycle de séchage
-* température trop élevée
-* problème système
+| Champ			| Type		| Description			|
+| --------------------- | ------------- | ----------------------------- |
+| id_capt		| INT (PK)	| Identifiant unique du capteur	|
 
-## Structure
+### Exemple de données
 
-| Champ       | Type     | Description               |
-| ----------- | -------- | ------------------------- |
-| id          | INT (PK) | Identifiant de l'alerte   |
-| type        | VARCHAR  | Type d'alerte             |
-| date_alerte | DATETIME | Date et heure de l'alerte |
-| etat        | VARCHAR  | Etat de l'alerte          |
+| id_capt	|
+| ------------- |
+| 1		|
+| 2		|
+| 3		|
 
-## Exemple
+</details>
 
-| id | type         | date_alerte         |
-| -- | ------------ | ------------------- |
-| 1  | Fin de cycle | 2026-03-05 14:00:00 |
+<details>
+<summary>Table : temperatures</summary>
 
----
+## Table : temperatures
 
-# 6. Table : masses_houblon
+### Description
 
-## Description
+Cette table enregistre les mesures de température provenant des capteurs présents dans le séchoir.  
+Chaque capteur envoie régulièrement une mesure qui est enregistrée avec sa date et son heure.
 
-Cette table permet d’enregistrer la masse produite de chaque variété de houblon à la fin de la saison.
+### Structure
 
+| Champ			| Type		| Description					|
+| --------------------- | ------------- | --------------------------------------------- |
+| id_temp		| INT (PK)	| Identifiant unique				|
+| temp_cyc_sech		| INT (FK)	| Référence à l'identifiant d'un cyle de sèche	|
+| temp_capteur		| INT (FK)	| Référence à l'identifiant d'un capteur	|
+| temp_valeur		| FLOAT		| Température mesurée				|
+| temp_date_mesure	| DATETIME	| Date et heure de la mesure			|
+
+### Exemple de données
+
+| id_temp	| temp_capteur	| temp_valeur	| temp_date_mesure	|
+| ------------- | ------------- | ------------- | --------------------- |
+| 1		| 4		| 52.3		| 2026-03-05 10:12:00	|
+| 2		| 2		| 53.1		| 2026-03-05 10:12:00	|
+
+</details>
+
+<details>
+<summary>Table : evenements</summary>
+
+## Table : evenements
+
+### Description
+
+Cette table enregistre les événements générés par le système.  
+Un événement peut être lié soit au système lui-même, soit à un composant du système.
+
+### Structure
+
+| Champ			| Type		| Description						|
+| --------------------- | ------------- | ----------------------------------------------------- |
+| id_event		| INT (PK)	| Identifiant de l'evenements				|
+| event_cyc_sech	| INT (FK)	| Référence à l'identifiant d'un cyle de sèche		|
+| event_src		| INT (FK)	| Identifiant du composant concerné (0 si système)	|
+| event_type		| VARCHAR	| Type d'evenements					|
+| event_date		| DATETIME	| Date et heure de l'evenements				|
+
+### Exemple
+
+| id_event	| event_type		| event_date		| event_src	|
+| ------------- | --------------------- | --------------------- | ------------- |
+| 1		| "Fin de cycle"	| 2026-03-05 14:00:00	| 0		|
+| 2		| "Demarage du cycle"	| 2026-15-05 14:00:00	| 0		|
+| 3		| "Capteur trop chaud"	| 2026-15-05 14:00:00	| 3		|
+
+</details>
+
+<details>
+<summary>Table : masses_houblon</summary>
+
+## Table : masses_houblon
+
+### Description
+
+Cette table enregistre la masse produite pour chaque variété de houblon à la fin d'un cycle de séchage.  
 Les données sont saisies par l'utilisateur depuis l'interface web.
 
-## Structure
+### Structure
 
-| Champ       | Type     | Description           |
-| ----------- | -------- | --------------------- |
-| id          | INT (PK) | Identifiant           |
-| variete     | VARCHAR  | Nom de la variété     |
-| masse       | FLOAT    | Masse produite        |
-| date_saisie | DATETIME | Date d'enregistrement |
+| Champ			| Type		| Description						|
+| --------------------- | ------------- | ----------------------------------------------------- |
+| id_m_houbl		| INT (PK)	| Identifiant de l'enregistrement			|
+| m_houbl_cyc_sech	| INT (FK)	| Référence à l'identifiant d'un cyle de sèche		|
+| m_houbl_variete	| VARCHAR	| Nom de la variété de houblon				|
+| m_houbl_masse		| FLOAT		| Masse produite					|
+| m_houbl_date_saisie	| DATETIME	| Date et heure de l'enregistrement			|
 
-## Utilisation
-
-Cette table permet de :
-
-* suivre la production annuelle
-* conserver un **historique des récoltes**
+</details>
 
 ---
 
-# 7. Utilisation par l'application
+# 3. Utilisation par l'application
 
-La base de données est utilisée par les scripts PHP du projet :
+La base de données est accédée par des scripts PHP.  
+Chaque script réalise une fonction spécifique et renvoie les données au site web au format JSON, afin qu’elles puissent être exploitées par le JavaScript.
 
-| Script               | Fonction                                     |
-| -------------------- | -------------------------------------------- |
-| `get_status.php`     | Récupère les températures et l'état du cycle |
-| `start_cycle.php`    | Démarre un cycle de séchage                  |
-| `stop_cycle.php`     | Arrête un cycle de séchage                   |
-| `add_production.php` | Ajoute une production de houblon             |
+## Script :
 
-Les données sont renvoyées au site web sous forme de **JSON** afin d’être exploitées par le JavaScript.
+- `get_temperature.php`
+  - Récupère les dernières mesures de température de tous les capteurs venant d'un meme cycle de sèchage.  
+  → Arguments : aucun.  
+  → On cherche jusqu'au 50 dernière prise de température pour ne pas chercher a l'infini. Le retour est donc un JSON NULL.  
+  → Retour : liste des dernières températures par capteur, au format JSON.  
+  → Exemple retour :  
+  ```JSON
+  [  
+  {"id_capt": 1, "temp_valeur": 52.3, "temp_date_mesure": "2026-03-05 10:12:00"},  
+  {"id_capt": 2, "temp_valeur": 53.1, "temp_date_mesure": "2026-03-05 10:12:00"},  
+  {"id_capt": 3, "temp_valeur": 51.8, "temp_date_mesure": "2026-03-05 10:12:00"}  
+  ]  
+  ```
 
----
+- `start_cycle.php`
+  - Démarre un nouveau cycle de séchage.  
+  → Arguments : aucun.  
+  → Retour : confirmation du démarrage du cycle et identifiant du cycle créé, au format JSON.  
+  → Exemple retour :  
+  ```JSON
+  {
+  "id_cyc_sech": 4,
+  "status": "Cycle démarré",
+  "cyc_sech_date_debut": "2026-03-06 08:00:00"
+  }
+  ```
 
-# 8. Perspectives d'amélioration
+- `stop_cycle.php`
+  - Arrête le cycle en cours.  
+  → Arguments : aucun.  
+  → Retour : confirmation de l’arrêt et mise à jour de la date de fin, au format JSON.  
+  → Exemple retour :  
+  ```JSON
+  {
+  "id_cyc_sech": 4,
+  "status": "Cycle arrêté",
+  "cyc_sech_date_debut": "2026-03-06 14:00:00"
+  }
+  ```
 
-Améliorations possibles :
-
-* ajout d'une table **capteurs**
-* ajout d'un historique détaillé des **cycles de séchage**
-* ajout d'une table **utilisateurs**
-* archivage des données anciennes
-
----
+- `add_production.php`
+  - Enregistre la masse produite de houblon d'un cycle de sèchage.  
+  → Arguments : Arguments : `m_houbl_variete`, `m_houbl_masse`, `id_cyc_sech`.  
+  → Retour : confirmation de l’ajout, au format JSON.  
+  → Exemple retour :  
+  ```JSON
+  {
+  "id_m_houbl": 7,
+  "status": "Production ajoutée",
+  "m_houbl_variete": "Cascade",
+  "m_houbl_masse": 12.5,
+  "m_houbl_date": "2026-03-06 14:00:00"
+  }
+  ```
