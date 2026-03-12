@@ -39,3 +39,9 @@
   → Permet de suivre l’évolution globale et vérifier la stabilité thermique.
   - **Température de chaque capteur**  
   → Permet d’identifier les zones systématiquement plus chaudes ou plus froides et d’analyser les incidents passés.
+
+## 5️⃣ Vérification de houblons
+
+### 📌 Indicateurs essentiels
+  - **Variété des houblons par étages**  
+  → Permet de suivre l’évolution globale et vérifier la stabilité thermique.

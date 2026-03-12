@@ -27,37 +27,39 @@ Elle est utilisée par l'utilisateur **www:data**
 
 # 2. Schéma global de la base
 
-| Table			| Description					|
-| --------------------- | --------------------------------------------- |
-| `cycles_sechage`	| Enregistre les cycles de séchage		|
-| `capteurs`		| Informations sur les capteurs installés	|
-| `temperatures`	| Stocke les mesures des capteurs		|
-| `evenements`		| Enregistre les alertes du système		|
-| `masses_houblon`	| Enregistre la masse produite par variété	|
+| Table				| Description						|
+| ----------------------------- | ----------------------------------------------------- |
+| `session de sechage`		| Enregistre les session de séchage			|
+| `capteur`			| Informations sur les capteurs installés		|
+| `temperatures`		| Stocke les mesures des capteurs			|
+| `evenements`			| Enregistre les evenements du système			|
+| `houblon variété`		| Enregistre les variétés d'houblons			|
+| `houblon sechage`		| Enregistre les houblons d'une session de séchage	|
+| `masses houblon finale`	| Enregistre une masse produite	de houblon		|
 
 # 3. Structure des tables de la base
 
 <details>
-<summary>Table : cycles_sechage</summary>
+<summary>Table : session_sechage</summary>
 
-## Table : cycles_sechage
+## Table : ses_sech
 
 ### Description
 
-Cette table enregistre les cycles de séchage du houblon.  
-Un cycle correspond à une période pendant laquelle le système de séchage est actif.
+Cette table enregistre les sessions de séchage du houblon.  
+Une sesions correspond à une période pendant laquelle le système de séchage est actif.
 
 ### Structure
 
 | Champ			| Type			| Description						|
 | --------------------- | --------------------- | ----------------------------------------------------- |
-| id_cyc_sech		| INT (PK)		| Identifiant du cycle					|
-| cyc_sech_date_debut	| DATETIME		| Date et heure de démarrage				|
-| cyc_sech_date_fin	| DATETIME (NULL)	| Date et heure d'arrêt (NULL si cycle en cours)	|
+| id_ses_sech		| INT (PK)		| Identifiant du cycle					|
+| ses_sech_date_debut	| DATETIME		| Date et heure de démarrage				|
+| ses_sech_date_fin	| DATETIME (NULL)	| Date et heure d'arrêt (NULL si cycle en cours)	|
 
 ### Exemple de données
 
-| id_cyc_sech	| cyc_sech_date_debut	| cyc_sech_date_fin	|
+| id_ses_sech	| ses_sech_date_debut	| ses_sech_date_fin	|
 | ------------- | --------------------- | --------------------- |
 | 1		| 2026-03-05 10:12:00	| 2026-03-05 15:12:00	|
 | 2		| 2026-12-17 09:20:00	| 2026-15-17 14:20:00	|
@@ -102,13 +104,13 @@ Chaque capteur envoie régulièrement une mesure qui est enregistrée avec sa da
 
 ### Structure
 
-| Champ			| Type		| Description					|
-| --------------------- | ------------- | --------------------------------------------- |
-| id_temp		| INT (PK)	| Identifiant unique				|
-| temp_cyc_sech		| INT (FK)	| Référence à l'identifiant d'un cyle de sèche	|
-| temp_capteur		| INT (FK)	| Référence à l'identifiant d'un capteur	|
-| temp_valeur		| FLOAT		| Température mesurée				|
-| temp_date_mesure	| DATETIME	| Date et heure de la mesure			|
+| Champ			| Type		| Description						|
+| --------------------- | ------------- | ----------------------------------------------------- |
+| id_temp		| INT (PK)	| Identifiant unique					|
+| temp_ses_sech		| INT (FK)	| Référence à l'identifiant d'une session de sèche	|
+| temp_capteur		| INT (FK)	| Référence à l'identifiant d'un capteur		|
+| temp_valeur		| FLOAT		| Température mesurée					|
+| temp_date_mesure	| DATETIME	| Date et heure de la mesure				|
 
 ### Exemple de données
 
@@ -131,13 +133,13 @@ Un événement peut être lié soit au système lui-même, soit à un composant 
 
 ### Structure
 
-| Champ			| Type		| Description						|
-| --------------------- | ------------- | ----------------------------------------------------- |
-| id_event		| INT (PK)	| Identifiant de l'evenements				|
-| event_cyc_sech	| INT (FK)	| Référence à l'identifiant d'un cyle de sèche		|
-| event_src		| INT (FK)	| Identifiant du composant concerné (0 si système)	|
-| event_type		| VARCHAR	| Type d'evenements					|
-| event_date		| DATETIME	| Date et heure de l'evenements				|
+| Champ			| Type		| Description							|
+| --------------------- | ------------- | ------------------------------------------------------------- |
+| id_event		| INT (PK)	| Identifiant de l'evenements					|
+| event_ses_sech	| INT (FK)	| Référence à l'identifiant d'une session de sèche		|
+| event_src		| INT (FK)	| Identifiant du composant concerné (0 si système)		|
+| event_type		| VARCHAR	| Type d'evenements						|
+| event_date		| DATETIME	| Date et heure de l'evenements					|
 
 ### Exemple
 
@@ -150,22 +152,64 @@ Un événement peut être lié soit au système lui-même, soit à un composant 
 </details>
 
 <details>
-<summary>Table : masses_houblon</summary>
+<summary>Table : houblon variété</summary>
 
-## Table : masses_houblon
+## Table : houb_var
 
 ### Description
 
-Cette table enregistre la masse produite pour chaque variété de houblon à la fin d'un cycle de séchage.  
+Cette table enregistre les capteurs utilisés par le système.  
+Elle sert uniquement de table de référence afin d'identifier les capteurs et d'éviter l'utilisation de valeurs numériques arbitraires dans les tables de mesures.
+
+### Structure
+
+| Champ			| Type		| Description			|
+| --------------------- | ------------- | ----------------------------- |
+| id_houb_var		| INT (PK)	| Identifiant unique du capteur	|
+| houb_var_type		| VARCHAR	| Nom de la variété		|
+
+</details>
+
+<details>
+<summary>Table : houblon de séchage</summary>
+
+## Table : houb_sech
+
+### Description
+
+Cette table enregistre une variété de houblon d'un cycle de séchage.  
+Les données sont saisies par l'utilisateur depuis l'interface web.
+
+### Structure
+
+| Champ				| Type		| Description						|
+| ----------------------------- | ------------- | ----------------------------------------------------- |
+| id_houb_sech			| INT (PK)	| Identifiant de l'enregistrement			|
+| houb_sech_m_houbl_final	| INT (FK/NULL)	| Identifiant sur la masse houblon finale		|
+| houb_sech_ses_sech		| INT (FK)	| Identifiant d'une session sèche			|
+| houb_sech_variete		| INT (FK)	| Identifiant de la variete de houblon			|
+| houb_sech_etage		| INT (NULL)	| Quelle étage est cette variete			|
+| houb_sech_date_in		| DATETIME	| Date et heure de l'enregistrement			|
+| houb_sech_date_out		| DATETIME	| Date et heure de retirement				|
+
+</details>
+
+
+<details>
+<summary>Table : masses houblon finale</summary>
+
+## Table : m_houb_final
+
+### Description
+
+Cette table enregistre la masse produite pour une variété de houblon à la fin d'un cycle de séchage.  
 Les données sont saisies par l'utilisateur depuis l'interface web.
 
 ### Structure
 
 | Champ			| Type		| Description						|
 | --------------------- | ------------- | ----------------------------------------------------- |
-| id_m_houbl		| INT (PK)	| Identifiant de l'enregistrement			|
-| m_houbl_cyc_sech	| INT (FK)	| Référence à l'identifiant d'un cyle de sèche		|
-| m_houbl_variete	| VARCHAR	| Nom de la variété de houblon				|
+| id_m_houbl_final	| INT (PK)	| Identifiant de l'enregistrement			|
 | m_houbl_masse		| FLOAT		| Masse produite					|
 | m_houbl_date_saisie	| DATETIME	| Date et heure de l'enregistrement			|
 
