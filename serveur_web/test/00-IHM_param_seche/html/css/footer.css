@@ -1,0 +1,8 @@
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 1rem 1.75rem;
+  text-align: center;
+  font-size: .72rem;
+  color: var(--text);
+}

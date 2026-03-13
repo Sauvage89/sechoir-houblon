@@ -1,0 +1,22 @@
+/* ── Le main prend toute la place qu'il y a entre le header et le footer ── */
+main {
+  flex: 1;
+  padding: 1.75rem;
+  max-width: 720px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* ── Les élèments de la class content sont mis en cologne ── */
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  animation: fadeUp .3s ease both;
+}
+
+/* ── Donne un effet de page qui vient d'en bas lors du changement de page ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
