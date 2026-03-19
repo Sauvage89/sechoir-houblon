@@ -61,6 +61,12 @@ Cette table enregistre les composants du système (capteurs, modules système, e
 | compo_type	| VARCHAR(32)	| Nom du type de composante					|
 | compo_actif	| BOOL		| Indique si le composant est active (1) ou inactive (0)	|
 
+### Stratégie d'enregistrement
+
+	Ont enregistre tout les composants impactant du système dans cette base.  
+	Si le composant est actif dans le système il faut bien mettre `compo_actif` a (1).  
+	Si le composant n'est plus actif dans le système il faut le garder en mémoire car il a pus être utile par les passé et serait nécessaire pour du log future, il faudras mettre `compo_actif` a (0) pour qu'il ne soit plus pris en compte par le système comme éléments actifs.  
+
 </details>
 
 
@@ -86,6 +92,12 @@ Il est également rattaché aux étages actifs du système au moment de l’év�
 | even_type		| VARCHAR(128)	| Type d'evenements						|
 | even_date		| DATETIME	| Date et heure de l'evenements					|
 
+### Stratégie d'enregistrement
+
+	Ont enregistre les évenements qui survienne dans le système, un événement provient forcément dans composant il faut donc renseigné qu'elle composant a généré cette événements.  
+	Il est demandé d'avoir une base de `even_type` d'événement conventionner.  
+	Au moment ou l'on vient faire une sauvegarde d'un événements ont vient aussi liée cette événements aux étage actif du système, ceci est fait dans une autre table `lienEvenHoubEtag`.  
+
 </details>
 
 
@@ -109,6 +121,11 @@ Les températures sont rattaché aux étages actifs du système au moment de l'e
 | id_temp		| INT (PK)	| Identifiant unique					|
 | temp_valeur		| DECIMAL(3,1)	| Température moyenne mesurée				|
 | temp_date		| DATETIME	| Date et heure de la mesure				|
+
+### Stratégie d'enregistrement
+
+	Les température sont sauvegarder toute les 30 minutes par un programmes lancer toute les 30 minutes.  
+	Au moment ou l'on vient faire une sauvegarde d'une temperature ont vient aussi liée cette temperature aux étage actif du système, ceci est fait dans une autre table `lienTempHoubEtag`.  
 
 </details>
 
@@ -136,6 +153,18 @@ Le lien `houblon etage` <-> `evenements`/`temperatures` sont faite par les table
 | houbEtag_duree	| INT (NULL) 	| Durée passée à cet étage					|
 | houbEtag_actif	| BOOL		| Indique si le lot est actuellement présent à cet étage	|
 
+### Stratégie d'enregistrement
+
+	La table houbEtag enregistre l’état d’un lot de houblon à un étage donné ce qui permet de connaitre sa position dans le séchoir et de relier des événement/température avec la position dans le séchoir.
+
+	Principe général :
+		Un lot de houblon ne peut être actif que sur un seul étage à la fois.  
+
+		À chaque changement d’étage de ce lot de houblon :
+			L’enregistrement actif précédent est désactivé (houbEtag_actif = 0)
+			Un nouvel enregistrement est créé pour le nouvel étage avec houbEtag_actif = 1
+			Ou alors si ont était déja au dernier étage ont fait riens
+
 </details>
 
 
@@ -159,6 +188,11 @@ Les (FK) sont explicite.
 | lienEvenHoubEtag_houbEtag	| INT (FK)	| Identifiant de l’étage de houblon 	|
 | lienEvenHoubEtag_even		| INT (FK)	| Identifiant de l’événement associé	|
 
+
+### Stratégie d'enregistrement
+
+	Un événements est répertoriée sur un lot de houblon mais ceci est fait en l'enregistrant sur l'étage actif de notre lot de houblon ce qui permet de connaitre un événement tout en connaisant la possition du houblon pour voire si cette événement est impactant pour l'étage xxx.  
+
 </details>
 
 
@@ -181,6 +215,10 @@ Les (FK) sont explicite.
 | ----------------------------- | ------------- | ----------------------------------------------------- |
 | lienTempHoubEtag_houbEtag	| INT (FK)	| Identifiant de l’étage de houblon 			|
 | lienTempHoubEtag_temp		| INT (FK)	| Identifiant de la mesure de température associé	|
+
+### Stratégie d'enregistrement
+
+	Une température est répertoriée sur un lot de houblon mais ceci est fait en l'enregistrant sur l'étage actif de notre lot de houblon ce qui permet de connaitre une température tout en connaisant la possition du houblon pour voire si cette température est impactant pour l'étage xxx.  
 
 </details>
 
@@ -211,6 +249,10 @@ Elle constitue la table centrale du système, car elle permet de suivre un cycle
 | houbLot_dateDebut		| DATETIME		| Date et heure de début du lot				|
 | houbLot_dateFin		| DATETIME (NULL)	| Date et heure de fin du lot				|
 
+### Stratégie d'enregistrement
+
+	Un lot de houblon ce créer au moment ou l'agriculteur met une variété dans un étage du séchoir, ce qui fait qu'on créer en même temps un enregistrement houbEtag en le rendant directement actif.
+
 </details>
 
 
@@ -232,6 +274,10 @@ Cette table enregistre les variétés de houblon disponibles et non-disponibles 
 | id_houbVar		| INT (PK)	| Identifiant unique de la variété				|
 | houbVar_type		| VARCHAR(32)	| Nom de la variété de houblon					|
 | houbVar_activ		| BOOL		| Indique si la variété est active (1) ou inactive (0)		|
+
+### Stratégie d'enregistrement
+
+	Ont enregistre les diverse variété de houblon activ pour l'année, ont garde toujours les autres variété pour un soucis de correspondance des autres bases.
 
 </details>
 
@@ -255,6 +301,10 @@ Les données sont saisies par l’utilisateur via l’interface web.
 | id_houbFinal			| INT (PK)	| Identifiant unique de la masse			|
 | houbFinal_masse		| DECIMAL(3,2)	| Masse produite					|
 | houbFinal_date		| DATETIME	| Date et heure de saisie de la mesure			|
+
+### Stratégie d'enregistrement
+
+	Quand l'agriculteur le souhaite il peut enregistrer une masse d'houblon finale en spécifiant de qui et quelle lot est composé cette masse finale.
 
 </details>
 
