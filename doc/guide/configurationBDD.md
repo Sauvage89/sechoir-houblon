@@ -30,13 +30,19 @@ Elle est utilisée par l'utilisateur **www:data**
 | Table				| Description						|
 | ----------------------------- | ----------------------------------------------------- |
 | `composants`			| Référence les composants du système			|
-| `temperatures`		| Stocke les mesures des capteurs			|
 | `evenements`			| Enregistre les evenements du système			|
-| `houblon variété`		| Enregistre les variétés d'houblons			|
-| `houblon sechage`		| Enregistre les houblons d'une session de séchage	|
-| `masses houblon finale`	| Enregistre une masse produite	de houblon		|
+| `temperatures`		| Stocke les mesures des capteurs			|
+| `houblon etage`		| Enregistre l'état d'un houblon à l'étage donné	|
+| `lien etage evenements`	| Table reliant un event à un étage			|
+| `lien etage température`	| Table reliant une température à un étage		|
+| `houblon variétés`		| Enregistre les variétés de houblon			|
+| `houblon lots`		| Enregistre les houblons d'une session de séchage	|
+| `houblon finale`		| Enregistre une masse produite de houblon		|
 
 # 3. Structure des tables de la base
+
+
+
 
 <details>
 <summary>Table : composant</summary>
@@ -45,38 +51,20 @@ Elle est utilisée par l'utilisateur **www:data**
 
 ### Description
 
-Cette table enregistre les composants du système 
-(capteurs, système, etc.).
+Cette table enregistre les composants du système (capteurs, modules système, etc.).  
 
 ### Structure
 
-| Champ		| Type		| Description						|
-| ------------- | ------------- | ----------------------------------------------------- |
-| id_compo	| INT (PK)	| Identifiant unique					|
-| compo_type	| VARCHAR	| Nom du type de composante				|
+| Champ		| Type		| Description							|
+| ------------- | ------------- | ------------------------------------------------------------- |
+| id_compo	| INT (PK)	| Identifiant unique du composant				|
+| compo_type	| VARCHAR(32)	| Nom du type de composante					|
+| compo_actif	| BOOL		| Indique si le composant est active (1) ou inactive (0)	|
 
 </details>
 
-<details>
-<summary>Table : temperatures</summary>
 
-## Table : temp
 
-### Description
-
-Cette table enregistre les mesures de température moyennes des capteurs dans le séchoir.  
-Toutes les minutes une messure des capteurs est prise et on enregistre la valeur en moyennant les messures des capteurs.  
-
-### Structure
-
-| Champ			| Type		| Description						|
-| --------------------- | ------------- | ----------------------------------------------------- |
-| id_temp		| INT (PK)	| Identifiant unique					|
-| temp_houb_sech	| INT (FK)	| Référence à l'identifiant d'un houblon de séchage	|
-| temp_valeur		| DECIMAL(3,1)	| Température moyenne mesurée				|
-| temp_date_mesure	| DATETIME	| Date et heure de la mesure				|
-
-</details>
 
 <details>
 <summary>Table : evenements</summary>
@@ -86,19 +74,148 @@ Toutes les minutes une messure des capteurs est prise et on enregistre la valeur
 ### Description
 
 Cette table enregistre les événements générés par le système.  
-Un événement peut être lié soit au système lui-même, soit à un composant du système.
+Un événement est lié soit à un composant du système via la (FK) `event_compo`.  
+Il est également rattaché aux étages actifs du système au moment de l’événement via la table `lien_etag_event`.  
 
 ### Structure
 
 | Champ			| Type		| Description							|
 | --------------------- | ------------- | ------------------------------------------------------------- |
-| id_event		| INT (PK)	| Identifiant de l'evenements					|
-| event_houb_sech	| INT (FK)	| Référence à l'identifiant d'un houblon de séchage		|
-| event_compo		| INT (FK)	| Référence à l'identifiant du composant concerné		|
-| event_type		| VARCHAR	| Type d'evenements						|
+| id_event		| INT (PK)	| Identifiant unique de l'événement				|
+| event_compo		| INT (FK)	| Référence au composant concerné				|
+| event_type		| VARCHAR(128)	| Type d'evenements						|
 | event_date		| DATETIME	| Date et heure de l'evenements					|
 
 </details>
+
+
+
+
+<details>
+<summary>Table : temperatures</summary>
+
+## Table : temp
+
+### Description
+
+Cette table enregistre les mesures de température moyennes des 6 capteurs dans le séchoir.  
+Toutes les trentres minutes une messure des 6 capteurs est prise et on enregistre la valeur moyenné.  
+Les températures sont rattaché aux étages actifs du système au moment de l'enregistrement via la table `lien_etag_temp`.  
+
+### Structure
+
+| Champ			| Type		| Description						|
+| --------------------- | ------------- | ----------------------------------------------------- |
+| id_temp		| INT (PK)	| Identifiant unique					|
+| temp_valeur		| DECIMAL(3,1)	| Température moyenne mesurée				|
+| temp_date		| DATETIME	| Date et heure de la mesure				|
+
+</details>
+
+
+
+
+<details>
+<summary>Table : houblon étage</summary>
+
+## Table : houb_etag
+
+### Description
+
+Cette table représente la position d’un lot de houblon dans le séchoir et sert de contexte pour associer les événements et les mesures à un étage précis du houblon lot.  
+Un étage houblon est lié soit à son houblon lot via la (FK) `houb_etag_houb_lot`.  
+Le lien `étage` <-> `évenements`/`températures` sont faite par les tables `lien_etag_event`/`lien_etag_temp`.  
+
+### Structure
+
+| Champ			| Type		| Description							|
+| --------------------- | ------------- | ------------------------------------------------------------- |
+| id_houb_etag		| INT (PK)	| Identifiant unique de l’enregistrement 			|
+| houb_etag_houb_lot	| INT (FK)	| Identifiant du lot de houblon					|
+| houb_etag_etage	| BYTE		| Numéro de l’étage dans le séchoir (1 à 4) 			|
+| houb_etag_duree	| INT (NULL) 	| Durée passée à cet étage					|
+| houb_etag_actif	| BOOL		| Indique si le lot est actuellement présent à cet étage	|
+
+</details>
+
+
+
+
+<details>
+<summary>Table : lien etage evenement</summary>
+
+## Table : lien_etag_event
+
+### Description
+
+Table d’association entre un **étage de houblon** et un **événement**.  
+Elle permet de rattacher un événement à l’étage précis où se trouvait le houblon au moment de cet événement.  
+Les (FK) sont explicite.  
+
+### Structure
+
+| Champ				| Type		| Description				|
+| ----------------------------- | ------------- | ------------------------------------- |
+| lien_etag_event_houb_etag	| INT (FK)	| Identifiant de l’étage de houblon 	|
+| lien_etag_event_event		| INT (FK)	| Identifiant de l’événement associé	|
+
+</details>
+
+
+
+
+<details>
+<summary>Table : lien etage temperature</summary>
+
+## Table : lien_etag_temp
+
+### Description
+
+Table d’association entre un **étage de houblon** et une **mesure de température**.  
+Elle permet de rattacher une mesure de température à l’étage précis où se trouvait le houblon au moment de la mesure.  
+Les (FK) sont explicite.  
+
+### Structure
+
+| Champ				| Type		| Description						|
+| ----------------------------- | ------------- | ----------------------------------------------------- |
+| lien_etag_temp_houb_etag	| INT (FK)	| Identifiant de l’étage de houblon 			|
+| lien_etag_temp_temp		| INT (FK)	| Identifiant de la mesure de température associé	|
+
+</details>
+
+
+
+
+<details>
+<summary>Table : houblon lot</summary>
+
+## Table : houb_lot
+
+### Description
+
+Cette table représente un lot de houblon.  
+Les données sont saisies par l’utilisateur via l’interface web.  
+Le lot houblon constitue une parie de la masse finale d'une production de houblon en étant relié via la (FK) `houb_lot_houb_final`, cette (FK) est nulle tant qu'on a pas de masse d'houblon finale mesuré.  
+La variété de l'houblon est donné par la (FK) `houb_lot_houb_var`.  
+
+Elle constitue la table centrale du système, car elle permet de suivre un cycle complet de production et d’évaluer la performance des lots participant aux différentes productions finales de houblon.  
+
+### Structure
+
+| Champ				| Type			| Description						|
+| ----------------------------- | --------------------- | ----------------------------------------------------- |
+| id_houb_lot			| INT (PK)		| Identifiant unique du lot				|
+| houb_lot_houb_final		| INT (FK/NULL)		| Référence à la production finale			|
+| houb_lot_houb_var		| INT (FK)		| Référence à la variété de houblon			|
+| houb_lot_date_debut		| DATETIME		| Date et heure de début du lot				|
+| houb_lot_date_fin		| DATETIME (NULL)	| Date et heure de fin du lot				|
+
+
+</details>
+
+
+
 
 <details>
 <summary>Table : houblon variété</summary>
@@ -107,66 +224,43 @@ Un événement peut être lié soit au système lui-même, soit à un composant 
 
 ### Description
 
-Cette table enregistre les variété de houblon.  
+Cette table enregistre les variétés de houblon disponibles et non-disponibles dans le système.  
 
 ### Structure
 
-| Champ			| Type		| Description			|
-| --------------------- | ------------- | ----------------------------- |
-| id_houb_var		| INT (PK)	| Identifiant unique du houblon	|
-| houb_var_type		| VARCHAR	| Nom de la variété		|
-| houb_var_activ	| BOOL		| 1=active, 0=inactif		|
+| Champ			| Type		| Description							|
+| --------------------- | ------------- | ------------------------------------------------------------- |
+| id_houb_var		| INT (PK)	| Identifiant unique de la variété				|
+| houb_var_type		| VARCHAR(32)	| Nom de la variété de houblon					|
+| houb_var_activ	| BOOL		| Indique si la variété est active (1) ou inactive (0)		|
 
 </details>
 
-<details>
-<summary>Table : houblon de séchage</summary>
 
-## Table : houb_sech
+
+
+<details>
+<summary>Table : masses houblon finale</summary>
+
+## Table : houb_final
 
 ### Description
 
-Cette table enregistre une variété de houblon d'un cycle de séchage.  
-Les données sont saisies par l'utilisateur depuis l'interface web.  
-Un houblon de séchage est un "lot de houblon".
-Toute l'importance de la BDD ce situe sur cette table la et sur la table `m_houb_final` pour voire la "performance d'une production d'houblon.  
+Cette table enregistre la masse de houblon produite à partir de plusieurs lots de houblon.  
+Les données sont saisies par l’utilisateur via l’interface web.  
 
 ### Structure
 
 | Champ				| Type		| Description						|
 | ----------------------------- | ------------- | ----------------------------------------------------- |
-| id_houb_sech			| INT (PK)	| Identifiant de l'enregistrement			|
-| houb_sech_m_houb_final	| INT (FK/NULL)	| Identifiant sur la masse houblon finale		|
-| houb_sech_var			| INT (FK)	| Identifiant de la variete de houblon			|
-| houb_sech_etage4		| INT (NULL)	| Temps passé a l'étage 4				|
-| houb_sech_etage3		| INT (NULL)	| Temps passé a l'étage 3				|
-| houb_sech_etage2		| INT (NULL)	| Temps passé a l'étage 2				|
-| houb_sech_etage1		| INT (NULL)	| Temps passé a l'étage 1				|
-| houb_sech_date_in		| DATETIME	| Date et heure de l'enregistrement			|
-| houb_sech_date_out		| DATETIME	| Date et heure de fin de séchage de l'houblon		|
-
+| id_houb_final			| INT (PK)	| Identifiant unique de la masse			|
+| houb_final_masse		| DECIMAL(3,2)	| Masse produite					|
+| houb_final_date_saisie	| DATETIME	| Date et heure de saisie de la mesure			|
 
 </details>
 
-<details>
-<summary>Table : masses houblon finale</summary>
 
-## Table : m_houb
 
-### Description
-
-Cette table enregistre la masse produite pour une variété de houblon à la fin d'un cycle de séchage.  
-Les données sont saisies par l'utilisateur depuis l'interface web.
-
-### Structure
-
-| Champ			| Type		| Description						|
-| --------------------- | ------------- | ----------------------------------------------------- |
-| id_m_houb		| INT (PK)	| Identifiant de l'enregistrement			|
-| m_houb_masse		| DECIMAL(3,2)	| Masse produite					|
-| m_houb_date_saisie	| DATETIME	| Date et heure de l'enregistrement			|
-
-</details>
 
 ---
 
