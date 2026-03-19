@@ -33,7 +33,7 @@ Elle est utilisée par l'utilisateur **www:data**
 | `evenements`			| Enregistre les evenements du système			|
 | `temperatures`		| Stocke les mesures des capteurs			|
 | `houblon etage`		| Enregistre l'état d'un houblon à l'étage donné	|
-| `lien etage evenements`	| Table reliant un event à un étage			|
+| `lien etage evenements`	| Table reliant un evenement à un étage			|
 | `lien etage température`	| Table reliant une température à un étage		|
 | `houblon variétés`		| Enregistre les variétés de houblon			|
 | `houblon lots`		| Enregistre les houblons d'une session de séchage	|
@@ -123,7 +123,7 @@ Les températures sont rattaché aux étages actifs du système au moment de l'e
 ### Description
 
 Cette table représente la position d’un lot de houblon dans le séchoir et sert de contexte pour associer les événements et les mesures à un étage précis du houblon lot.  
-Un étage houblon est lié soit à son houblon lot via la (FK) `houb_etag_houb_lot`.  
+Un étage houblon est lié à son houblon lot via la (FK) `houb_etag_houb_lot`.  
 Le lien `étage` <-> `évenements`/`températures` sont faite par les tables `lien_etag_event`/`lien_etag_temp`.  
 
 ### Structure
