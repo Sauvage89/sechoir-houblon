@@ -119,6 +119,7 @@ Les températures sont rattaché aux étages actifs du système au moment de l'e
 | Champ			| Type		| Description						|
 | --------------------- | ------------- | ----------------------------------------------------- |
 | id_temp		| INT (PK)	| Identifiant unique					|
+| temp_compo		| DATETIME	| Référence au capteur qui a effectuer les messures	|
 | temp_valeur		| DECIMAL(3,1)	| Température moyenne mesurée				|
 | temp_date		| DATETIME	| Date et heure de la mesure				|
 
