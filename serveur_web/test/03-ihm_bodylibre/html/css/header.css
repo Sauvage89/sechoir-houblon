@@ -1,0 +1,29 @@
+/* ── Le header vient structurer le logo et le titre de la page ── */
+header {
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+  padding: 0 1.75rem;
+  position: sticky; top: 0; z-index: 100;
+}
+
+/* ── Met les élement a gauche du header et les aligne ── */
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+}
+
+/* ── Met les élement a droite du header et les aligne ── */
+.header-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .68rem;
+  color: var(--text-mute);
+}
