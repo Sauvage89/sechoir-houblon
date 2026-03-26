@@ -9,7 +9,7 @@
 	semaine 5 : 4 - 6	: Changement du projet en passant d'une Raspberry Pi 3 a une 5. Prototypage d'ihm de saisie de donnée.
 	semaine 6 : 11 - 13	: refactor de la revue2 sauvage. Prototypage d'ihm de saisie de donnée.
 	semaine 7 : 18 - 20	: refactor de la revue2 sauvage. Prototypage d'ihm de saisie de donnée. Reléguation de la tache config BDD a sauvage. Refactor de la BDD. Cablement de la Raspberry Pi 5.
-	semaine 8 : 25 - 27	: exposé revue2. refactor de la revue1. refactor de la revu2 sauvage. Prototype d'ihm de saisie de donnée.
+	semaine 8 : 25 - 27	: exposé revue2. refactor de la revue1. refactor de la revu2 sauvage. Prototype d'ihm de saisie de donnée. Merge des revue1 et revue2sauvage dans develop. Merge de dev/bdd dans develop. Suppresion sans faire exprés de la branch dev/ihm_overlay qui permettait de tester la manière de faire un overlay
 ### Avril
 	semaine 9 : 1 - 3	:
 	semaine 10: 22 - 24	:
