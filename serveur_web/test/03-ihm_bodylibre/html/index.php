@@ -16,6 +16,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH'])) {
     exit;
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>

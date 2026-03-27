@@ -43,6 +43,11 @@
           <button type="button" onclick="ajusterRemplissage(+10)">+</button>
         </div>
       </div>
+
+      <div class="field">
+        <label>Test script</label>
+          <button type="button" onclick="callScript()">BUTTON</button>
+      </div>
   
     </div>
 
@@ -87,5 +92,9 @@ function descendre(id) {
 function ajusterRemplissage(delta) {
   remplissage = Math.min(100, Math.max(0, remplissage + delta));
   document.getElementById('remplissageVal').textContent = remplissage;
+}
+
+function	callScript() {
+	fetch("../api/api.php");
 }
 </script>
