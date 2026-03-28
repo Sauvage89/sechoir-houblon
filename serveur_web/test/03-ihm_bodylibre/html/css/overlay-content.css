@@ -24,6 +24,12 @@
   border-color: var(--green);
   color: var(--green);
 }
+
+.field {
+  margin-top: 3px;
+  margin-bottom:  3px;
+}
+
 .field select {
   padding: 8px;
   border: 1px solid var(--border);
@@ -43,4 +49,13 @@
   color: var(--text);
   min-width: 2.5rem;
   text-align: center;
+}
+
+#config_lot {
+  display: none;
+  flex-direction: column;
+}
+
+#id_lot {
+  font-weight:  bold;
 }

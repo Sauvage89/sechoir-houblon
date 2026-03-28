@@ -1,4 +1,5 @@
 <?php
+
 $page = $_GET['page'] ?? 'gestion_sechoir';
 $pages_autorisees = ["gestion_sechoir", "nouvelle_seche", "visualisation"];
 if (!in_array($page, $pages_autorisees)) $page = "404";
