@@ -1,0 +1,26 @@
+/* ── Titres de section ── */
+.section-title {
+font-family: 'Segoe UI', system-ui, sans-serif;
+font-size: 0.95rem;
+  letter-spacing: 0.16em;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.section-num {
+font-family: 'Segoe UI', system-ui, sans-serif;  font-size: 0.58rem;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  padding: 1px 4px;
+  border-radius: 2px;
+}

@@ -1,0 +1,29 @@
+/* ── Carte d'étage ── */
+.floor-card {
+  background: var(--bg);
+  border: 2px solid var(--border-mute);
+  border-left: 4px solid var(--border-card-left);
+  border-radius: 25px;
+  padding: 0.7rem 1.2rem;
+  min-height: 80px;
+}
+
+.floor-card--sensors {
+  border-left-color: var(--border-card-left);
+}
+
+/* ── Cartes capteurs ── */
+.sensor-card {
+  background: var(--bg);
+  border: 2px solid var(--border-mute);
+  border-left: 3px solid var(--border-card-left);
+  border-radius: 25px;
+  padding: 0.5rem 0.65rem;
+  height: 100%;
+  transition: border-color 0.2s;
+}
+
+.sensor-card.alert {
+  border-color: var(--danger);
+  border-left-color: var(--danger);
+}

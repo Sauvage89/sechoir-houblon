@@ -1,0 +1,90 @@
+/* ── Description global de l'overlay ── */
+#overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+}
+
+#overlay-box {
+  position: relative;
+  width: 80%;
+  max-width: 800px;
+  height: 80vh;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+#overlayTitle {
+  color: black;
+  margin-top: 20px;
+  margin-left: 20px;
+  text-decoration: underline;
+  text-underline-offset: 6px;
+}
+
+.overlay-close {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 50px;
+  cursor: pointer;
+  color: black;
+  line-height: 1;
+  padding: 0;
+  transition: color .25s;
+}
+
+.overlay-close:hover {
+  color: white;
+  background: red;
+}
+
+#overlay-content {
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+#overlay-content h2 {
+  margin: 0 0 8px;
+  font-size: 1.1rem;
+  color: var(--text);
+}
+
+#overlay-actions {
+  display: flex;
+  gap: 10px;
+  padding: 1rem 1.75rem;
+  border-top: 1px solid var(--border);
+}
+
+#overlay-actions button {
+  flex: 1;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  font-size: 14px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--bg3);
+  color: var(--text);
+  transition: border-color .15s;
+}
+
+#overlay-actions button:hover {
+  border-color: var(--text-mute);
+}

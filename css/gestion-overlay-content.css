@@ -1,0 +1,65 @@
+
+/* ── Description des élèment dans le content de l'overlay ── */
+#remplissage-control {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+#remplissage-control button {
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg3);
+  color: var(--text);
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color .15s;
+}
+
+#remplissage-control button:hover {
+  border-color: var(--green);
+  color: var(--green);
+}
+
+.field {
+  margin-top: 3px;
+  margin-bottom:  3px;
+}
+
+.field select {
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg3);
+  color: var(--text);
+  font-size: 14px;
+  width: 100%;
+  max-width: 250px;
+  text-align: center;
+  text-align-last: center;
+}
+#remplissageVal {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text);
+  min-width: 2.5rem;
+  text-align: center;
+}
+
+#info_lot {
+  color: red;
+}
+#config_lot {
+  display: none;
+  flex-direction: column;
+}
+
+#id_lot {
+  font-weight:  bold;
+}
