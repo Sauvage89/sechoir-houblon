@@ -23,7 +23,10 @@ $title = $titles[$page];
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><?= $title ?> - Séchoir Houblon</title>
+  <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
   <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/style_adam.css">
 </head>
 
 <body>
@@ -39,7 +42,7 @@ $title = $titles[$page];
     <a href="?page=<?= $PAGE_GESTION ?>" class="<?= $page === $PAGE_GESTION ? "active" : "" ?>">Gestion séchoir</a>
   </nav>
 
-  <main id="main-content">
+  <main id="main-content" class="container-fluid px-3 px-md-4 py-3">
     <?php include "site/{$page}.php"; ?>
   </main>
 
