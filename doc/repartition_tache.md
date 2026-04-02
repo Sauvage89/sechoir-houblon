@@ -6,10 +6,9 @@
 
 	- S'occuper de la RTC de la rasberypi
 	- S'occuper du serveur web de la raberypi
+	- S'occuper du serveur bdd de la raberypi
 	- Conception de l'IHM sur la partie de saisie des paramètres de l'utilisateur
-	- Définir les données a visualiser pour l'utilisateur
-	- Sauvegarde des paramètres de l'utilisateur pour une séche
-	- Exportation des donnée d'une seche en format CSV depuis l'application web
+	- Conception de l'IHM sur la partie de l'exportation des donnée d'une seche en format CSV
 </details>
 
 <details>

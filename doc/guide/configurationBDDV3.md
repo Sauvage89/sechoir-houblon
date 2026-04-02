@@ -30,17 +30,17 @@
 
 # 2. Schéma global de la base
 
-| Table naturelle   | Table technique | Description                                              |
-| ----------------- | --------------- | -------------------------------------------------------- |
-| `variete`         | `variete`       | Enregistre les variétés de houblon                       |
-| `masse`           | `masse`         | Enregistre les masses produites de houblon               |
-| `etage`           | `etage`         | Référence les étages physiques du séchoir                |
-| `etatSechoir`     | `etatSechoir`   | Enregistre l'état courant du séchoir                     |
-| `compo`           | `compo`         | Référence les composants du système                      |
-| `evenement`       | `evenement`     | Enregistre les événements du système                     |
-| `lot`             | `lot`           | Enregistre les lots de houblon d'une session de séchage  |
-| `temperature`     | `temperature`   | Stocke les mesures de température des capteurs           |
-| `lotEtage`        | `lotEtage`      | Table de liaison entre un lot et un étage                |
+| Table naturelle	| Table technique | Description                                              |
+| --------------------- | --------------- | -------------------------------------------------------- |
+| `variete`		| `variete`       | Enregistre les variétés de houblon                       |
+| `masse finale`	| `masse`         | Enregistre les masses produites de houblon               |
+| `etage`		| `etage`         | Référence les étages physiques du séchoir                |
+| `etat sechoir`	| `etatSechoir`   | Enregistre l'état courant du séchoir                     |
+| `composant`		| `compo`         | Référence les composants du système                      |
+| `evenement`		| `evenement`     | Enregistre les événements du système                     |
+| `lot`			| `lot`           | Enregistre les lots de houblon d'une session de séchage  |
+| `temperature`		| `temperature`   | Stocke les mesures de température des capteurs           |
+| `occuper`		| `lotEtage`      | Table de liaison entre un lot et un étage                |
 
 ---
 
@@ -134,7 +134,7 @@ Chaque étage est une position fixe dans le séchoir où un lot de houblon peut 
 
 
 <details>
-<summary>Table : etatSechoir</summary>
+<summary>Table : etat sechoir</summary>
 
 ## Table technique : etatSechoir
 
@@ -165,7 +165,7 @@ Elle permet de savoir si le séchoir est en fonctionnement, en pause, ou à l'ar
 
 
 <details>
-<summary>Table : compo</summary>
+<summary>Table : composant</summary>
 
 ## Table technique : compo
 
@@ -175,11 +175,13 @@ Cette table enregistre les composants du système (capteurs, modules système, e
 
 ### Structure
 
-| Champ       | Type         | Description                                                   |
-| ----------- | ------------ | ------------------------------------------------------------- |
-| id_compo    | INT (PK)     | Identifiant unique du composant                               |
-| compo_type  | VARCHAR(32)  | Nom du type de composant                                      |
-| compo_actif | BOOLEAN      | Indique si le composant est actif (1) ou inactif (0)          |
+| Champ		| Type		| Description                                                   |
+| ------------- | --------------- | ------------------------------------------------------------- |
+| id_compo	| INT (PK)	| Identifiant unique du composant                               |
+| compo_type	| VARCHAR(32)	| Nom du type de composant                                      |
+| compo_nom	| VARCHAR(32)	| Nom du type de composant                                      |
+| compo_gpio	| TINYINT	| Nom du type de composant                                      |
+| compo_actif	| BOOLEAN	| Indique si le composant est actif (1) ou inactif (0)          |
 
 ### Stratégie d'enregistrement
 
@@ -244,8 +246,8 @@ Elle constitue la table centrale du système, car elle permet de suivre un cycle
 | ---------------- | -------------- | -------------------------------------------------- |
 | id_lot           | INT (PK)       | Identifiant unique du lot                          |
 | lot_remplissage  | DECIMAL(3,2)   | Taux de remplissage du lot (ex : quantité initiale)|
-| lot_dateDebut    | DATETIME       | Date et heure de début du lot                      |
-| lot_dateFin      | DATETIME (NULL)| Date et heure de fin du lot (NULL si en cours)     |
+| lot_dateEntree   | DATETIME       | Date et heure de début du lot                      |
+| lot_dateSortie   | DATETIME (NULL)| Date et heure de fin du lot (NULL si en cours)     |
 | lot_actif        | BOOLEAN        | Indique si le lot est actuellement en cours (1)    |
 | id_masse         | INT (FK)       | Référence à la masse produite finale               |
 | id_variete       | INT (FK)       | Référence à la variété de houblon                  |
