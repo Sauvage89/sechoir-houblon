@@ -1,4 +1,4 @@
-<?php include "overlay_etage_houblon.php"; ?>
+<?php include "gestion_sechoir_overlay.php"; ?>
 
 <div class="etage-row">
   <button onclick="descendre(4)">↓</button>

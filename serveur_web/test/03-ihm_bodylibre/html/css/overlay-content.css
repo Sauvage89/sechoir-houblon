@@ -51,6 +51,9 @@
   text-align: center;
 }
 
+#info_lot {
+  color: red;
+}
 #config_lot {
   display: none;
   flex-direction: column;

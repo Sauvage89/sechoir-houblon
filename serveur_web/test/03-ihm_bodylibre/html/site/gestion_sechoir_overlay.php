@@ -42,8 +42,7 @@
     </div>
 
   <div id="overlay-actions">
-    <button onclick="hideOverlay()">Annuler</button>
-    <button onclick="sauvegarder()">Sauvegarder</button>
+    <button onclick="hideOverlay()">Quitter</button>
   </div>
 
   </div>
@@ -71,7 +70,7 @@ function  saveNewLot() {
   document.getElementById("id_lot").textContent = "Chargement";
   document.getElementById("info_lot").textContent = "Cette étage contient un lot.";
   document.getElementById("info_lot").style.color = "green";
-	fetch("../api/sauvegarde_new_lot.php");
+  fetch("../api/sauvegarde_new_lot.php");
 }
 
 function  deleteLot(idLot) {
@@ -79,7 +78,7 @@ function  deleteLot(idLot) {
   document.getElementById("id_lot").textContent = "---";
   document.getElementById("info_lot").textContent = "Cette étage ne contient pas de lot.";
   document.getElementById("info_lot").style.color = "red";
-	fetch("../api/delete_lot.php");
+  fetch("../api/delete_lot.php");
 }
 
 function  ajustRemplisage(nb) {
