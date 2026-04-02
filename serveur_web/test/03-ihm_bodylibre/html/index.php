@@ -1,13 +1,12 @@
 <?php
-
-$page = $_GET['page'] ?? 'gestion_sechoir';
-$pages_autorisees = ["gestion_sechoir", "nouvelle_seche", "visualisation"];
-if (!in_array($page, $pages_autorisees)) $page = "404";
+$page = $_GET['page'] ?? 'acceuil';
+$pages_autorisees = ["acceuil", "gestion_sechoir", "exportation_csv"];
+if (!in_array($page, $pages_autorisees)) $page = "erreur_404";	
 
 $titles = [
+    "acceuil"   => "acceuil",
     "gestion_sechoir" => "Gestion séchoir",
-    "nouvelle_seche"  => "Nouvelle session",
-    "visualisation"   => "Visualisation",
+    "exportation_csv"  => "Exportation CSV",
     "404"             => "Erreur 404"
 ];
 $title = $titles[$page];
@@ -37,9 +36,9 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH'])) {
   </header>
 
   <nav id="main-nav">
+    <a href="?page=acceuil"   class="<?= $page === 'acceuil'   ? 'active' : '' ?>">Acceuil</a>
     <a href="?page=gestion_sechoir" class="<?= $page === 'gestion_sechoir' ? 'active' : '' ?>">Gestion d'un séchoir</a>
-    <a href="?page=nouvelle_seche"  class="<?= $page === 'nouvelle_seche'  ? 'active' : '' ?>">Nouvelle session</a>
-    <a href="?page=visualisation"   class="<?= $page === 'visualisation'   ? 'active' : '' ?>">Visualisation</a>
+    <a href="?page=exportation_csv"  class="<?= $page === 'exportation_csv'  ? 'active' : '' ?>">Exportation CSV</a>
   </nav>
 
   <main id="main-content">
