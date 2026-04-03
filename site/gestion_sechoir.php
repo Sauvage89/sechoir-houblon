@@ -24,7 +24,7 @@ $e4 = getEtage($etages, 4);
   <h2 class="section-title">
     État du cycle
   </h2>
-  
+
   <div class="floor-card">
     <div class="row g-2">
 
@@ -121,4 +121,97 @@ $e4 = getEtage($etages, 4);
 </section>
 
 
+
+<!-- ══ ÉTAGE 2 ══ -->
+<section class="mb-3">
+  <h2 class="section-title">
+    <span class="section-num">02</span>
+    Étage 2 — Niveau bas
+  </h2>
+
+  <div class="floor-card">
+    <div class="row g-2">
+      
+      <div class="col-12 col-md-4">
+      	<div class="info-block">
+          <div class="info-label">🌿 Variété</div>
+          <div class="info-value" id="variete-2"><?= htmlspecialchars($e2['variete']) ?></div>
+        </div>
+      </div>
+      
+      <div class="col-12 col-md-4">
+        <div class="info-block">
+          <div class="info-label">🕐 Début</div>
+          <div class="info-value" id="debut-2"><?= htmlspecialchars($e2['date_debut']) ?></div>
+        </div>
+      </div>
+      
+      <div class="col-12 col-md-4">
+        <div class="info-block">
+          <div class="info-label">🕔 Fin prévue</div>
+          <div class="info-value" id="fin-2"><?= $e2['date_fin'] ?? 'En cours' ?></div>
+        </div>
+      </div>
+    
+    </div>
+  </div>
+</section>
+
+<!-- ══ ÉTAGE 1 (bas) — avec capteurs ══ -->
+<section class="mb-3">
+  <h2 class="section-title">
+    <span class="section-num">01</span>
+    Étage 1 — Niveau tiroir
+  </h2>
+  
+  <div class="floor-card floor-card--sensors">
+
+    <div class="row g-2 mb-2">
+      <div class="col-12 col-md-4">
+        <div class="info-block">
+          <div class="info-label">🌿 Variété</div>
+          <div class="info-value" id="variete-1"><?= htmlspecialchars($e1['variete']) ?></div>
+        </div>
+      </div>
+      
+      <div class="col-12 col-md-4">
+        <div class="info-block">
+          <div class="info-label">🕐 Début</div>
+          <div class="info-value" id="debut-1"><?= htmlspecialchars($e1['date_debut']) ?></div>
+        </div>
+      </div>
+      
+      <div class="col-12 col-md-4">
+        <div class="info-block">
+          <div class="info-label">🕔 Fin prévue</div>
+          <div class="info-value" id="fin-1"><?= $e1['date_fin'] ?? 'En cours' ?></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Température moyenne -->
+    <div class="row g-2 mb-2">
+      <div class="col-12">
+        <div class="info-block info-block--moyenne">
+          <div class="info-label">🌡️ Température moyenne des capteurs</div>
+          <div class="info-value" id="moyenne">-- °C</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6 capteurs : 2 col mobile / 3 col tablette / 6 col desktop -->
+    <div class="row g-2">
+      <?php for ($i = 1; $i <= 6; $i++): ?>
+      <div class="col-6 col-md-4 col-lg-2">
+        <div class="sensor-card" id="card-<?= $i ?>">
+          <div class="sensor-label">Capteur <?= $i ?></div>
+          <div class="sensor-temp"><span id="capteur_<?= $i ?>">--</span><span class="unit">°C</span></div>
+          <div class="sensor-sub" id="sub-<?= $i ?>">Chargement...</div>
+          <div class="sensor-bar"><div class="sensor-bar-fill" id="bar-<?= $i ?>" style="width:0%"></div></div>
+        </div>
+      </div>
+      <?php endfor; ?>
+    </div>
+  </div>
+</section>
 
