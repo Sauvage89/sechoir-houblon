@@ -1,0 +1,31 @@
+BDD {
+Diagramme d'exigeance bdd ->
+	On doit pouvoir sauvegarder des données ont vas donc mettre en place une bdd conventioner et documenter.
+
+Schema globale bdd ->
+	Voici ma structure de base de donnée.
+	On peut représenté de différente mannière les stucture de bdd.
+
+MCD ->
+	Provient de la méthode Merise.
+	On a plussieurs entité.
+	Des entités on des liens entre elle et on peut voire les cardinalité.
+	1 lot appartient a 1 et 1 seule variete.
+	1 variete avoir entre 0 et n lot.
+
+MLD ->
+	Provient de la méthode Merise.
+	1 MLD s'est la translation d'un MCD a lui en suivant plussieurs règle.
+	On a plussieurs table.
+	Ses tables ont des liens entre elle via les meme cardinalité qu'avant mais mise a l'envers.
+	1 lot appartient a 1 et 1 seule variete.
+	1 variete avoir entre 0 et n lot.
+	(ON PEUT REVENIR EN MCD POUR EXPLIQUER LA REGLE DES CLE ETRANGERE)
+	Explication des clé étrangére.
+Champ d'une table ->
+	On montre qu'on a une documentation de notre structure.
+}
+
+Service Web {
+Diagramme d'exigeance web ->
+	
