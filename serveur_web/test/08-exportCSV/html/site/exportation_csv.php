@@ -1,295 +1,248 @@
-    <div class="export-page">
+<div class="export-page">
+ 
+    <!-- 1 — Type d'export -->
+    <section class="compartiment" id="comp-type">
+      <h2 class="comp-label">1 — Type d'export</h2>
+      <div class="type-list">
 
-        <!-- ══════════════════════════════════════
-             COMPARTIMENT 1 — Type d'export
-        ══════════════════════════════════════ -->
-        <section class="compartiment" id="comp-type">
-            <div class="comp-label">1 — Type d'export</div>
+        <button class="type-item" id="btn-type-lot" onclick="selectType('lot')">
+          <span class="dot dot-green"></span> Par lot — export détaillé d'un lot
+        </button>
 
-            <div class="type-list">
-                <button class="type-item" data-type="lot" onclick="selectType('lot')">
-                    <span class="type-dot dot-green"></span>
-                    Par lot — export détaillé d'un lot
-                </button>
-                <button class="type-item" data-type="periode" onclick="selectType('production')">
-                    <span class="type-dot dot-amber"></span>
-                    Par production — tous les lots compris dans une production finale
-                </button>
-            </div>
-        </section>
+        <button class="type-item" id="btn-type-production" onclick="selectType('production')">
+          <span class="dot dot-orange"></span> Par production — tous les lots d'une production finale
+        </button>
 
-        <!-- ══════════════════════════════════════
-             COMPARTIMENT 2 — Filtres
-        ══════════════════════════════════════ -->
-        <section class="compartiment" id="comp-filtres">
-            <div class="comp-label">2 — Filtres</div>
+      </div>
+    </section>
+ 
+    <!-- 2 — Filtres -->
+    <section class="compartiment" id="comp-filtres" hidden>
+      <h2 class="comp-label">2 — Filtres</h2>
+ 
+      <div id="filtres-lot" hidden>
+        <div class="filter-grid">
+          <div class="filter-group">
+            <div class="filter-name">Variété</div>
+            <select id="lot-variete">
+              <option value="">Toutes</option>
+              <option>Strisselspalt</option><option>Aramis</option>
+              <option>Brewers Gold</option><option>Magnum</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <div class="filter-name">N° de lot</div>
+            <input type="text" id="lot-numero" placeholder="ex. LOT-027">
+          </div>
+        </div>
+      </div>
 
-            <!-- Filtres : Par lot -->
-            <div class="filter-set" data-type="lot" style="display:none;">
-                <div class="filter-grid">
-                    <div class="filter-group">
-                        <label class="filter-name" for="lot-variete">Variété</label>
-                        <select id="lot-variete" name="variete">
-                            <option value="">Toutes</option>
-                            <option value="Strisselspalt">Strisselspalt</option>
-                            <option value="Aramis">Aramis</option>
-                            <option value="Brewers Gold">Brewers Gold</option>
-                            <option value="Magnum">Magnum</option>
-                        </select>
-                    </div>
+      <div id="filtres-production" hidden>
+        <div class="filter-grid">
+          <div class="filter-group">
+            <div class="filter-name">Variété</div>
+            <select id="prod-variete">
+              <option value="">Toutes</option>
+              <option>Strisselspalt</option><option>Aramis</option>
+              <option>Brewers Gold</option><option>Magnum</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <div class="filter-name">N° de production</div>
+            <input type="text" id="prod-numero" placeholder="ex. PROD-005">
+          </div>
+        </div>
+      </div>
 
-                    <div class="filter-group">
-                        <label class="filter-name" for="lot-numero">N° de lot</label>
-                        <input type="text" id="lot-numero" name="numero_lot" placeholder="ex. LOT-027">
-                    </div>
-                </div>
-
-                <div class="filter-actions">
-                    <button class="btn" onclick="selectType('lot')">Réinitialiser</button>
-                    <button class="btn btn-primary" onclick="loadPreview()">Rechercher</button>
-                </div>
-            </div>
-
-            <!-- Filtres : Par production -->
-            <div class="filter-set" data-type="production" style="display:none;">
-                <div class="filter-grid">
-                    <div class="filter-group">
-                        <label class="filter-name" for="lot-variete">Variété</label>
-                        <select id="lot-variete" name="variete">
-                            <option value="">Toutes</option>
-                            <option value="Strisselspalt">Strisselspalt</option>
-                            <option value="Aramis">Aramis</option>
-                            <option value="Brewers Gold">Brewers Gold</option>
-                            <option value="Magnum">Magnum</option>
-                        </select>
-                    </div>
-
-                    <div class="filter-group">
-                        <label class="filter-name" for="prod-numero">N° de production</label>
-                        <input type="text" id="prod-numero" name="numero_prod" placeholder="ex. PROD-005">
-                    </div>
-                </div>
-
-                <div class="filter-actions">
-                    <button class="btn" onclick="selectType('lot')">Réinitialiser</button>
-                    <button class="btn btn-primary" onclick="loadPreview()">Rechercher</button>
-                </div>
-            </div>
-
-        <!-- ══════════════════════════════════════
-             COMPARTIMENT 3 — Résultats
-        ══════════════════════════════════════ -->
-        <section class="compartiment" id="comp-results" style="display:none;">
-            <div class="comp-label">3 — Résultats</div>
-
-            <div class="results-meta">
-                <span class="results-count" id="result-count">—</span>
-                <button class="export-btn" id="btn-export" disabled onclick="submitExport()">
-                    <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
-                        <path d="M8 1v9M4 7l4 4 4-4M2 13h12"
-                              stroke="currentColor" stroke-width="1.8"
-                              stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                    Télécharger CSV
-                </button>
-            </div>
-
-            <div id="result-table-wrap">
-                <p class="empty-state">Applique les filtres pour voir les résultats.</p>
-            </div>
-        </section>
-
-    </div><!-- /.export-page -->
-
-<!-- Formulaire caché pour l'export CSV (soumission classique → téléchargement) -->
-<form id="export-form" method="POST" action="export_handler.php" style="display:none;">
-    <input type="hidden" id="hidden-action" name="action" value="export">
-    <input type="hidden" id="hidden-type"   name="type_export" value="">
+	    <div class="filter-actions">
+        <button class="btn" onclick="resetFilters()">Réinitialiser</button>
+        <button class="btn btn-search" onclick="loadPreview()">Rechercher</button>
+      </div>
+    </section>
+ 
+    <!-- 3 — Résultats -->
+    <section class="compartiment" id="comp-results" hidden>
+      <h2 class="comp-label">3 — Résultats</h2>
+      <div class="results-meta">
+            <span class="results-count" id="result-count">—</span>
+            <button class="export-btn" id="btn-export" disabled>
+                <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+                    <path d="M8 1v9M4 7l4 4 4-4M2 13h12"
+                          stroke="currentColor" stroke-width="1.8"
+                          stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Télécharger CSV
+            </button>
+        </div>
+        <div id="result-table-wrap">
+            <p class="empty-state">Applique les filtres pour voir les résultats.</p>
+        </div>
+    </section>
+ 
+</div>
+ 
+<!-- Formulaire caché pour l'export CSV -->
+<form id="export-form" method="POST" action="export_handler.php" hidden>
+    <input type="hidden" name="action" value="export">
+    <input type="hidden" id="hidden-type" name="type_export" value="">
 </form>
 
 
-
 <script>
-// ─── État ─────────────────────────────────────────────────────
-let currentType = null;
-
-// ─── Sélection du type d'export ──────────────────────────────
+var currentType = null;
+ 
+// ── Colonnes par type ─────────────────────────────────────────
+var COLUMNS = {
+  lot: {
+    numero_lot:'N° lot', variete:'Variété', sechoir:'Séchoir', palier:'Palier',
+    date_sechage:'Date', quantite_kg:'Quantité (kg)', duree_heures:'Durée (h)',
+    humidite_fin:'Humidité fin (%)', statut:'Statut'
+  },
+  production: {
+    numero_lot:'N° lot', variete:'Variété', sechoir:'Séchoir',
+    date_sechage:'Date', quantite_kg:'Quantité (kg)', duree_heures:'Durée (h)',
+    humidite_fin:'Humidité fin (%)', statut:'Statut'
+  }
+};
+ 
+var BADGE = { 'Terminé':'badge-done', 'En cours':'badge-prog', 'Erreur':'badge-err' };
+ 
+// ── Filtres par type → { champ: id_element } ─────────────────
+var FILTER_IDS = {
+  lot:        { variete: 'lot-variete',  numero_lot:  'lot-numero'  },
+  production: { variete: 'prod-variete', numero_prod: 'prod-numero' }
+};
+ 
+// ── Sélection du type ─────────────────────────────────────────
 function selectType(type) {
-    currentType = type;
-
-    // Mise à jour visuelle des boutons
-    document.querySelectorAll('.type-item').forEach(el => {
-        el.classList.toggle('active', el.dataset.type === type);
-    });
-
-    // Affichage des filtres correspondants
-    document.querySelectorAll('.filter-set').forEach(el => {
-        el.style.display = el.dataset.type === type ? 'block' : 'none';
-    });
-
-    // Réinitialise les résultats
-    resetResults();
-
-    // Lance automatiquement une preview avec filtres vides
-    loadPreview();
+  currentType = type;
+ 
+  document.getElementById('btn-type-lot').classList.toggle('active',        type === 'lot');
+  document.getElementById('btn-type-production').classList.toggle('active', type === 'production');
+ 
+  document.getElementById('filtres-lot').hidden        = (type !== 'lot');
+  document.getElementById('filtres-production').hidden = (type !== 'production');
+  document.getElementById('comp-filtres').hidden = false;
+ 
+  resetResults();
 }
-
-// ─── Chargement de la preview via AJAX ───────────────────────
+ 
+// ── Collecte des filtres actifs ───────────────────────────────
+function getFilters() {
+  var filters = {};
+  var ids = FILTER_IDS[currentType] || {};
+  for (var field in ids) {
+    var val = document.getElementById(ids[field]).value;
+    if (val) filters[field] = val;
+  }
+  return filters;
+}
+ 
+// ── Aperçu (appel serveur) ────────────────────────────────────
 function loadPreview() {
-    if (!currentType) return;
-
-    const resultsPanel = document.getElementById('comp-results');
-    const tableWrap    = document.getElementById('result-table-wrap');
-    const countEl      = document.getElementById('result-count');
-    const exportBtn    = document.getElementById('btn-export');
-
-    tableWrap.classList.add('loading');
-
-    const formData = new FormData();
-    formData.append('action', 'preview');
-    formData.append('type_export', currentType);
-
-    // Collecte les filtres actifs
-    const activeFilters = document.querySelector(`.filter-set[data-type="${currentType}"]`);
-    if (activeFilters) {
-        activeFilters.querySelectorAll('select, input').forEach(el => {
-            if (el.name && el.value) formData.append(el.name, el.value);
-        });
-    }
-
-    fetch('export_handler.php', { method: 'POST', body: formData })
-        .then(r => r.json())
-        .then(data => {
-            renderTable(data.rows, data.count);
-            tableWrap.classList.remove('loading');
-            resultsPanel.style.display = 'block';
-            exportBtn.disabled = data.count === 0;
-            countEl.textContent = data.count + ' résultat' + (data.count > 1 ? 's' : '');
-        })
-        .catch(() => {
-            tableWrap.innerHTML = '<p class="empty-state">Erreur de connexion au serveur.</p>';
-            tableWrap.classList.remove('loading');
-        });
-}
-
-// ─── Rendu du tableau de résultats ───────────────────────────
-function renderTable(rows, count) {
-    const wrap = document.getElementById('result-table-wrap');
-
-    if (count === 0) {
-        wrap.innerHTML = '<p class="empty-state">Aucun résultat pour ces filtres.</p>';
-        return;
-    }
-
-    // En-têtes lisibles selon le type
-    const headers = {
-        lot: {
-            numero_lot:    'N° lot',
-            variete:       'Variété',
-            sechoir:       'Séchoir',
-            palier:        'Palier',
-            date_sechage:  'Date',
-            quantite_kg:   'Quantité (kg)',
-            duree_heures:  'Durée (h)',
-            humidite_fin:  'Humidité fin (%)',
-            statut:        'Statut',
-        },
-        periode: {
-            numero_lot:    'N° lot',
-            variete:       'Variété',
-            sechoir:       'Séchoir',
-            date_sechage:  'Date',
-            quantite_kg:   'Quantité (kg)',
-            duree_heures:  'Durée (h)',
-            humidite_fin:  'Humidité fin (%)',
-            statut:        'Statut',
-        },
-        variete: {
-            variete:       'Variété',
-            saison:        'Saison',
-            nb_lots:       'Nb lots',
-            total_kg:      'Total (kg)',
-            humidite_moy:  'Humidité moy. (%)',
-        }
-    };
-
-    const cols     = headers[currentType] || {};
-    const colKeys  = Object.keys(cols);
-
-    let html = '<table class="result-table"><thead><tr>';
-    colKeys.forEach(k => { html += `<th>${cols[k]}</th>`; });
-    html += '</tr></thead><tbody>';
-
-    rows.forEach(row => {
-        html += '<tr>';
-        colKeys.forEach(k => {
-            let val = row[k] ?? '—';
-
-            if (k === 'statut') {
-                const map = {
-                    'Terminé':  'badge-done',
-                    'En cours': 'badge-prog',
-                    'Erreur':   'badge-err',
-                };
-                const cls = map[val] || '';
-                val = `<span class="badge ${cls}">${val}</span>`;
-            } else if (k === 'humidite_fin' || k === 'humidite_moy') {
-                val = parseFloat(val).toFixed(1) + ' %';
-            } else if (k === 'total_kg' || k === 'quantite_kg') {
-                val = parseFloat(val).toFixed(0) + ' kg';
-            } else if (k === 'duree_heures') {
-                val = parseFloat(val).toFixed(1) + ' h';
-            }
-
-            html += `<td>${val}</td>`;
-        });
-        html += '</tr>';
+  if (!currentType) return;
+ 
+  var formData = new FormData();
+  formData.append('action', 'preview');
+  formData.append('type_export', currentType);
+  var filters = getFilters();
+  for (var f in filters) formData.append(f, filters[f]);
+ 
+  fetch('api/export_handler.php', { method: 'POST', body: formData })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      document.getElementById('comp-results').hidden = false;
+      renderTable(data.rows, data.count);
+      document.getElementById('btn-export').disabled  = (data.count === 0);
+      document.getElementById('result-count').textContent =
+        data.count + ' résultat' + (data.count > 1 ? 's' : '');
+    })
+    .catch(function() {
+      document.getElementById('result-table-wrap').innerHTML =
+        '<p class="empty-state">Erreur de connexion au serveur.</p>';
     });
-
-    html += '</tbody></table>';
-    wrap.innerHTML = html;
+}
+ 
+// ── Rendu tableau ─────────────────────────────────────────────
+function renderTable(rows, count) {
+  var wrap = document.getElementById('result-table-wrap');
+  if (!count) {
+    wrap.innerHTML = '<p class="empty-state">Aucun résultat pour ces filtres.</p>';
+    return;
+  }
+ 
+  var cols  = COLUMNS[currentType];
+  var keys  = Object.keys(cols);
+  var thead = keys.map(function(k) { return '<th>' + cols[k] + '</th>'; }).join('');
+ 
+  var tbody = rows.map(function(row) {
+    var cells = keys.map(function(k) {
+      var v = (row[k] !== undefined && row[k] !== null) ? row[k] : '—';
+      if      (k === 'statut')       v = '<span class="badge ' + (BADGE[v] || '') + '">' + v + '</span>';
+      else if (k === 'humidite_fin') v = parseFloat(v).toFixed(1) + ' %';
+      else if (k === 'quantite_kg')  v = parseFloat(v).toFixed(0) + ' kg';
+      else if (k === 'duree_heures') v = parseFloat(v).toFixed(1) + ' h';
+      return '<td>' + v + '</td>';
+    }).join('');
+    var exportBtn = '<td><button class="btn-export-line" onclick="exportRow(\'' + row.numero_lot + '\')">CSV</button></td>';
+    return '<tr>' + cells + exportBtn + '</tr>';
+  }).join('');
+ 
+  wrap.innerHTML = '<table class="result-table"><thead><tr>' + thead +
+                  '</tr></thead><tbody>' + tbody + '</tbody></table>';
 }
 
-// ─── Export CSV (soumission du formulaire) ────────────────────
+function exportRow(id) {
+  if (!currentType) return;
+
+  var form = document.getElementById('export-form');
+
+  // reset anciens champs
+  form.querySelectorAll('.dyn').forEach(function(el) { el.remove(); });
+
+  document.getElementById('hidden-type').value = currentType;
+
+  // identifiant spécifique (lot ou prod)
+  var input = document.createElement('input');
+  input.type = 'hidden';
+  input.name = (currentType === 'lot') ? 'numero_lot' : 'numero_prod';
+  input.value = id;
+  input.className = 'dyn';
+
+  form.appendChild(input);
+
+  form.submit();
+}
+ 
+// ── Export CSV ────────────────────────────────────────────────
 function submitExport() {
-    if (!currentType) return;
-
-    const form = document.getElementById('export-form');
-    document.getElementById('hidden-type').value  = currentType;
-    document.getElementById('hidden-action').value = 'export';
-
-    // Copie les valeurs des filtres actifs dans le formulaire
-    const activeFilters = document.querySelector(`.filter-set[data-type="${currentType}"]`);
-    if (activeFilters) {
-        // Nettoie les champs cachés précédents
-        form.querySelectorAll('.dyn-field').forEach(el => el.remove());
-
-        activeFilters.querySelectorAll('select, input').forEach(el => {
-            if (el.name && el.value) {
-                const hidden = document.createElement('input');
-                hidden.type  = 'hidden';
-                hidden.name  = el.name;
-                hidden.value = el.value;
-                hidden.classList.add('dyn-field');
-                form.appendChild(hidden);
-            }
-        });
-    }
-
-    form.submit();
+  if (!currentType) return;
+  document.getElementById('hidden-type').value = currentType;
+ 
+  var form = document.getElementById('export-form');
+  form.querySelectorAll('.dyn').forEach(function(el) { el.remove(); });
+ 
+  var filters = getFilters();
+  for (var f in filters) {
+    var input = document.createElement('input');
+    input.type = 'hidden'; input.name = f; input.value = filters[f]; input.className = 'dyn';
+    form.appendChild(input);
+  }
+  form.submit();
 }
-
-// ─── Reset ───────────────────────────────────────────────────
+ 
+// ── Reset ─────────────────────────────────────────────────────
+function resetFilters() {
+  var ids = FILTER_IDS[currentType] || {};
+  for (var f in ids) { document.getElementById(ids[f]).value = ''; }
+  resetResults();
+  loadPreview();
+}
+ 
 function resetResults() {
-    document.getElementById('result-table-wrap').innerHTML =
-        '<p class="empty-state">Applique les filtres pour voir les résultats.</p>';
-    document.getElementById('result-count').textContent = '—';
-    document.getElementById('btn-export').disabled = true;
+  document.getElementById('result-table-wrap').innerHTML =
+    '<p class="empty-state">Applique les filtres pour voir les résultats.</p>';
+  document.getElementById('result-count').textContent = '—';
+  document.getElementById('btn-export').disabled = true;
 }
-
-// ─── Init ────────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
-    resetResults();
-});
-
 </script>
