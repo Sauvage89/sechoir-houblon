@@ -1,6 +1,0 @@
-/* ── Reset des marging de tout les élèments ── */
-*, *::before, *::after {
-	box-sizing: border-box;
-	margin: 0;
-	padding: 0;
-}

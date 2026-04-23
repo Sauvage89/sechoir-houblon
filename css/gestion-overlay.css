@@ -69,14 +69,6 @@
   color: var(--text);
 }
 
-.btn-save {
-	padding: 8px 18px;
-	font-size: 16px;
-	font-weight: 400;
-	width: 25%;        /* prend toute la largeur du bloc */
-	border-radius: 8px; /* optionnel */
-}
-
 #overlay-actions {
   display: flex;
   gap: 10px;
@@ -99,4 +91,49 @@
 
 #overlay-actions button:hover {
   border-color: var(--text-mute);
+}
+
+.info-lot--empty {
+	color: red;
+	font-weight: bold;
+}
+
+.info-lot--active {
+	color: green;
+	font-weight: bold;
+}
+
+.form-msg {
+	margin-left: 10px;
+	font-size: 12px;
+	color: red;
+	opacity: 0;
+	transition: opacity 0.3s ease;
+}
+
+.form-msg.show {
+	opacity: 1;
+}
+
+.btn-error-flash {
+	animation: flashRed 0.6s ease;
+}
+
+@keyframes flashRed {
+	0% { background-color: white; }
+	25% { background-color: #ff4d4d; }
+	50% { background-color: white; }
+	75% { background-color: #ff4d4d; }
+	100% { background-color: white; }
+}
+
+.lot-warning {
+	color: red;
+	font-weight: bold;
+	opacity: 0;
+	transition: opacity 0.3s ease;
+}
+
+.lot-warning.show {
+	opacity: 1;
 }

@@ -2,8 +2,8 @@
 function	db_connect(): ?PDO
 {
 	$host	= "localhost";
-	$dbname	= "sechoir_houblon";
-	$user	= "userdb";
+	$dbname	= "base_sechoir";
+	$user	= "dbsechoir";
 	$pass	= "password";
 	$pdo	= null;
 

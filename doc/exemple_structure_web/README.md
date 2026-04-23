@@ -1,1 +1,0 @@
-le dossier html ce situe dans /var/www/ pour la Raspberry Pi
