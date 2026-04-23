@@ -12,3 +12,14 @@
 /* page gestion_sechoir */
 @import url("gestion-overlay.css");
 @import url("gestion-overlay-content.css");
+
+@import url("export_main.css");
+
+.btn-block {
+	display: flex;
+	flex-direction: row;
+	gap: 1rem;
+}
+.btn-block button {
+    width: 50%;
+}

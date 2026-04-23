@@ -54,15 +54,27 @@
   padding: 1.75rem;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 24px;
   overflow-y: auto;
   flex: 1;
+}
+
+#overlay-content .field {
+	margin: 10px 0;
 }
 
 #overlay-content h2 {
   margin: 0 0 8px;
   font-size: 1.1rem;
   color: var(--text);
+}
+
+.btn-save {
+	padding: 8px 18px;
+	font-size: 16px;
+	font-weight: 400;
+	width: 25%;        /* prend toute la largeur du bloc */
+	border-radius: 8px; /* optionnel */
 }
 
 #overlay-actions {

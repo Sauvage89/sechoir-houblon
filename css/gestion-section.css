@@ -1,7 +1,7 @@
 /* ── Titres de section ── */
 .section-title {
-font-family: 'Segoe UI', system-ui, sans-serif;
-font-size: 0.95rem;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-size: 0.95rem;
   letter-spacing: 0.16em;
   color: var(--text);
   display: flex;
