@@ -1,6 +1,8 @@
 <?php
 require "lib/bdd.php";
 
+header('Content-Type: application/json');
+
 $idEtage = (int)$_GET['etage'];
 
 $pdo = db_connect();

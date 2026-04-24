@@ -13,6 +13,8 @@ try
 	$idEtage = (int)$_POST['etage'];
 	$idVariete = (int)$_POST['variete'];
 	$remplissage = (int)$_POST['remplissage'];
+	$tempsTheorique = (int)$_POST['temps_theorique'];
+	
 
 	$pdo = db_connect();
 	$pdo->beginTransaction();
@@ -30,8 +32,8 @@ try
 		VALUES (?, NOW(), ?, ?, ?)",
 		[
 			$remplissage,
-			100,        // lot_dureeTheorique (obligatoire dans ta table)
-			1,        // lot_actif (TRUE = actif)
+			$tempsTheorique,
+			1,
 			$idVariete
 		]
 	);

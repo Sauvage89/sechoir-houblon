@@ -11,6 +11,7 @@ try
 	$idLot = (int)$_POST['id_lot'];
 	$idVariete = (int)$_POST['variete'];
 	$remplissage = (int)$_POST['remplissage'];
+	$tempsTheorique = (int)$_POST['temps_theorique'];
 
 	if ($idLot <= 0) throw new Exception("id_lot invalide");
 	if ($idVariete <= 0) throw new Exception("variete invalide");
@@ -21,11 +22,13 @@ try
 		$pdo,
 		"UPDATE lot
 		 SET lot_remplissage = ?,
-		     id_variete = ?
+		     id_variete = ?,
+		     lot_dureeTheorique = ?
 		 WHERE id_lot = ?",
 		[
 			$remplissage,
 			$idVariete,
+			$tempsTheorique,
 			$idLot
 		]
 	);

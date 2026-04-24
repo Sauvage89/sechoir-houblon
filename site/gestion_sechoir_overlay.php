@@ -40,6 +40,18 @@ $varietes = query_get_variete();
             <button type="button" onclick="ajustRemplisage(+10)">+</button>
           </div>
         </div>
+
+        <div class="field">
+          <label>Temps de séchage voulue</label>
+          <div id="remplissage-control">
+            <input id="temps-theorique" placeholder="hh:mm (01:30 ou 02:00)">
+            <button type="button" onclick="ajustTime(-10)">−</button>
+            <button type="button" onclick="ajustTime(+10)">+</button>
+          </div>
+        </div>
+
+        
+
         <button id="btn-lot-save" onclick="handleLot()">Créer un lot</button>
         <button id="btn-lot-delete" onclick="deleteLot()">Supprimer ce lot</button>
       </div>
@@ -159,7 +171,8 @@ async function set_config_lot() {
 	const doc_id_lot = document.getElementById("id-lot");
   const doc_remplissageVal = document.getElementById("remplissageVal");
   const doc_variete = document.getElementById("inputVariete");
-  const btn_save = document.getElementById("btn-lot-save");
+  const doc_btn_save = document.getElementById("btn-lot-save");
+  const doc_temps_theorique = document.getElementById("temps-theorique");
 
 	if (LOT)
 	{
@@ -169,8 +182,15 @@ async function set_config_lot() {
 		doc_info_lot.classList.add("info-lot--active");
     doc_remplissageVal.textContent = LOT.lot_remplissage;
     doc_variete.value = LOT.id_variete;
-    btn_save.textContent = "Sauvegarder le lot";
-		btn_save.classList.add("btn-save");
+    doc_btn_save.textContent = "Sauvegarder le lot";
+		doc_btn_save.classList.add("btn-save");
+    console.log("dans set_config_lot le lot duree brut");
+    console.log((LOT.lot_dureeTheorique));
+    console.log("dans set_config_lot le lot duree formater");
+    console.log(formatTime(LOT.lot_dureeTheorique));
+    console.log(doc_temps_theorique);
+    doc_temps_theorique.value = formatTime(LOT.lot_dureeTheorique);
+
 	}
 	else
 	{
@@ -180,8 +200,9 @@ async function set_config_lot() {
 		doc_info_lot.classList.add("info-lot--empty");
     doc_variete.value = "";
     doc_remplissageVal.textContent = 50;
-    btn_save.textContent = "Créer un lot";
-		btn_save.classList.remove("btn-save");
+    doc_btn_save.textContent = "Créer un lot";
+		doc_btn_save.classList.remove("btn-save");
+    doc_temps_theorique.value = formatTime(0);
 	}
 }
 
@@ -204,6 +225,10 @@ function handleLot()
 async function updateLot() {
 	const VARIETE = document.getElementById("inputVariete").value;
 	const REMPLISSAGE = document.getElementById("remplissageVal").textContent;
+  const TEMPSTHEO = document.getElementById("temps-theorique").value;
+
+  // conversion
+  const tempsTheorique = parseTime(TEMPSTHEO);
 
   document.getElementById("id-lot").textContent = "Chargement";
 	const res = await fetch("../api/query_update_lot_on_etage.php",
@@ -217,7 +242,8 @@ async function updateLot() {
 		{
 			id_lot: LOT.id_lot,
 			variete: VARIETE,
-			remplissage: REMPLISSAGE
+			remplissage: REMPLISSAGE,
+      temps_theorique: tempsTheorique
 		})
 	});
 	const data = await res.json();
@@ -235,10 +261,12 @@ async function saveNewLot() {
 
 	const VARIETE = document.getElementById("inputVariete").value;
 	const REMPLISSAGE = document.getElementById("remplissageVal").textContent;
+  const TEMPSTHEO = document.getElementById("temps-theorique").value;
 
   // conversion
   const varieteId = parseInt(VARIETE, 10);
   const remplissage = parseInt(REMPLISSAGE, 10);
+  const tempsTheorique = parseTime(TEMPSTHEO);
 
   // validation simple
   if (!varieteId || varieteId <= 0)
@@ -265,7 +293,8 @@ async function saveNewLot() {
 		{
 			etage: ID_ETAGE,
 			variete: varieteId,
-			remplissage: remplissage
+			remplissage: remplissage,
+      temps_theorique: tempsTheorique
 		})
 	});
 
@@ -354,5 +383,42 @@ async function get_lot(etage) {
 	const data = await res.json();
 
 	return (data.lot);
+} 
+
+function parseTime(value) {
+  value = value.trim();
+
+  // format hh:mm
+  if (/^\d{1,2}:\d{2}$/.test(value)) {
+    const [h, m] = value.split(':').map(Number);
+    return h * 60 + m;
+  }
+
+  // format minutes (ex: 90)
+  if (/^\d+$/.test(value)) {
+    return parseInt(value, 10);
+  }
+
+  return 0; // fallback si vide ou invalide
 }
+
+function formatTime(totalMinutes) {
+  totalMinutes = Math.max(0, totalMinutes); // pas de négatif
+
+  const h = Math.floor(totalMinutes / 60);
+  const m = totalMinutes % 60;
+
+  return String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0');
+}
+
+function ajustTime(delta) {
+  const input = document.getElementById("temps-theorique");
+  console.log(input.value);
+  let minutes = parseTime(input.value); 
+  minutes += delta;
+  if (minutes < 0) minutes = 0;
+
+  input.value = formatTime(minutes);
+}
+
 </script>
