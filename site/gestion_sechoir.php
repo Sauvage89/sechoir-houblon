@@ -182,76 +182,150 @@
   </div>
 </section>
 
+
 <script>
+
+function updateEtatCycle(data) {
+	document.getElementById("etat_cycle").textContent = data.etat_cycle ?? "—";
+	document.getElementById("derniere_alerte").textContent = data.derniere_alerte ?? "—";
+}
+
+function updateEtage(data) {
+	var etageMap;
+	var etage;
+	var estActif;
+	var docVariete;
+	var docDateDebut;
+	var docDateFin;
+
+	etageMap = updateEtagePrepareEtageMap(data);
+	for (let num = 1; num <= 4; num++) {
+		etage = etageMap[num];
+		estActif = (etage !== undefined);
+		docVariete = document.getElementById("variete-" + num);
+		docDateDebut = document.getElementById("debut-" + num);
+		docDateFin = document.getElementById("fin-" + num);
+		if (estActif) {
+			docVariete.textContent = (etage.variete !== null && etage.variete !== undefined) ? etage.variete : "—";
+			docDateDebut.textContent = (etage.date_debut !== null && etage.date_debut !== undefined) ? etage.date_debut : "—";
+			docDateFin.textContent = (etage.date_fin !== null && etage.date_fin !== undefined) ? etage.date_fin : "—";
+		} else {
+			docVariete.textContent = "—";
+			docDateDebut.textContent = "—";
+			docDateFin.textContent = "—";
+		}
+	}
+}
+
+function updateEtagePrepareEtageMap(data) {
+	var etageMap;
+	var etages;
+	var etage;
+	var num;
+
+	etageMap = {};
+	etages = data.etages ? data.etages : [];
+	for (var i = 0; i < etages.length; i++) {
+		etage = etages[i];
+		num = parseInt(etage.etage, 10);
+		etageMap[num] = etage;
+	}
+	return (etageMap);
+}
+
+function updateTemperature(data) {
+	var capteurs = data.temperatures !== undefined ?? [] ? data.temperatures : [];
+	var valeurs = [];
+	var i;
+	var cap;
+	var valeur;
+	var heure;
+
+	for (i = 0; i < capteurs.length; i++) {
+		cap = capteurs[i];
+		var index = i + 1;
+		valeur = (cap.temperature_valeur !== null && cap.temperature_valeur !== undefined)
+			? parseFloat(cap.temperature_valeur)
+			: null;
+		heure = (cap.temperature_dateHeure !== undefined)
+			? cap.temperature_dateHeure
+			: null;
+
+		// ── Température ───────────────────────────────
+		var spanTemp = document.getElementById("capteur_" + index);
+		if (spanTemp !== null) {
+			spanTemp.textContent = (valeur !== null)
+			? valeur.toFixed(1)
+			: "--";
+		}
+
+		// ── Sous-titre (heure) ───────────────────────
+		var sub = document.getElementById("sub-" + index);
+		if (sub !== null) {
+			if (heure) {
+			sub.textContent = heure.slice(11, 16);
+			} else {
+			sub.textContent = "Aucune donnée";
+			}
+		}
+
+		// ── Barre (15°C / 50°C) ──────────────────────
+		var bar = document.getElementById("bar-" + index);
+		if (bar !== null && valeur !== null) {
+
+			var pct = ((valeur - 15) / (50 - 15)) * 100;
+
+			if (pct < 0) pct = 0;
+			if (pct > 100) pct = 100;
+
+			bar.style.width = pct + "%";
+		}
+
+		// ── Stock valeurs ─────────────────────────────
+		if (valeur !== null) {
+			valeurs.push(valeur);
+		}
+	}
+	updateTemperatureMoy(valeurs);
+}
+
+function updateTemperatureMoy(valeurs) {
+	var moyenne = document.getElementById("moyenne");
+
+	if (moyenne !== null) {
+
+	if (valeurs.length > 0) {
+
+		var i;
+		var somme = 0;
+		var moy;
+
+		for (i = 0; i < valeurs.length; i++) {
+		somme = somme + valeurs[i];
+		}
+
+		moy = somme / valeurs.length;
+
+		moyenne.textContent = moy.toFixed(1) + " °C";
+
+	} else {
+
+		moyenne.textContent = "-- °C";
+	}
+	}
+}
+
 async function rafraichirStatus() {
-  await fetch("../api/get_status.php")
-    .then(r => {
-      if (!r.ok) throw new Error("HTTP " + r.status);
-      return r.json();
-    })
-    .then(data => {
-      console.log(data);
-
-      document.getElementById("etat_cycle").textContent     = data.etat_cycle     ?? "—";
-      document.getElementById("derniere_alerte").textContent = data.derniere_alerte ?? "—";
-
-      const etageMap = {};
-      (data.etages ?? []).forEach(e => {
-        etageMap[parseInt(e.etage)] = e;
-      });
-
-      [1, 2, 3, 4].forEach(num => {
-	const e         = etageMap[num];        // undefined si étage vide
-	const estActif  = e !== undefined;
-
-	document.getElementById(`variete-${num}`).textContent = estActif ? (e.variete    ?? "—") : "—";
-	document.getElementById(`debut-${num}`).textContent   = estActif ? (e.date_debut ?? "—") : "—";
-	document.getElementById(`fin-${num}`).textContent     = estActif ? (e.date_fin   ?? "—") : "—";
-	});
-
-      // ── Capteurs ───────────────────────────────────────────
-      const capteurs = data.temperatures ?? [];
-      const valeurs  = [];
-
-      capteurs.forEach((cap, index) => {
-        const i     = index + 1;
-        const valeur = cap.temperature_valeur !== null ? parseFloat(cap.temperature_valeur) : null;
-        const heure  = cap.temperature_dateHeure ?? null;
-
-        // Température
-        const spanTemp = document.getElementById(`capteur_${i}`);
-        if (spanTemp) spanTemp.textContent = valeur !== null ? valeur.toFixed(1) : "--";
-
-        // Sous-titre (heure)
-        const sub = document.getElementById(`sub-${i}`);
-        if (sub) sub.textContent = heure ? heure.slice(11, 16) : "Aucune donnée";
-
-        // Barre (min 15°C / max 50°C)
-        const bar = document.getElementById(`bar-${i}`);
-        if (bar && valeur !== null) {
-          const pct = Math.min(100, Math.max(0, ((valeur - 15) / (50 - 15)) * 100));
-          bar.style.width = pct + "%";
-        }
-
-        if (valeur !== null) valeurs.push(valeur);
-      });
-
-      // Moyenne
-      const moyenne = document.getElementById("moyenne");
-      if (moyenne) {
-        if (valeurs.length > 0) {
-          const moy = valeurs.reduce((a, b) => a + b, 0) / valeurs.length;
-          moyenne.textContent = moy.toFixed(1) + " °C";
-        } else {
-          moyenne.textContent = "-- °C";
-        }
-      }
-    })
-    .catch(error => {
-      console.error("Erreur API :", error);
-      document.getElementById("etat_cycle").textContent     = "Erreur de chargement";
-      document.getElementById("derniere_alerte").textContent = "Erreur de chargement";
-    });
+	await fetch("../api/get_status.php")
+		.then(r => {
+		if (!r.ok) throw new Error("HTTP " + r.status);
+		return r.json();
+	})
+	.then(data => {
+		updateEtatCycle(data);
+		updateEtage(data);
+		updateTemperature(data);
+	})
 }
 
 rafraichirStatus();
