@@ -62,4 +62,8 @@ error_reporting(E_ALL);
 </div>
 
 
+<script src="/../js/gestionSechoirOverlay/GestionAPI.js" defer></script>
+<script src="/../js/gestionSechoirOverlay/GestionUI.js" defer></script>
+<script src="/../js/gestionSechoirOverlay/GestionUTILS.js" defer></script>
+<script src="/../js/gestionSechoirOverlay/GestionSTATE.js" defer></script>
 <script src="/../js/gestionSechoirOverlay/index.js" defer></script>
