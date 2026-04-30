@@ -2,10 +2,6 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-
-require_once __DIR__ . "/../api/query_get_variete.php";
-
-$varietes = query_get_variete();
 ?>
 
 <div id="overlay">
@@ -66,11 +62,30 @@ $varietes = query_get_variete();
 </div>
 
 <script>
-const varietes = <?= json_encode($varietes) ?>;
 let ID_ETAGE;
 let LOT;
 
 document.addEventListener("DOMContentLoaded", get_variete);
+
+async function get_variete() {
+  const select = document.getElementById("inputVariete");
+  if (!select) return;
+  if (select.dataset.loaded === "true") return;
+  try {
+    const res = await fetch("../api/query_get_variete.php");
+    const data = await res.json();
+    if (!Array.isArray(data)) return;
+    data.forEach(v => {
+      const opt = document.createElement("option");
+      opt.value = v.id_variete;
+      opt.textContent = v.variete_nom;
+      select.appendChild(opt);
+    });
+    select.dataset.loaded = "true";
+  } catch (e) {
+    console.error("Erreur chargement variétés", e);
+  }
+}
 
 async function retirer(idEtage)
 {
@@ -100,6 +115,7 @@ async function retirer(idEtage)
 	{
 		console.error(data.message);
 	}
+	rafraichirStatus();
 }
 
 async function descendre(idEtage, event)
@@ -131,6 +147,7 @@ async function descendre(idEtage, event)
 		console.error(data.message);
     showDescenteError(btn, data.message);
 	}
+	rafraichirStatus();
 }
 
 function showDescenteError(btn, message)
@@ -208,6 +225,7 @@ async function set_config_lot() {
 
 function	hideOverlay() {
 	document.getElementById("overlay").style.display = "none";
+	rafraichirStatus();
 }
 
 function handleLot()
@@ -326,25 +344,6 @@ function  ajustRemplisage(nb) {
     return;
   valeur += nb;
   doc.textContent = valeur;
-}
-
-function get_variete()
-{
-	const select = document.getElementById("inputVariete");
-
-	// éviter de recharger plusieurs fois
-	if (select.dataset.loaded === "true")
-		return;
-
-	varietes.forEach(v =>
-	{
-		const opt = document.createElement("option");
-		opt.value = v.id_variete;
-		opt.textContent = v.variete_nom;
-		select.appendChild(opt);
-	});
-
-	select.dataset.loaded = "true";
 }
 
 async function deleteLot() {

@@ -1,8 +1,9 @@
 <?php
-function query_get_variete(): array
-{
-	require "api/lib/bdd.php";
+header('Content-Type: application/json');
 
+require_once __DIR__ . "/lib/bdd.php";
+
+try {
 	$pdo = db_connect();
 
 	$stmt = db_query(
@@ -11,6 +12,13 @@ function query_get_variete(): array
 		[1]
 	);
 
-	return ($stmt->fetchAll());
+	$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+	echo json_encode($data);
 }
-?>
+catch (Exception $e) {
+	http_response_code(500);
+	echo json_encode([
+		"error" => $e->getMessage()
+	]);
+}

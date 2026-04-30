@@ -20,7 +20,7 @@ try
 
 	if ($variete)
 	{
-		$where[]  = "v.variete_nom = ?";
+		$where[]  = "v.id_variete = ?";
 		$params[] = $variete;
 	}
 
