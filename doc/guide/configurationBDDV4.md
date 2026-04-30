@@ -123,7 +123,7 @@ Les données sont saisies par l'utilisateur via l'interface web.
 | Champ            | Type          | Description                              |
 | ---------------- | ------------- | ---------------------------------------- |
 | id_masse         | INT (PK)      | Identifiant unique de la masse           |
-| masse_masse      | DECIMAL(3,2)  | Masse produite (en kg)                   |
+| masse_masse      | DECIMAL(4,1)  | Masse produite (en kg)                   |
 | masse_dateHeure  | DATETIME      | Date et heure de saisie de la mesure     |
 
 ### Stratégie d'enregistrement
@@ -278,7 +278,7 @@ Un capteur est référencé via la (FK) `addresse_capteur`.
 | Champ                  | Type          | Description                                        |
 | ---------------------- | ------------- | -------------------------------------------------- |
 | id_temperature         | INT (PK)      | Identifiant unique de la mesure                    |
-| temperature_valeur     | DECIMAL(2,1)  | Valeur de la température mesurée (en °C)           |
+| temperature_valeur     | DECIMAL(3,1)  | Valeur de la température mesurée (en °C)           |
 | temperature_dateHeure  | DATETIME      | Date et heure de la mesure                         |
 | addresse_capteur       | VARCHAR(32)   | Référence au capteur ayant effectué la mesure (FK) |
 
@@ -328,119 +328,3 @@ La clé primaire est composée de (`id_lot`, `id_etage`), ce qui signifie qu'un 
 
 
 ---
-
-# 4. Utilisation par l'application
-
-La base de données est accédée par des scripts PHP.  
-Chaque script réalise une fonction spécifique et renvoie les données au site web au format JSON, afin qu'elles puissent être exploitées par le JavaScript.
-
-## Scripts :
-
-- `get_temperature.php`
-  - Récupère les dernières mesures de température de tous les capteurs actifs.  
-  → Arguments : aucun.  
-  → Retour : liste des dernières températures par capteur, au format JSON.  
-  → Exemple retour :
-  ```json
-  [
-    {"addresse_capteur": "28-0000AAAA", "temperature_valeur": 52.3, "temperature_dateHeure": "2026-03-05 10:12:00"},
-    {"addresse_capteur": "28-0000BBBB", "temperature_valeur": 53.1, "temperature_dateHeure": "2026-03-05 10:12:00"},
-    {"addresse_capteur": "28-0000CCCC", "temperature_valeur": 51.8, "temperature_dateHeure": "2026-03-05 10:12:00"}
-  ]
-  ```
-
-- `get_etat_sechoir.php`
-  - Récupère l'état actuel du séchoir.  
-  → Arguments : aucun.  
-  → Retour : statut du séchoir et informations associées, au format JSON.  
-  → Exemple retour :
-  ```json
-  {
-    "id_etatSechoir": 1,
-    "etatSechoir_status": "en cours",
-    "etatSechoir_dataMaj": "2026-03-06 08:00:00",
-    "etatSechoir_pauseDebut": null,
-    "etatSechoir_ajoutMinute": 0
-  }
-  ```
-
-- `start_lot.php`
-  - Crée un nouveau lot de houblon et l'associe à un étage de départ.  
-  → Arguments : `id_variete`, `lot_remplissage`, `lot_dureeTheorique`, `id_etage`.  
-  → Retour : confirmation de la création du lot et identifiant du lot créé, au format JSON.  
-  → Exemple retour :
-  ```json
-  {
-    "id_lot": 5,
-    "status": "Lot démarré",
-    "lot_dateHeureEntree": "2026-03-06 08:00:00"
-  }
-  ```
-
-- `stop_lot.php`
-  - Arrête un lot en cours et renseigne sa date de fin.  
-  → Arguments : `id_lot`.  
-  → Retour : confirmation de l'arrêt du lot, au format JSON.  
-  → Exemple retour :
-  ```json
-  {
-    "id_lot": 5,
-    "status": "Lot arrêté",
-    "lot_dateHeureSortie": "2026-03-06 14:00:00"
-  }
-  ```
-
-- `add_masse.php`
-  - Enregistre une masse de houblon produite et la lie aux lots concernés.  
-  → Arguments : `masse_masse`, `ids_lot[]`.  
-  → Retour : confirmation de l'ajout de la masse, au format JSON.  
-  → Exemple retour :
-  ```json
-  {
-    "id_masse": 3,
-    "status": "Masse ajoutée",
-    "masse_masse": 12.50,
-    "masse_dateHeure": "2026-03-06 14:30:00"
-  }
-  ```
-
-- `change_etage.php`
-  - Enregistre le passage d'un lot vers un nouvel étage du séchoir.  
-  → Arguments : `id_lot`, `id_etage_nouveau`.  
-  → Retour : confirmation du changement d'étage, au format JSON.  
-  → Exemple retour :
-  ```json
-  {
-    "id_lot": 5,
-    "id_etage": 2,
-    "status": "Étage mis à jour",
-    "lotEtage_dateDebut": "2026-03-06 10:00:00"
-  }
-  ```
-
-- `start_pause.php`
-  - Enregistre le début d'une pause du séchoir.  
-  → Arguments : `pause_type`.  
-  → Retour : confirmation du début de la pause, au format JSON.  
-  → Exemple retour :
-  ```json
-  {
-    "id_pause": 1,
-    "status": "Pause démarrée",
-    "pause_type": "manuelle",
-    "pause_dateHeureDebut": "2026-03-06 11:00:00"
-  }
-  ```
-
-- `stop_pause.php`
-  - Enregistre la fin d'une pause du séchoir.  
-  → Arguments : `id_pause`.  
-  → Retour : confirmation de la fin de la pause, au format JSON.  
-  → Exemple retour :
-  ```json
-  {
-    "id_pause": 1,
-    "status": "Pause terminée",
-    "pause_dateHeureFin": "2026-03-06 11:30:00"
-  }
-  ```
