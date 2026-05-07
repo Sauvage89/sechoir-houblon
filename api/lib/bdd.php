@@ -1,5 +1,5 @@
 <?php
-function	db_connect(): ?PDO
+function db_connect(): ?PDO
 {
 	$host	= "localhost";
 	$dbname	= "base_sechoir";
@@ -24,12 +24,13 @@ function	db_connect(): ?PDO
 	catch (PDOException $e)
 	{
 		die("Erreur connexion BDD : " . $e->getMessage());
+		return (NULL);
 	}
 }
 
-function	db_query(PDO $pdo, string $sql, array $params = []): PDOStatement
+function db_query(PDO $pdo, string $query_sql, array $params = []): PDOStatement
 {
-	$stmt = $pdo->prepare($sql);
+	$stmt = $pdo->prepare($query_sql);
 	$stmt->execute($params);
 	return ($stmt);
 }

@@ -1,9 +1,11 @@
 <?php
+
 header('Content-Type: application/json');
 
-require_once __DIR__ . "/lib/bdd.php";
+require "lib/bdd.php";
 
-try {
+try
+{
 	$pdo = db_connect();
 
 	$stmt = db_query(

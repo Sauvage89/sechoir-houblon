@@ -40,7 +40,7 @@ error_reporting(E_ALL);
         <div class="field">
           <label>Temps de séchage voulue</label>
           <div id="remplissage-control">
-            <input id="temps-theorique" placeholder="hh:mm (01:30 ou 02:00)">
+            <input id="temps-theorique" placeholder="hh:mm (01:30)">
             <button type="button" onclick="ajustTime(-10)">−</button>
             <button type="button" onclick="ajustTime(+10)">+</button>
           </div>
@@ -60,7 +60,6 @@ error_reporting(E_ALL);
 
   </div>
 </div>
-
 
 <script src="/../js/gestionSechoirOverlay/GestionAPI.js" defer></script>
 <script src="/../js/gestionSechoirOverlay/GestionUI.js" defer></script>
