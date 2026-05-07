@@ -177,3 +177,16 @@ ON lot(lot_actif);
 
 CREATE INDEX idx_capteur_actif
 ON capteur(capteur_actif);
+
+-- ─────────────────────────────────────────────────────
+-- UTILISATEUR APPLICATION
+-- ─────────────────────────────────────────────────────
+
+CREATE USER IF NOT EXISTS 'user_sechoir'@'localhost'
+IDENTIFIED BY 'password';
+
+GRANT ALL PRIVILEGES
+ON base_sechoir.*
+TO 'user_sechoir'@'localhost';
+
+FLUSH PRIVILEGES;
