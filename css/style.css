@@ -15,6 +15,14 @@
 
 @import url("export_main.css");
 
+.form-msg {
+	display: block;
+	margin-top: 8px;
+	font-size: 0.9rem;
+	color: #2e7d32;
+	min-height: 20px;
+}
+
 .btn-block {
 	display: flex;
 	flex-direction: column;
