@@ -1,114 +1,179 @@
--- ========================================================
--- Base de données pour le suivi des lots de houblon
--- Compatible MariaDB
--- ========================================================
+DROP DATABASE IF EXISTS base_sechoir;
+CREATE DATABASE base_sechoir
+CHARACTER SET utf8mb4
+COLLATE utf8mb4_unicode_ci;
 
-CREATE DATABASE IF NOT EXISTS sechoir_houblon;
-USE sechoir_houblon;
+USE base_sechoir;
 
--- ========================================================
--- Table: composant
--- ========================================================
-CREATE TABLE compo (
-    id_compo INT AUTO_INCREMENT PRIMARY KEY,
-    compo_type VARCHAR(32) NOT NULL,
-    compo_actif BOOL NOT NULL DEFAULT 1
-);
+-- ─────────────────────────────────────────────────────
+-- TABLE : pause
+-- ─────────────────────────────────────────────────────
 
--- ========================================================
--- Table: evenement
--- ========================================================
-CREATE TABLE even (
-    id_even INT AUTO_INCREMENT PRIMARY KEY,
-    even_compo INT NOT NULL,
-    even_type VARCHAR(128) NOT NULL,
-    even_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (even_compo) REFERENCES compo(id_compo)
-);
+CREATE TABLE pause(
+   id_pause INT AUTO_INCREMENT,
+   pause_type VARCHAR(64) NOT NULL,
+   pause_dateHeureDebut DATETIME NOT NULL,
+   pause_dateHeureFin DATETIME,
+   PRIMARY KEY(id_pause)
+) ENGINE=InnoDB;
 
--- ========================================================
--- Table: temperature
--- ========================================================
-CREATE TABLE temp (
-    id_temp INT AUTO_INCREMENT PRIMARY KEY,
-    temp_compo INT NOT NULL,
-    temp_valeur DECIMAL(3,1) NOT NULL,
-    temp_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (temp_compo) REFERENCES compo(id_compo)
-);
+-- ─────────────────────────────────────────────────────
+-- TABLE : variete
+-- ─────────────────────────────────────────────────────
 
--- ========================================================
--- Table: houblon variete
--- ========================================================
-CREATE TABLE houbVar (
-    id_houbVar INT AUTO_INCREMENT PRIMARY KEY,
-    houbVar_type VARCHAR(32) NOT NULL,
-    houbVar_activ BOOL NOT NULL DEFAULT 1
-);
+CREATE TABLE variete(
+   id_variete INT AUTO_INCREMENT,
+   variete_nom VARCHAR(32) NOT NULL,
+   variete_dateHeureCreation DATETIME NOT NULL,
+   variete_actif BOOLEAN NOT NULL DEFAULT TRUE,
+   PRIMARY KEY(id_variete)
+) ENGINE=InnoDB;
 
--- ========================================================
--- Table: houblon final
--- ========================================================
-CREATE TABLE houbFinal (
-    id_houbFinal INT AUTO_INCREMENT PRIMARY KEY,
-    houbFinal_masse DECIMAL(5,2) NOT NULL,
-    houbFinal_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
+-- ─────────────────────────────────────────────────────
+-- TABLE : masse
+-- ─────────────────────────────────────────────────────
 
--- ========================================================
--- Table: houblon lot
--- ========================================================
-CREATE TABLE houbLot (
-    id_houbLot INT AUTO_INCREMENT PRIMARY KEY,
-    houbLot_houbFinal INT DEFAULT NULL,
-    houbLot_houbVar INT NOT NULL,
-    houbLot_dateDebut DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    houbLot_dateFin DATETIME DEFAULT NULL,
-    FOREIGN KEY (houbLot_houbFinal) REFERENCES houbFinal(id_houbFinal),
-    FOREIGN KEY (houbLot_houbVar) REFERENCES houbVar(id_houbVar)
-);
+CREATE TABLE masse(
+   id_masse INT AUTO_INCREMENT,
+   masse_masse DECIMAL(4,1) NOT NULL,
+   masse_dateHeure DATETIME NOT NULL,
+   PRIMARY KEY(id_masse)
+) ENGINE=InnoDB;
 
--- ========================================================
--- Table: houblon etage
--- ========================================================
-CREATE TABLE houbEtag (
-    id_houbEtag INT AUTO_INCREMENT PRIMARY KEY,
-    houbEtag_houbLot INT NOT NULL,
-    houbEtag_etage TINYINT NOT NULL,
-    houbEtag_duree INT DEFAULT NULL,
-    houbEtag_actif BOOL NOT NULL DEFAULT 1,
-    FOREIGN KEY (houbEtag_houbLot) REFERENCES houbLot(id_houbLot)
-);
+-- ─────────────────────────────────────────────────────
+-- TABLE : etage
+-- ─────────────────────────────────────────────────────
 
--- ========================================================
--- Table: lien evenement houblon etage
--- ========================================================
-CREATE TABLE lienEvenHoubEtag (
-    lienEvenHoubEtag_houbEtag INT NOT NULL,
-    lienEvenHoubEtag_even INT NOT NULL,
-    PRIMARY KEY (lienEvenHoubEtag_houbEtag, lienEvenHoubEtag_even),
-    FOREIGN KEY (lienEvenHoubEtag_houbEtag) REFERENCES houbEtag(id_houbEtag),
-    FOREIGN KEY (lienEvenHoubEtag_even) REFERENCES even(id_even)
-);
+CREATE TABLE etage(
+   id_etage INT AUTO_INCREMENT,
+   PRIMARY KEY(id_etage)
+) ENGINE=InnoDB;
 
--- ========================================================
--- Table: lien temperature houblon etage
--- ========================================================
-CREATE TABLE lienTempHoubEtag (
-    lienTempHoubEtag_houbEtag INT NOT NULL,
-    lienTempHoubEtag_temp INT NOT NULL,
-    PRIMARY KEY (lienTempHoubEtag_houbEtag, lienTempHoubEtag_temp),
-    FOREIGN KEY (lienTempHoubEtag_houbEtag) REFERENCES houbEtag(id_houbEtag),
-    FOREIGN KEY (lienTempHoubEtag_temp) REFERENCES temp(id_temp)
-);
+-- ─────────────────────────────────────────────────────
+-- TABLE : etatSechoir
+-- ─────────────────────────────────────────────────────
 
--- ========================================================
--- Index et contraintes supplémentaires
--- ========================================================
--- Un lot ne peut être actif que sur un seul étage
-ALTER TABLE houbEtag
-ADD CONSTRAINT unique_active_etage_per_lot UNIQUE (houbEtag_houbLot, houbEtag_etage, houbEtag_actif);
+CREATE TABLE etatSechoir(
+   id_etatSechoir INT AUTO_INCREMENT,
+   etatSechoir_status VARCHAR(32),
+   etatSechoir_dataMaj DATETIME,
+   etatSechoir_pauseDebut DATETIME,
+   etatSechoir_ajoutMinute SMALLINT,
+   etatSechoir_seuilMin DECIMAL(4,1),
+   etatSechoir_seuilMax DECIMAL(4,1),
+   PRIMARY KEY(id_etatSechoir)
+) ENGINE=InnoDB;
 
--- ========================================================
--- Fin du script
--- ========================================================
+-- ─────────────────────────────────────────────────────
+-- TABLE : capteur
+-- ─────────────────────────────────────────────────────
+
+CREATE TABLE capteur(
+   addresse_capteur VARCHAR(32),
+   capteur_nom VARCHAR(32) NOT NULL,
+   capteur_gpio VARCHAR(8) NOT NULL,
+   capteur_actif BOOLEAN NOT NULL DEFAULT TRUE,
+   PRIMARY KEY(addresse_capteur)
+) ENGINE=InnoDB;
+
+-- ─────────────────────────────────────────────────────
+-- TABLE : evenement
+-- ─────────────────────────────────────────────────────
+
+CREATE TABLE evenement(
+   id_event INT AUTO_INCREMENT,
+   event_type VARCHAR(64) NOT NULL,
+   event_description VARCHAR(2048) NOT NULL,
+   event_dateHeureDebut DATETIME NOT NULL,
+   event_dateHeureFin DATETIME,
+   PRIMARY KEY(id_event)
+) ENGINE=InnoDB;
+
+-- ─────────────────────────────────────────────────────
+-- TABLE : lot
+-- ─────────────────────────────────────────────────────
+
+CREATE TABLE lot(
+   id_lot INT AUTO_INCREMENT,
+   lot_remplissage TINYINT NOT NULL,
+   lot_dateHeureEntree DATETIME NOT NULL,
+   lot_dateHeureSortie DATETIME,
+   lot_dureeTheorique INT NOT NULL,
+   lot_actif BOOLEAN NOT NULL DEFAULT TRUE,
+   id_masse INT,
+   id_variete INT NOT NULL,
+
+   PRIMARY KEY(id_lot),
+
+   CONSTRAINT fk_lot_masse
+      FOREIGN KEY(id_masse)
+      REFERENCES masse(id_masse)
+      ON DELETE SET NULL
+      ON UPDATE CASCADE,
+
+   CONSTRAINT fk_lot_variete
+      FOREIGN KEY(id_variete)
+      REFERENCES variete(id_variete)
+      ON DELETE RESTRICT
+      ON UPDATE CASCADE
+) ENGINE=InnoDB;
+
+-- ─────────────────────────────────────────────────────
+-- TABLE : temperature
+-- ─────────────────────────────────────────────────────
+
+CREATE TABLE temperature(
+   id_temperature INT AUTO_INCREMENT,
+   temperature_valeur DECIMAL(4,1) NOT NULL,
+   temperature_dateHeure DATETIME NOT NULL,
+   addresse_capteur VARCHAR(32) NOT NULL,
+
+   PRIMARY KEY(id_temperature),
+
+   CONSTRAINT fk_temperature_capteur
+      FOREIGN KEY(addresse_capteur)
+      REFERENCES capteur(addresse_capteur)
+      ON DELETE CASCADE
+      ON UPDATE CASCADE
+) ENGINE=InnoDB;
+
+-- ─────────────────────────────────────────────────────
+-- TABLE : lotEtage
+-- ─────────────────────────────────────────────────────
+
+CREATE TABLE lotEtage(
+   id_lot INT,
+   id_etage INT,
+   lotEtage_dateDebut DATETIME NOT NULL,
+   lotEtage_dateFin DATETIME,
+
+   PRIMARY KEY(id_lot, id_etage),
+
+   CONSTRAINT fk_lotEtage_lot
+      FOREIGN KEY(id_lot)
+      REFERENCES lot(id_lot)
+      ON DELETE CASCADE
+      ON UPDATE CASCADE,
+
+   CONSTRAINT fk_lotEtage_etage
+      FOREIGN KEY(id_etage)
+      REFERENCES etage(id_etage)
+      ON DELETE CASCADE
+      ON UPDATE CASCADE
+) ENGINE=InnoDB;
+
+-- ─────────────────────────────────────────────────────
+-- INDEX
+-- ─────────────────────────────────────────────────────
+
+CREATE INDEX idx_temperature_date
+ON temperature(temperature_dateHeure);
+
+CREATE INDEX idx_evenement_date
+ON evenement(event_dateHeureDebut);
+
+CREATE INDEX idx_lot_actif
+ON lot(lot_actif);
+
+CREATE INDEX idx_capteur_actif
+ON capteur(capteur_actif);
