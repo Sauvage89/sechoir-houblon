@@ -21,6 +21,18 @@
   </div>
 </section>
 
+<!-- == BOUTON DE CONTROLE == -->
+<section class="mb-3">
+<div class="btn-block">
+  <div class="btn-row">
+    <button type="button" id="btnPauseSechoir">Pause</button>
+    <button type="button" id="btnReprendreSechoir">Reprendre</button>
+  </div>
+</div>
+
+
+</section>
+
 <!-- ══ ÉTAGE 4 ══ -->
 <section class="mb-3">
   <h2 class="section-title"><span class="section-num">04</span> Étage 4 — Niveau haut</h2>
@@ -330,3 +342,4 @@ async function rafraichirStatus() {
 
 rafraichirStatus();
 </script>
+<script src="/../js/gestionSechoirOverlay/GestionPAUSE.js"></script>

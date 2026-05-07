@@ -2,7 +2,8 @@
 $PAGE_ACCUEIL = "accueil";
 $PAGE_GESTION = "gestion_sechoir";
 $PAGE_EXPORT = "exportation_csv";
-$pages_autorisees = [$PAGE_ACCUEIL , $PAGE_GESTION, $PAGE_EXPORT];
+$PAGE_AJOUTMASSE = "ajout_masse";
+$pages_autorisees = [$PAGE_ACCUEIL, $PAGE_GESTION, $PAGE_EXPORT, $PAGE_AJOUTMASSE];
 $page = $_GET['page'] ?? $PAGE_ACCUEIL;
 if (!in_array($page, $pages_autorisees)) {
   header("Location: ?page=" . $PAGE_ACCUEIL);
@@ -13,6 +14,7 @@ $titles = [
 	$PAGE_ACCUEIL 	=>	"Accueil",
 	$PAGE_GESTION	=>	"Gestion du séchoir",
   $PAGE_EXPORT  => "Exportation CSV",
+  $PAGE_AJOUTMASSE => "Ajout Masse",
 	"404"		=>	"Erreur 404"
 ];
 $title = $titles[$page] ?? "404";
@@ -28,6 +30,7 @@ $title = $titles[$page] ?? "404";
   <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="/css/style_adam.css">
   <link rel="stylesheet" href="/css/style.css">
+
 </head>
 
 <body>
@@ -39,11 +42,11 @@ $title = $titles[$page] ?? "404";
       <div class="title">Séchoir Houblon</div>
     </div>
   </header>
-
   <nav id="main-nav">
     <a href="?page=<?= $PAGE_ACCUEIL ?>" class="<?= $page === $PAGE_ACCUEIL ? "active" : "" ?>">Accueil</a>
     <a href="?page=<?= $PAGE_GESTION ?>" class="<?= $page === $PAGE_GESTION ? "active" : "" ?>">Gestion séchoir</a>
     <a href="?page=<?= $PAGE_EXPORT ?>" class="<?= $page === $PAGE_EXPORT ? "active" : "" ?>">Exportation CSV</a>
+    <a href="?page=<?= $PAGE_AJOUTMASSE ?>" class="<?= $page === $PAGE_AJOUTMASSE ? "active" : "" ?>">Ajouter masse houblon</a>
   </nav>
 
   <main id="main-content" class="container-fluid px-3 px-md-4 py-3">

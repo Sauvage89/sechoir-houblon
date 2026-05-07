@@ -7,7 +7,7 @@ error_reporting(E_ALL);
 <div id="overlay">
   <div id="overlay-box">
 
-    <button class="overlay-close" onclick="hideOverlay()">&times;</button>
+    <button class="overlay-close" onclick="hideOverlay()">X</button>
 
     <h2 id="overlayTitle"></h2>
   
