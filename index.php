@@ -1,23 +1,31 @@
 <?php
+
+// Variable en liant avec les différente type de page possible
 $PAGE_ACCUEIL = "accueil";
 $PAGE_GESTION = "gestion_sechoir";
 $PAGE_EXPORT = "exportation_csv";
 $PAGE_AJOUTMASSE = "ajout_masse";
-$pages_autorisees = [$PAGE_ACCUEIL, $PAGE_GESTION, $PAGE_EXPORT, $PAGE_AJOUTMASSE];
-$page = $_GET['page'] ?? $PAGE_ACCUEIL;
+$PAGE_ERREUR404 = "404";
+
+$pages_autorisees = [$PAGE_ACCUEIL, $PAGE_GESTION, $PAGE_EXPORT, $PAGE_AJOUTMASSE, $PAGE_ERREUR404]; // Liste des type de page
+$page = $_GET['page']; // Récupére le type de la page
+
+// Si le chargement du site ne dispose pas de l'attribut "page" alors on recharge la page a l'acceuil
 if (!in_array($page, $pages_autorisees)) {
   header("Location: ?page=" . $PAGE_ACCUEIL);
   exit;
 }
 
+// Titre associé au type de la page
 $titles = [
-	$PAGE_ACCUEIL 	=>	"Accueil",
-	$PAGE_GESTION	=>	"Gestion du séchoir",
-  $PAGE_EXPORT  => "Exportation CSV",
-  $PAGE_AJOUTMASSE => "Ajout Masse",
-	"404"		=>	"Erreur 404"
+	$PAGE_ACCUEIL => "Accueil",
+	$PAGE_GESTION => "Gestion du séchoir",
+	$PAGE_EXPORT => "Exportation CSV",
+	$PAGE_AJOUTMASSE => "Ajout Masse",
+	$PAGE_ERREUR404 => "Erreur 404"
 ];
-$title = $titles[$page] ?? "404";
+
+$title = $titles[$page];
 ?>
 
 <!DOCTYPE html>
@@ -50,13 +58,18 @@ $title = $titles[$page] ?? "404";
   </nav>
 
   <main id="main-content" class="container-fluid px-3 px-md-4 py-3">
-    <?php 
+    <?php
+
     $file = "site/{$page}.php";
 
-    if (!file_exists($file)) {
-    $file = "site/404.php";
+    // Si le fichier n'est pas trouvé on charge la page ERREUR 404
+    if (!file_exists($file)) { 
+    	header("Location: ?page=" . $PAGE_ERREUR404);
+	exit;
     }
+    
     include $file;
+
     ?>
   </main>
 

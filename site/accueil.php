@@ -1,27 +1,18 @@
 <!-- Bloc d'introduction -->
 <div class="intro-box">
   <p>Ce site web vous permet de contrôler et de suivre le séchoir à houblon depuis votre téléphone, sans avoir à rester sur place. Voici les différentes fonctionnalités disponibles :</p>
-  <div class="nav-cards">
-    <div class="nav-card">
-      <i class="ti ti-settings"></i>
+  <div class="intro-info">
       <strong>Paramétrage</strong>
       <span>Configurer les variétés, les températures et la durée de séchage de chaque lot.</span>
-    </div>
-    <div class="nav-card">
-      <i class="ti ti-temperature"></i>
+      <br>
       <strong>Contrôle</strong>
       <span>Visualiser les températures des 6 capteurs et piloter le chauffage en temps réel (ce fait de mannière automatique).</span>
-    </div>
-    <div class="nav-card">
-      <i class="ti ti-chart-line"></i>
+      <br>
       <strong>Historique</strong>
       <span>Consulter les données des cycles passés et exporter un fichier CSV sur clé USB.</span>
-    </div>
-    <div class="nav-card">
-      <i class="ti ti-bell"></i>
+      <br>
       <strong>Alertes</strong>
       <span>Être informé en cas de dépassement de température ou de fin de cycle.</span>
-    </div>
   </div>
 </div>
 
