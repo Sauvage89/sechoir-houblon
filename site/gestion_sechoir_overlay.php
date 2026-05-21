@@ -1,24 +1,17 @@
-<?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-?>
-
 <div id="overlay">
   <div id="overlay-box">
 
-    <button class="overlay-close" onclick="hideOverlay()">X</button>
-
-    <h2 id="overlayTitle"></h2>
+    <button class="overlay-close" onclick="hideOverlay()">X</button> <!-- Bouton quittant l'overlay !-->
+    <h2 id="overlayTitle"></h2> <!-- Le titre ce charge automatiquement en ouvrant l'overlay !--> 
   
     <div id="overlay-content">
       <h2>Configuration d'un lot de houblon</h2>
 
       <div id="gestion_lot" class="field">
-        <p id="info-lot"></p>
-        <p id="id-lot"></p>
+        <p id="info-lot"></p> <!-- Sur cette balise ont donne les infos de si un lot existe ou non sur l'étage x !-->
+        <p id="id-lot"></p> <!-- Sur cette balise ont donne l'id du lot qui existe sur l'étage !-->
 
-				<div class="field">
+				<div class="field"> <!-- Cette div permet de selectionner une variete d'houblon, elle charge la variete du lot sur l'étage x !-->
 	        <label for="inputVariete">Variété de houblon</label>
       
 					<select id="inputVariete" name="variete" required>
@@ -27,7 +20,7 @@ error_reporting(E_ALL);
           <span id="variete-msg" class="form-msg"></span>
         </div>
 
-	      <div class="field">
+	      <div class="field"> <!-- Cette div permet de selectionner un taux de remplissage, elle charge le remplissage du lot sur l'étage x !-->
           <label>Remplissage</label>
           <div id="remplissage-control">
             <button type="button" onclick="ajustRemplisage(-10)">−</button>
@@ -37,7 +30,7 @@ error_reporting(E_ALL);
           </div>
         </div>
 
-        <div class="field">
+        <div class="field"> <!-- Cette div permet de taper le temps de séchage voulue, elle charge le temps de séchage du lot sur l'étage x !-->
           <label>Temps de séchage voulue</label>
           <div id="remplissage-control">
             <input id="temps-theorique" placeholder="hh:mm (01:30)">
@@ -46,16 +39,14 @@ error_reporting(E_ALL);
           </div>
         </div>
 
-        
+        <button id="btn-lot-save" onclick="handleLot()">Créer un lot</button>  <!-- Ce bouton sauvegarde les paramètre renseigner du lot !-->
+        <button id="btn-lot-delete" onclick="deleteLot()">Supprimer ce lot</button> <!-- Ce bouton supprime le lot d'houblon !-->
 
-        <button id="btn-lot-save" onclick="handleLot()">Créer un lot</button>
-        <button id="btn-lot-delete" onclick="deleteLot()">Supprimer ce lot</button>
       </div>
-
     </div>
 
   <div id="overlay-actions">
-    <button onclick="hideOverlay()">Quitter</button>
+    <button onclick="hideOverlay()">Quitter</button> <!-- Bouton quittant l'overlay !-->
   </div>
 
   </div>

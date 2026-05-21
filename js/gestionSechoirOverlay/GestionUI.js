@@ -1,3 +1,4 @@
+// --------------------------- Bouton update/sauvegarde/delete lot --------START---------------------------------
 
 function handleLot()
 {
@@ -85,18 +86,6 @@ async function saveNewLot() {
 		set_config_lot();
 }
 
-function showVarieteMessage(text, isError = true) {
-	const msg = document.getElementById("variete-msg");
-
-	msg.textContent = text;
-	msg.style.color = isError ? "red" : "green";
-	msg.classList.add("show");
-
-	setTimeout(() => {
-		msg.classList.remove("show");
-	}, 5000);
-}
-
 async function deleteLot() {
 	if (!ID_ETAGE || !LOT) return;
 
@@ -122,6 +111,21 @@ async function deleteLot() {
 	}
 }
 
+// --------------------------- Bouton update/sauvegarde/delete lot --------STOP---------------------------------
+// --------------------------- UPDATE de l'UI --------START---------------------------------
+
+function showVarieteMessage(text, isError = true) {
+	const msg = document.getElementById("variete-msg");
+
+	msg.textContent = text;
+	msg.style.color = isError ? "red" : "green";
+	msg.classList.add("show");
+
+	setTimeout(() => {
+		msg.classList.remove("show");
+	}, 5000);
+}
+
 
 function  ajustRemplisage(nb) {
 	const doc = document.getElementById("remplissageVal");
@@ -135,10 +139,84 @@ function  ajustRemplisage(nb) {
 	doc.textContent = valeur;
 }
 
+function showDescenteError(btn, message) {
+	const block = btn.closest(".btn-block");
+	const msg = block.querySelector(".lot-warning");
 
+	btn.classList.add("btn-error-flash");
 
+	setTimeout(() => {
+		btn.classList.remove("btn-error-flash");
+	}, 600);
 
+	msg.textContent = msg.textContent = message;
+	msg.classList.add("show");
+	setTimeout(() => {
+		msg.classList.remove("show");
+	}, 4000);
+}
 
+async function set_config_lot() {
+	if (!ID_ETAGE) return;
+
+	LOT = await get_lot(ID_ETAGE);
+	const doc_info_lot = document.getElementById("info-lot");
+	const doc_id_lot = document.getElementById("id-lot");
+	const doc_remplissageVal = document.getElementById("remplissageVal");
+	const doc_variete = document.getElementById("inputVariete");
+	const doc_btn_save = document.getElementById("btn-lot-save");
+	const doc_temps_theorique = document.getElementById("temps-theorique");
+
+	if (LOT) {
+		doc_info_lot.textContent = "Cette étage contient un lot";
+		doc_id_lot.textContent = "LOT_" + LOT.id_lot;
+		doc_info_lot.classList.remove("info-lot--empty");
+		doc_info_lot.classList.add("info-lot--active");
+		doc_remplissageVal.textContent = LOT.lot_remplissage;
+		doc_variete.value = LOT.id_variete;
+		doc_btn_save.textContent = "Sauvegarder le lot";
+				doc_btn_save.classList.add("btn-save");
+		console.log("dans set_config_lot le lot duree brut");
+		console.log((LOT.lot_dureeTheorique));
+		console.log("dans set_config_lot le lot duree formater");
+		console.log(formatTime(LOT.lot_dureeTheorique));
+		console.log(doc_temps_theorique);
+		doc_temps_theorique.value = formatTime(LOT.lot_dureeTheorique);
+	} else {
+		doc_info_lot.textContent = "Cette étage ne contient pas de lot";
+		doc_id_lot.textContent = "...";
+		doc_info_lot.classList.remove("info-lot--active");
+		doc_info_lot.classList.add("info-lot--empty");
+		doc_variete.value = "";
+		doc_remplissageVal.textContent = 50;
+		doc_btn_save.textContent = "Créer un lot";
+		doc_btn_save.classList.remove("btn-save");
+		doc_temps_theorique.value = formatTime(0);
+	}
+}
+
+async function get_variete() {
+	const select = document.getElementById("inputVariete");
+	if (!select) return;
+	if (select.dataset.loaded === "true") return;
+	try {
+		const res = await fetch("../api/query_get_variete.php");
+		const data = await res.json();
+		if (!Array.isArray(data)) return;
+		data.forEach(v => {
+		const opt = document.createElement("option");
+		opt.value = v.id_variete;
+		opt.textContent = v.variete_nom;
+		select.appendChild(opt);
+		});
+		select.dataset.loaded = "true";
+	} catch (e) {
+		console.error("Erreur chargement variétés", e);
+	}
+}
+
+// --------------------------- UPDATE de l'UI --------STOP---------------------------------
+// --------------------------- Descendre/Retirer lot --------START---------------------------------
 
 async function retirer(idEtage)
 {
@@ -203,23 +281,9 @@ async function descendre(idEtage, event)
 	rafraichirStatus();
 }
 
-function showDescenteError(btn, message)
-{
-	const block = btn.closest(".btn-block");
-	const msg = block.querySelector(".lot-warning");
+// --------------------------- Descendre/Retirer lot --------STOP---------------------------------
+// --------------------------- Ouverture/Fermeture de l'overlay --------START---------------------------------
 
-	btn.classList.add("btn-error-flash");
-
-	setTimeout(() => {
-		btn.classList.remove("btn-error-flash");
-	}, 600);
-
-	msg.textContent = msg.textContent = message;
-	msg.classList.add("show");
-	setTimeout(() => {
-		msg.classList.remove("show");
-	}, 4000);
-}
 
 function showOverlay(idEtage) {
 	ID_ETAGE = idEtage;
@@ -233,77 +297,8 @@ function hideOverlay() {
 	rafraichirStatus();
 }
 
-async function set_config_lot() {
-	if (!ID_ETAGE) return;
-
-	LOT = await get_lot(ID_ETAGE);
-	const doc_info_lot = document.getElementById("info-lot");
-	const doc_id_lot = document.getElementById("id-lot");
-	const doc_remplissageVal = document.getElementById("remplissageVal");
-	const doc_variete = document.getElementById("inputVariete");
-	const doc_btn_save = document.getElementById("btn-lot-save");
-	const doc_temps_theorique = document.getElementById("temps-theorique");
-
-	if (LOT) {
-		doc_info_lot.textContent = "Cette étage contient un lot";
-		doc_id_lot.textContent = "LOT_" + LOT.id_lot;
-		doc_info_lot.classList.remove("info-lot--empty");
-		doc_info_lot.classList.add("info-lot--active");
-		doc_remplissageVal.textContent = LOT.lot_remplissage;
-		doc_variete.value = LOT.id_variete;
-		doc_btn_save.textContent = "Sauvegarder le lot";
-				doc_btn_save.classList.add("btn-save");
-		console.log("dans set_config_lot le lot duree brut");
-		console.log((LOT.lot_dureeTheorique));
-		console.log("dans set_config_lot le lot duree formater");
-		console.log(formatTime(LOT.lot_dureeTheorique));
-		console.log(doc_temps_theorique);
-		doc_temps_theorique.value = formatTime(LOT.lot_dureeTheorique);
-	} else {
-		doc_info_lot.textContent = "Cette étage ne contient pas de lot";
-		doc_id_lot.textContent = "...";
-		doc_info_lot.classList.remove("info-lot--active");
-		doc_info_lot.classList.add("info-lot--empty");
-		doc_variete.value = "";
-		doc_remplissageVal.textContent = 50;
-		doc_btn_save.textContent = "Créer un lot";
-		doc_btn_save.classList.remove("btn-save");
-		doc_temps_theorique.value = formatTime(0);
-	}
-}
-
-
-
-
-
-
-
-async function get_variete() {
-	const select = document.getElementById("inputVariete");
-	if (!select) return;
-	if (select.dataset.loaded === "true") return;
-	try {
-		const res = await fetch("../api/query_get_variete.php");
-		const data = await res.json();
-		if (!Array.isArray(data)) return;
-		data.forEach(v => {
-		const opt = document.createElement("option");
-		opt.value = v.id_variete;
-		opt.textContent = v.variete_nom;
-		select.appendChild(opt);
-		});
-		select.dataset.loaded = "true";
-	} catch (e) {
-		console.error("Erreur chargement variétés", e);
-	}
-}
-
-
-
+// --------------------------- Ouverture/Fermeture de l'overlay --------STOP---------------------------------
 // --------------------------- TEMPS THEORIQUE --------START---------------------------------
-
-
-
 
 // Update le temps théorique.
 function ajustTime(delta) {

@@ -68,6 +68,7 @@ async function ajouterVariete() {
 		else {
 			msg.style.color = "red";
 			msg.textContent = "Erreur serveur.";
+			input.value = "";
 		}
 
 	}
@@ -75,6 +76,5 @@ async function ajouterVariete() {
 		console.error(error);
 		msg.style.color = "red";
 		msg.textContent = "Erreur serveur.";
-
 	}
 }

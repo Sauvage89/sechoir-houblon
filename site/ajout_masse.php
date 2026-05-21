@@ -269,4 +269,4 @@ try {
     </div>
 </div>
 
-<script src="js/ajout_masse.js"></script>
+<script src="js/ajoutMasse/index.js"></script>

@@ -31,9 +31,9 @@ async function get_variete() {
 		});
 
 	}
-	catch (e) {
+	catch (error) {
 
-		console.error("Erreur chargement variétés", e);
+		console.error("Erreur chargement variétés", error);
 
 	}
 }

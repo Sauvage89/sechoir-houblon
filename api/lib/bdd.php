@@ -2,9 +2,9 @@
 function db_connect(): ?PDO
 {
 	$host	= "localhost";
-	$dbname	= "sechoir";
-	$user	= "singe";
-	$pass	= "singe";
+	$dbname	= "base_sechoir";
+	$user	= "dbsechoir";
+	$pass	= "password";
 	$pdo	= null;
 
 	try
