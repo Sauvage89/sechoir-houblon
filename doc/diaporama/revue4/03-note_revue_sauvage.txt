@@ -1,3 +1,22 @@
+1 :
+	Presentation personelle, projet sechoir a houblon
+2:
+	Cycle de séchage ménanique explication de comment mettre des houblon et problèmatique du manque de données
+brutes par rapport a son séchoir.
+3:
+	Mise en relief du cycle de séchage mécanique a celui de l'informatique.
+4 :
+	La solution est une interface + sauvegarde de données + consultation de données.
+5:
+	Introduction de la raison de la configuration BDD.
+
+	
+
+
+
+
+
+
 BDD {
 Diagramme d'exigeance bdd ->
 	On doit pouvoir sauvegarder des données ont vas donc mettre en place une bdd conventioner et documenter.
