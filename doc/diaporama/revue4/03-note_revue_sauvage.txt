@@ -8,9 +8,21 @@ brutes par rapport a son séchoir.
 4 :
 	La solution est une interface + sauvegarde de données + consultation de données.
 5:
+	Tout ce passe sur la Raspberry Pi
+6:
 	Introduction de la raison de la configuration BDD.
 
 	
+
+
+
+
+
+
+
+
+
+
 
 
 
