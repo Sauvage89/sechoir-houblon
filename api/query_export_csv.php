@@ -1,13 +1,14 @@
 <?php
+
 header('Content-Type: application/json');
 
 require_once __DIR__ . "/lib/bdd.php";
 
 $pdo = db_connect();
 
-$id_lot        = $_POST['numero_lot']  ?? null;
-$avec_temp     = isset($_POST['temperature']) ? (int)$_POST['temperature'] : 0;
-$avec_evenement = isset($_POST['evenement'])  ? (int)$_POST['evenement']   : 0;
+$id_lot         = $_POST['numero_lot']  ?? null;
+$avec_temp      = isset($_POST['temperature']) ? (int)$_POST['temperature'] : 0;
+$avec_evenement = isset($_POST['evenement'])   ? (int)$_POST['evenement']   : 0;
 
 if (!$id_lot) {
     echo json_encode([
@@ -20,7 +21,7 @@ if (!$id_lot) {
 try {
 
     /* ─────────────────────────────
-       1. INFOS LOT
+       1. INFOS LOT (sans lot_actif)
     ───────────────────────────── */
     $stmt = db_query(
         $pdo,
@@ -30,7 +31,6 @@ try {
             l.lot_dateHeureEntree,
             l.lot_dateHeureSortie,
             l.lot_dureeTheorique,
-            l.lot_actif,
             v.variete_nom
          FROM lot l
          JOIN variete v ON v.id_variete = l.id_variete
@@ -49,7 +49,7 @@ try {
     }
 
     /* ─────────────────────────────
-       2. TEMPS PAR ÉTAGE
+       2. TEMPS PAR ÉTAGE (ordre décroissant)
     ───────────────────────────── */
     $stmt = db_query(
         $pdo,
@@ -64,14 +64,14 @@ try {
             ) AS duree_minute
          FROM lotEtage
          WHERE id_lot = ?
-         ORDER BY id_etage",
+         ORDER BY id_etage DESC",
         [$id_lot]
     );
 
     $etages = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     /* ─────────────────────────────
-       3. TEMPÉRATURES (conditionnel)
+       3. TEMPÉRATURES avec id_etage et capteur_nom (conditionnel)
     ───────────────────────────── */
     $temperatures = [];
     if ($avec_temp) {
@@ -81,13 +81,15 @@ try {
                 t.id_temperature,
                 t.temperature_valeur,
                 t.temperature_dateHeure,
-                t.addresse_capteur
+                c.capteur_nom,
+                le.id_etage
              FROM temperature t
-             JOIN lotEtage le ON le.id_lot = ?
-             WHERE t.temperature_dateHeure 
-             BETWEEN le.lotEtage_dateDebut 
-             AND COALESCE(le.lotEtage_dateFin, NOW())
-             ORDER BY t.temperature_dateHeure",
+             JOIN capteur c ON c.addresse_capteur = t.addresse_capteur
+             JOIN lotEtage le
+                ON le.id_lot = ?
+                AND t.temperature_dateHeure >= le.lotEtage_dateDebut
+                AND t.temperature_dateHeure <= COALESCE(le.lotEtage_dateFin, NOW())
+             ORDER BY t.temperature_dateHeure ASC",
             [$id_lot]
         );
         $temperatures = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -123,8 +125,8 @@ try {
         "status"       => "ok",
         "lot"          => $lot,
         "etages"       => $etages,
-        "temperatures" => $temperatures,  // [] si checkbox décochée
-        "evenements"   => $evenements,    // [] si checkbox décochée
+        "temperatures" => $temperatures,
+        "evenements"   => $evenements,
     ]);
 
 } catch (Exception $e) {

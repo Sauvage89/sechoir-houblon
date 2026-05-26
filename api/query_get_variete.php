@@ -1,8 +1,5 @@
 <?php
 
-// Le header permet de dire que la réponse de cette API seras en JSON
-header('Content-Type: application/json');
-
 // Librairie de connexion et de requête a une base de donnée
 require "lib/bdd.php";
 
