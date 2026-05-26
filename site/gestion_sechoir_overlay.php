@@ -11,16 +11,17 @@
         <p id="info-lot"></p> <!-- Sur cette balise ont donne les infos de si un lot existe ou non sur l'étage x !-->
         <p id="id-lot"></p> <!-- Sur cette balise ont donne l'id du lot qui existe sur l'étage !-->
 
-				<div class="field"> <!-- Cette div permet de selectionner une variete d'houblon, elle charge la variete du lot sur l'étage x !-->
-	        <label for="inputVariete">Variété de houblon</label>
-      
-					<select id="inputVariete" name="variete" required>
-	          <option value="" disabled selected>-- Sélectionner une variété --</option>
+        <!-- Cette div permet de selectionner une variete d'houblon, elle charge la variete du lot sur l'étage x !-->
+				<div class="field">
+	        <label>Variété de houblon</label>
+					<select id="inputVariete">
+	          <option value="" disabled>-- Sélectionner une variété --</option>
           </select>
           <span id="variete-msg" class="form-msg"></span>
         </div>
 
-	      <div class="field"> <!-- Cette div permet de selectionner un taux de remplissage, elle charge le remplissage du lot sur l'étage x !-->
+        <!-- Cette div permet de selectionner un taux de remplissage, elle charge le remplissage du lot sur l'étage x !-->
+	      <div class="field">
           <label>Remplissage</label>
           <div id="remplissage-control">
             <button type="button" onclick="ajustRemplisage(-10)">−</button>

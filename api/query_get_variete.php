@@ -1,11 +1,12 @@
 <?php
 
+// Le header permet de dire que la réponse de cette API seras en JSON
 header('Content-Type: application/json');
 
+// Librairie de connexion et de requête a une base de donnée
 require "lib/bdd.php";
 
-try
-{
+try {
 	$pdo = db_connect();
 
 	$stmt = db_query(
@@ -14,11 +15,12 @@ try
 		[1]
 	);
 
+	// Récupere les lignes sous le format (id_var, nom_var)
 	$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+	// envoie des donnée en format JSON
 	echo json_encode($data);
-}
-catch (Exception $e) {
+} catch (Exception $e) {
 	http_response_code(500);
 	echo json_encode([
 		"error" => $e->getMessage()

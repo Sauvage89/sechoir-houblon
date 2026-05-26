@@ -1,15 +1,10 @@
 // --------------------------- Bouton update/sauvegarde/delete lot --------START---------------------------------
 
-function handleLot()
-{
+function handleLot() {
 	if (LOT)
-	{
 		updateLot();
-	}
 	else
-	{
 		saveNewLot();
-	}
 }
 
 async function updateLot() {
@@ -195,21 +190,18 @@ async function set_config_lot() {
 	}
 }
 
+// Select contenant les différentes variétés du système sous forme d'options
 async function get_variete() {
 	const select = document.getElementById("inputVariete");
-	if (!select) return;
-	if (select.dataset.loaded === "true") return;
 	try {
-		const res = await fetch("../api/query_get_variete.php");
-		const data = await res.json();
-		if (!Array.isArray(data)) return;
+		const res = await fetch("../api/query_get_variete.php"); // Appel API vers une fonction php
+		const data = await res.json(); // Retour de l'API
 		data.forEach(v => {
-		const opt = document.createElement("option");
-		opt.value = v.id_variete;
-		opt.textContent = v.variete_nom;
-		select.appendChild(opt);
+			const opt = document.createElement("option"); // Création d'une option
+			opt.value = v.id_variete; // ID associé à l'option
+			opt.textContent = v.variete_nom; // Texte associé à l'option
+			select.appendChild(opt); // Ajout de l'option dans le select
 		});
-		select.dataset.loaded = "true";
 	} catch (e) {
 		console.error("Erreur chargement variétés", e);
 	}
