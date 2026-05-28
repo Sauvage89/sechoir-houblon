@@ -1,1 +1,1 @@
-rafraichirStatus();
+//rafraichirStatus();
