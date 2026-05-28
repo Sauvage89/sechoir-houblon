@@ -1,7 +1,3 @@
 USE base_sechoir;
 
-INSERT INTO etage (id_etage) VALUES
-(),
-(),
-(),
-();
+INSERT INTO etage () VALUES (), (), (), ();
