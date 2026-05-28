@@ -13,6 +13,9 @@
 @import url("gestion-menu.css");
 @import url("gestion-menu-content.css");
 
+/* page ajout_masse */
+@import url("pop-up_ajoutmasse.css");
+
 @import url("export_main.css");
 
 .form-msg {
