@@ -1,7 +1,7 @@
 <section id="menu">
   <div id="menu-box">
 
-    <button class="menu-close" onclick="cacherMenu()">X</button> <!-- Bouton quittant l'overlay !-->
+    <button class="menu-close" onclick="cacherMenu()">X</button> <!-- Bouton quittant le menu!-->
     <h2 id="menuTitre"></h2> <!-- Le titre ce charge automatiquement en ouvrant l'menu !--> 
   
     <div id="menu-content">
@@ -15,7 +15,7 @@
 				<div class="field">
 	        <label>Variété de houblon</label>
 					<select id="inputVariete">
-	          <option value="" disabled>-- Sélectionner une variété --</option>
+	          <option value="" disabled selected>-- Sélectionner une variété --</option>
           </select>
           <span id="variete-msg" class="form-msg"></span>
         </div>

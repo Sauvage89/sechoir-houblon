@@ -1,4 +1,4 @@
-<?php include "gestion_sechoir_overlay.php"; ?>
+<?php include "gestion_sechoir_menu.php"; ?>
 
 <!-- ══ ÉTAT DU CYCLE ══ -->
 <section class="mb-3">
