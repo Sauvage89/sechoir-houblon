@@ -1,7 +1,5 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+
 header('Content-Type: application/json');
 
 require "lib/bdd.php";
@@ -42,8 +40,7 @@ catch (Throwable $e)
 	http_response_code(500);
 
 	echo json_encode([
-		"status" => "error",
+		"status"  => "error",
 		"message" => $e->getMessage()
 	]);
 }
-?>

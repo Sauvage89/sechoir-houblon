@@ -9,9 +9,7 @@ try
 	$idEtage = (int)$_POST['etage'];
 
 	if ($idEtage <= 1)
-	{
 		throw new Exception("Impossible de descendre en dessous de l'étage 1");
-	}
 
 	$pdo = db_connect();
 	$pdo->beginTransaction();
@@ -30,9 +28,7 @@ try
 	$lot = $stmt->fetch();
 
 	if (!$lot)
-	{
 		throw new Exception("Aucun lot actif sur cet étage");
-	}
 
 	$newEtage = $idEtage - 1;
 	$idLot = (int)$lot['id_lot'];
@@ -51,9 +47,7 @@ try
 	$occupant = $stmt->fetch();
 
 	if ($occupant)
-	{
 		throw new Exception("L'étage inférieur est déjà occupé");
-	}
 
 	// 2. fermer étage actuel
 	db_query(
@@ -91,11 +85,6 @@ try
 }
 catch (Throwable $e)
 {
-	if (isset($pdo))
-	{
-		$pdo->rollBack();
-	}
-
 	http_response_code(500);
 
 	echo json_encode([
@@ -104,5 +93,3 @@ catch (Throwable $e)
 		"message" => $e->getMessage()
 	]);
 }
-
-?>

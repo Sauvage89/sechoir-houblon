@@ -1,6 +1,7 @@
 <?php
 
-// Librairie de connexion et de requête a une base de donnée
+header('Content-Type: application/json');
+
 require "lib/bdd.php";
 
 try {
@@ -17,9 +18,13 @@ try {
 
 	// envoie des donnée en format JSON
 	echo json_encode($data);
-} catch (Exception $e) {
+}
+catch (Throwable $e)
+{
 	http_response_code(500);
+
 	echo json_encode([
-		"error" => $e->getMessage()
+		"status"  => "error",
+		"message" => $e->getMessage()
 	]);
 }

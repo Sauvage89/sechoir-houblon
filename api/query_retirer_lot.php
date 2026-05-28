@@ -9,9 +9,7 @@ try
 	$idEtage = (int)$_POST['etage'];
 
 	if ($idEtage !== 1)
-	{
 		throw new Exception("Retrait uniquement à l'étage 1");
-	}
 
 	$pdo = db_connect();
 	$pdo->beginTransaction();
@@ -30,9 +28,7 @@ try
 	$lot = $stmt->fetch();
 
 	if (!$lot)
-	{
 		throw new Exception("Aucun lot actif à retirer");
-	}
 
 	$idLot = $lot['id_lot'];
 
@@ -66,17 +62,10 @@ try
 }
 catch (Throwable $e)
 {
-	if (isset($pdo))
-	{
-		$pdo->rollBack();
-	}
-
 	http_response_code(500);
 
 	echo json_encode([
-		"status" => "error",
+		"status"  => "error",
 		"message" => $e->getMessage()
 	]);
 }
-
-?>

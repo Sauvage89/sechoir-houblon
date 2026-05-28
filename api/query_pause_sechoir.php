@@ -6,6 +6,7 @@ require "lib/bdd.php";
 
 try {
 	$pdo = db_connect();
+
 	$stmt = db_query(
 		$pdo,
 		"UPDATE etatSechoir
@@ -15,22 +16,23 @@ try {
 
 
 	if ($stmt->rowCount() === 0) {
-	echo json_encode([
-		"status" => "ignored",
-		"message" => "Le séchoir est déjà en pause."
-	]);
-	exit;
+		echo json_encode([
+			"status" => "ignored",
+			"message" => "Le séchoir est déjà en pause."
+		]);
+		exit;
 	}
 
 	echo json_encode([
 		"status" => "ok"
 	]);
-	exit;
+}
+catch (Throwable $e)
+{
+	http_response_code(500);
 
-} catch (Throwable $e) {
 	echo json_encode([
-		"status" => "error",
+		"status"  => "error",
 		"message" => $e->getMessage()
 	]);
-	exit;
 }

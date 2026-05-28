@@ -31,12 +31,13 @@ try {
 	echo json_encode([
 		"status" => "ok"
 	]);
-	exit;
+}
+catch (Throwable $e)
+{
+	http_response_code(500);
 
-} catch (Throwable $e) {
 	echo json_encode([
-		"status" => "error",
+		"status"  => "error",
 		"message" => $e->getMessage()
 	]);
-	exit;
 }

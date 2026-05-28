@@ -9,9 +9,7 @@ try
 	$idLot = (int)$_POST['id_lot'];
 
 	if ($idLot <= 0)
-	{
 		throw new Exception("Paramètres invalides");
-	}
 
 	$pdo = db_connect();
 	$pdo->beginTransaction();
@@ -40,11 +38,6 @@ try
 }
 catch (Throwable $e)
 {
-	if (isset($pdo))
-	{
-		$pdo->rollBack();
-	}
-
 	http_response_code(500);
 
 	echo json_encode([
@@ -52,5 +45,3 @@ catch (Throwable $e)
 		"message" => $e->getMessage()
 	]);
 }
-
-?>

@@ -1,4 +1,5 @@
 <?php
+
 function db_connect(): ?PDO
 {
 	$host	= "localhost";
@@ -34,4 +35,3 @@ function db_query(PDO $pdo, string $query_sql, array $params = []): PDOStatement
 	$stmt->execute($params);
 	return ($stmt);
 }
-?>
