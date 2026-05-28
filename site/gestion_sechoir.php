@@ -40,31 +40,36 @@
   <h2 class="section-title"><span class="section-num">04</span> Étage 4 — Niveau haut</h2>
   <div class="floor-card">
     <div class="row g-2">
+
       <div class="col-12 col-md-4">
         <div class="info-block">
           <div class="info-label">🌿 Variété</div>
           <div class="info-value" id="variete-4">—</div>
         </div>
       </div>
+
       <div class="col-12 col-md-4">
         <div class="info-block">
           <div class="info-label">🕐 Début</div>
           <div class="info-value" id="debut-4">—</div>
         </div>
       </div>
+
       <div class="col-12 col-md-4">
         <div class="info-block">
           <div class="info-label">🕔 Fin prévue</div>
           <div class="info-value" id="fin-4">—</div>
         </div>
       </div>
+
       <div class="btn-block">
         <div class="btn-row">
-          <button onclick="showOverlay(4)">Étage 4</button>
+          <button onclick="afficherMenu(4)">Étage 4</button>
           <button onclick="descendre(4, event)">↓</button>
         </div>
         <p class="lot-warning"></p>
       </div>
+
     </div>
   </div>
 </section>
@@ -94,7 +99,7 @@
       </div>
       <div class="btn-block">
         <div class="btn-row">
-          <button onclick="showOverlay(3)">Étage 3</button>
+          <button onclick="afficherMenu(3)">Étage 3</button>
           <button onclick="descendre(3, event)">↓</button>
         </div>
         <p class="lot-warning"></p>
@@ -128,7 +133,7 @@
       </div>
       <div class="btn-block">
         <div class="btn-row">
-          <button onclick="showOverlay(2)">Étage 2</button>
+          <button onclick="afficherMenu(2)">Étage 2</button>
           <button onclick="descendre(2, event)">↓</button>
         </div>
         <p class="lot-warning"></p>
@@ -188,7 +193,7 @@
     </div>
 
     <div class="col-12 col-md-4 btn-block">
-      <button onclick="showOverlay(1)">Étage 1</button>
+      <button onclick="afficherMenu(1)">Étage 1</button>
       <button onclick="retirer(1)">Retirer le houblon</button>
       <p id="lot-warning" class="lot-warning"></p>
     </div>

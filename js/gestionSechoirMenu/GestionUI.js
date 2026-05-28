@@ -274,22 +274,22 @@ async function descendre(idEtage, event)
 }
 
 // --------------------------- Descendre/Retirer lot --------STOP---------------------------------
-// --------------------------- Ouverture/Fermeture de l'overlay --------START---------------------------------
+// --------------------------- Ouverture/Fermeture du menu --------START---------------------------------
 
 
-function showOverlay(idEtage) {
+function afficherMenu(idEtage) {
 	ID_ETAGE = idEtage;
-	document.getElementById("overlayTitle").textContent = "Étage " + idEtage;
-	document.getElementById("overlay").style.display = "flex";
+	document.getElementById("menuTitre").textContent = "Étage " + idEtage;
+	document.getElementById("menu").style.display = "flex";
 	set_config_lot();
 }
 
-function hideOverlay() {
-	document.getElementById("overlay").style.display = "none";
+function cacherMenu() {
+	document.getElementById("menu").style.display = "none";
 	rafraichirStatus();
 }
 
-// --------------------------- Ouverture/Fermeture de l'overlay --------STOP---------------------------------
+// --------------------------- Ouverture/Fermeture du menu --------STOP---------------------------------
 // --------------------------- TEMPS THEORIQUE --------START---------------------------------
 
 // Update le temps théorique.
@@ -306,3 +306,14 @@ function ajustTime(delta) {
 }
 
 // --------------------------- TEMPS THEORIQUE --------STOP---------------------------------
+
+
+
+function afficherMenu(idEtage) {
+	document.getElementById("menuTitre").textContent = "Étage " + idEtage;
+	document.getElementById("menu").style.display = "flex";
+}
+
+function cacherMenu() {
+	document.getElementById("menu").style.display = "none";
+}

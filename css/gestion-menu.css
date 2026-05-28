@@ -1,5 +1,5 @@
-/* ── Description global de l'overlay ── */
-#overlay {
+/* ── Description global du menu ── */
+#menu {
   display: none;
   position: fixed;
   inset: 0;
@@ -9,7 +9,7 @@
   justify-content: center;
 }
 
-#overlay-box {
+#menu-box {
   position: relative;
   width: 80%;
   max-width: 800px;
@@ -23,7 +23,7 @@
   overflow: hidden;
 }
 
-#overlayTitle {
+#menuTitle {
   color: black;
   margin-top: 20px;
   margin-left: 20px;
@@ -31,7 +31,7 @@
   text-underline-offset: 6px;
 }
 
-.overlay-close {
+.menu-close {
   position: absolute;
   top: 16px;
   right: 20px;
@@ -45,12 +45,12 @@
   transition: color .25s;
 }
 
-.overlay-close:hover {
+.menu-close:hover {
   color: white;
   background: red;
 }
 
-#overlay-content {
+#menu-content {
   padding: 1.75rem;
   display: flex;
   flex-direction: column;
@@ -59,24 +59,24 @@
   flex: 1;
 }
 
-#overlay-content .field {
+#menu-content .field {
 	margin: 10px 0;
 }
 
-#overlay-content h2 {
+#menu-content h2 {
   margin: 0 0 8px;
   font-size: 1.1rem;
   color: var(--text);
 }
 
-#overlay-actions {
+#menu-actions {
   display: flex;
   gap: 10px;
   padding: 1rem 1.75rem;
   border-top: 1px solid var(--border);
 }
 
-#overlay-actions button {
+#menu-actions button {
   flex: 1;
   padding: 8px;
   cursor: pointer;
@@ -89,7 +89,7 @@
   transition: border-color .15s;
 }
 
-#overlay-actions button:hover {
+#menu-actions button:hover {
   border-color: var(--text-mute);
 }
 

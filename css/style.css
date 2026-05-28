@@ -10,8 +10,8 @@
 @import url("footer.css");
 
 /* page gestion_sechoir */
-@import url("gestion-overlay.css");
-@import url("gestion-overlay-content.css");
+@import url("gestion-menu.css");
+@import url("gestion-menu-content.css");
 
 @import url("export_main.css");
 

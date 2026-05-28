@@ -1,10 +1,10 @@
-<div id="overlay">
-  <div id="overlay-box">
+<section id="menu">
+  <div id="menu-box">
 
-    <button class="overlay-close" onclick="hideOverlay()">X</button> <!-- Bouton quittant l'overlay !-->
-    <h2 id="overlayTitle"></h2> <!-- Le titre ce charge automatiquement en ouvrant l'overlay !--> 
+    <button class="menu-close" onclick="cacherMenu()">X</button> <!-- Bouton quittant l'overlay !-->
+    <h2 id="menuTitre"></h2> <!-- Le titre ce charge automatiquement en ouvrant l'menu !--> 
   
-    <div id="overlay-content">
+    <div id="menu-content">
       <h2>Configuration d'un lot de houblon</h2>
 
       <div id="gestion_lot" class="field">
@@ -46,15 +46,15 @@
       </div>
     </div>
 
-  <div id="overlay-actions">
-    <button onclick="hideOverlay()">Quitter</button> <!-- Bouton quittant l'overlay !-->
+  <div id="menu-actions">
+    <button onclick="cacherMenu()">Quitter</button> <!-- Bouton quittant l'menu !-->
   </div>
 
   </div>
-</div>
+</section>
 
-<script src="/../js/gestionSechoirOverlay/GestionAPI.js" defer></script>
-<script src="/../js/gestionSechoirOverlay/GestionUI.js" defer></script>
-<script src="/../js/gestionSechoirOverlay/GestionUTILS.js" defer></script>
-<script src="/../js/gestionSechoirOverlay/GestionSTATE.js" defer></script>
-<script src="/../js/gestionSechoirOverlay/index.js" defer></script>
+<script src="/../js/gestionSechoirMenu/GestionAPI.js" defer></script>
+<script src="/../js/gestionSechoirMenu/GestionUI.js" defer></script>
+<script src="/../js/gestionSechoirMenu/GestionUTILS.js" defer></script>
+<script src="/../js/gestionSechoirMenu/GestionSTATE.js" defer></script>
+<script src="/../js/gestionSechoirMenu/index.js" defer></script>
