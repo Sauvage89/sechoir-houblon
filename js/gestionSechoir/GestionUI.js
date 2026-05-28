@@ -131,7 +131,6 @@ function updateTemperatureMoy(valeurs) {
 async function rafraichirStatus() {
 	await fetch("../api/get_status.php")
 		.then(r => {
-		if (!r.ok) throw new Error("HTTP " + r.status);
 		return r.json();
 	})
 	.then(data => {
