@@ -1,4 +1,5 @@
 DROP DATABASE IF EXISTS base_sechoir;
+
 CREATE DATABASE base_sechoir
 CHARACTER SET utf8mb4
 COLLATE utf8mb4_unicode_ci;
@@ -13,7 +14,18 @@ CREATE TABLE masse(
    masse_masse DECIMAL(4,1) NOT NULL,
    masse_dateHeure DATETIME NOT NULL,
    PRIMARY KEY(id_masse)
-);
+) ENGINE=InnoDB;
+
+-- =========================
+-- TABLE VARIETE
+-- =========================
+CREATE TABLE variete(
+   id_variete INT AUTO_INCREMENT,
+   variete_nom VARCHAR(32) NOT NULL,
+   variete_dateHeureCreation DATETIME NOT NULL,
+   variete_actif BOOLEAN NOT NULL,
+   PRIMARY KEY(id_variete)
+) ENGINE=InnoDB;
 
 -- =========================
 -- TABLE ETAGE
@@ -21,7 +33,18 @@ CREATE TABLE masse(
 CREATE TABLE etage(
    id_etage INT AUTO_INCREMENT,
    PRIMARY KEY(id_etage)
-);
+) ENGINE=InnoDB;
+
+-- =========================
+-- TABLE CAPTEUR
+-- =========================
+CREATE TABLE capteur(
+   addresse_capteur VARCHAR(32) NOT NULL,
+   capteur_nom VARCHAR(32) NOT NULL,
+   capteur_gpio VARCHAR(8) NOT NULL,
+   capteur_actif BOOLEAN NOT NULL,
+   PRIMARY KEY(addresse_capteur)
+) ENGINE=InnoDB;
 
 -- =========================
 -- TABLE ETAT SECHOIR
@@ -35,18 +58,7 @@ CREATE TABLE etatSechoir(
    etatSechoir_seuilMin DECIMAL(4,1),
    etatSechoir_seuilMax DECIMAL(4,1),
    PRIMARY KEY(id_etatSechoir)
-);
-
--- =========================
--- TABLE CAPTEUR
--- =========================
-CREATE TABLE capteur(
-   addresse_capteur VARCHAR(32),
-   capteur_nom VARCHAR(32) NOT NULL,
-   capteur_gpio VARCHAR(8) NOT NULL,
-   capteur_actif BOOLEAN NOT NULL,
-   PRIMARY KEY(addresse_capteur)
-);
+) ENGINE=InnoDB;
 
 -- =========================
 -- TABLE EVENEMENT
@@ -58,7 +70,7 @@ CREATE TABLE evenement(
    event_dateHeureDebut DATETIME NOT NULL,
    event_dateHeureFin DATETIME,
    PRIMARY KEY(id_event)
-);
+) ENGINE=InnoDB;
 
 -- =========================
 -- TABLE LOT
@@ -75,7 +87,7 @@ CREATE TABLE lot(
    PRIMARY KEY(id_lot),
    FOREIGN KEY(id_masse) REFERENCES masse(id_masse),
    FOREIGN KEY(id_variete) REFERENCES variete(id_variete)
-);
+) ENGINE=InnoDB;
 
 -- =========================
 -- TABLE TEMPERATURE
@@ -87,7 +99,7 @@ CREATE TABLE temperature(
    addresse_capteur VARCHAR(32) NOT NULL,
    PRIMARY KEY(id_temperature),
    FOREIGN KEY(addresse_capteur) REFERENCES capteur(addresse_capteur)
-);
+) ENGINE=InnoDB;
 
 -- =========================
 -- TABLE LOT ETAGE
@@ -100,19 +112,17 @@ CREATE TABLE lotEtage(
    PRIMARY KEY(id_lot, id_etage),
    FOREIGN KEY(id_lot) REFERENCES lot(id_lot),
    FOREIGN KEY(id_etage) REFERENCES etage(id_etage)
-);
+) ENGINE=InnoDB;
 
--- ─────────────────────────────────────────────────────
+-- =========================
 -- INDEX
--- ─────────────────────────────────────────────────────
-
+-- =========================
 CREATE INDEX idx_temp_capteur ON temperature(addresse_capteur);
 CREATE INDEX idx_temp_date ON temperature(temperature_dateHeure);
 
--- ─────────────────────────────────────────────────────
--- UTILISATEUR APPLICATION
--- ─────────────────────────────────────────────────────
-
+-- =========================
+-- USER APPLICATION
+-- =========================
 CREATE USER IF NOT EXISTS 'user_sechoir'@'localhost'
 IDENTIFIED BY 'password';
 
