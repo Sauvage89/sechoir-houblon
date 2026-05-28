@@ -139,22 +139,8 @@ la RTC interne.
 
 ### Commande utilisée
 ```bash
-$ sudo hwclock -r	# demande la date et l'heure a la RTC
+$ sudo hwclock  # demande la date et l'heure a la RTC
 ```
-
-### Trame I²C observée
-```bash
-TRAM : 0x68 0x00 RESTART 0x68 0x03
-```
-
-- Interprétation :
-  - 0x68 → Adresse I²C du périphérique  
-  - 0x00 → Registre des secondes  
-  - RESTART → Repeated START I²C  
-  - 0x68 → Adresse I²C (lecture)  
-  - 0x03 → Valeur retournée par la RTC (secondes)
-
----
 
 ## Décomposition de la communication
 
@@ -183,7 +169,7 @@ TRAM : 0x68 0x00 RESTART 0x68 0x03
   - 1 bit ACK : `0` : master  
   → le master souhaite continuer la communication
 
-`SUITE NON DECODER`  
+`SUITE NON DECODER`
 
 Les 5 tram ce situe dans le dossier `doc/img/`  
 
@@ -302,7 +288,7 @@ sudo apt install util-linux-extra
 
 ### 6️⃣ Vérifier le fonctionnement de la RTC
 
-> Raspberry Pi 3 B+ et Raspberry Pi 3 B+
+> Raspberry Pi 3 B+ et Raspberry Pi 5
 
 Après reboot :  
 ```bash

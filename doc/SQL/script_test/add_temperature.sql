@@ -1,6 +1,6 @@
 USE base_sechoir;
 
-INSERT INTO temperature (temperature_valeur, temperature_dateHeure, addresse_capteur) VALUES
+INSERT INTO temperature (temperature_valeur, temperature_dateHeure, adresse_capteur) VALUES
 (18.5, NOW(), 'CAP1'),
 (19.0, NOW(), 'CAP2'),
 (20.5, NOW(), 'CAP3'),

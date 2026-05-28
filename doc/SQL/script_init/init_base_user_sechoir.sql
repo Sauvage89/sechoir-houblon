@@ -39,11 +39,11 @@ CREATE TABLE etage(
 -- TABLE CAPTEUR
 -- =========================
 CREATE TABLE capteur(
-   addresse_capteur VARCHAR(32) NOT NULL,
+   adresse_capteur VARCHAR(32) NOT NULL,
    capteur_nom VARCHAR(32) NOT NULL,
    capteur_gpio VARCHAR(8) NOT NULL,
    capteur_actif BOOLEAN NOT NULL,
-   PRIMARY KEY(addresse_capteur)
+   PRIMARY KEY(adresse_capteur)
 ) ENGINE=InnoDB;
 
 -- =========================
@@ -96,9 +96,9 @@ CREATE TABLE temperature(
    id_temperature INT AUTO_INCREMENT,
    temperature_valeur DECIMAL(4,1) NOT NULL,
    temperature_dateHeure DATETIME NOT NULL,
-   addresse_capteur VARCHAR(32) NOT NULL,
+   adresse_capteur VARCHAR(32) NOT NULL,
    PRIMARY KEY(id_temperature),
-   FOREIGN KEY(addresse_capteur) REFERENCES capteur(addresse_capteur)
+   FOREIGN KEY(adresse_capteur) REFERENCES capteur(adresse_capteur)
 ) ENGINE=InnoDB;
 
 -- =========================
@@ -117,7 +117,7 @@ CREATE TABLE lotEtage(
 -- =========================
 -- INDEX
 -- =========================
-CREATE INDEX idx_temp_capteur ON temperature(addresse_capteur);
+CREATE INDEX idx_temp_capteur ON temperature(adresse_capteur);
 CREATE INDEX idx_temp_date ON temperature(temperature_dateHeure);
 
 -- =========================

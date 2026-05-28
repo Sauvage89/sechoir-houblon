@@ -198,7 +198,7 @@ Cette table référence les capteurs de température.
 
 | Champ | Type | Description |
 |---|---|---|
-| addresse_capteur | VARCHAR(32) (PK) | Adresse physique |
+| adresse_capteur | VARCHAR(32) (PK) | Adresse physique |
 | capteur_nom | VARCHAR(32) | Nom du capteur |
 | capteur_gpio | VARCHAR(8) | GPIO utilisé |
 | capteur_actif | BOOLEAN | État du capteur |
@@ -302,11 +302,11 @@ Cette table stocke les relevés de température.
 | id_temperature | INT (PK) | Identifiant unique |
 | temperature_valeur | DECIMAL(4,1) | Température mesurée |
 | temperature_dateHeure | DATETIME | Date de mesure |
-| addresse_capteur | VARCHAR(32) (FK) | Capteur associé |
+| adresse_capteur | VARCHAR(32) (FK) | Capteur associé |
 
 ## Contraintes
 
-- FK `addresse_capteur`
+- FK `adresse_capteur`
   - `ON DELETE CASCADE`
   - `ON UPDATE CASCADE`
 

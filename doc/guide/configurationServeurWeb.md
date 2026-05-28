@@ -217,7 +217,6 @@ Le site web est composé de plusieurs fichiers situés dans :
 
 /var/www/html
 
-<<<<<<< HEAD
 Le fichier principal, `index.html`, intègre des fonctionnalités définies dans d’autres fichiers présents dans le même dossier ou dans les sous-dossiers.  
 Le site utilise les technologies suivantes : **HTML**, **PHP** et **JavaScript**.
 
@@ -290,16 +289,3 @@ Ce meme dossier est accesible via un lien symbolique dans le dossier : `/serveur
 # Versionnage et suivi du site web
 
 La configuration, le site web et sa documentation sont gérés dans un projet **Git** dans le dossier `serveur_web`.
-=======
-Le fichier principal, index.php, intègre des fonctionnalités définies dans d’autres fichiers présents dans le même dossier ou dans les sous-dossiers.
-Les fichiers décrivant le site sont tous du php.
-
-# Versionnage et suivi du site web
-
-La configuration, le site web, et sa documentation est gérés dans un projet git dans le dossier `serveur_web`.
-
-
-# ATTENTION !!!
-
-Les droits d'accés sont trés restrectif.
->>>>>>> test/web

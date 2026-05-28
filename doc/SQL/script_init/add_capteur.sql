@@ -1,6 +1,6 @@
 USE base_sechoir;
 
-INSERT INTO capteur (addresse_capteur, capteur_nom, capteur_gpio, capteur_actif) VALUES
+INSERT INTO capteur (adresse_capteur, capteur_nom, capteur_gpio, capteur_actif) VALUES
 ('CAP1', 'Capteur 1', 'GPIO1', 1),
 ('CAP2', 'Capteur 2', 'GPIO2', 1),
 ('CAP3', 'Capteur 3', 'GPIO3', 1),
