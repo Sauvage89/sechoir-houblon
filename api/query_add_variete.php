@@ -35,7 +35,7 @@ try
 	echo json_encode([
 		"status" => "ok",
 		"id_variete" => $idVariete,
-		"nom" => $nom
+		"variete_nom" => $nom
 	]);
 }
 catch (Throwable $e)
