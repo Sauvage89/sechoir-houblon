@@ -130,12 +130,17 @@ function updateTemperatureMoy(valeurs) {
 
 async function rafraichirStatus() {
 	await fetch("../api/get_status.php")
-		.then(r => {
-		return r.json();
-	})
-	.then(data => {
-		updateEtatCycle(data);
-		updateEtage(data);
-		updateTemperature(data);
-	})
+		.then(r => r.json())
+		.then(data => {
+			updateEtatCycle(data);
+			updateEtage(data);
+			updateTemperature(data);
+			if (typeof setPauseButtonsState === 'function') {
+				try {
+					setPauseButtonsState(data.etat_cycle);
+				} catch (e) {
+					console.error('Erreur en appliquant setPauseButtonsState:', e);
+				}
+			}
+		});
 }

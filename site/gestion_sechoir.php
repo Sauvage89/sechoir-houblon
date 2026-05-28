@@ -27,6 +27,8 @@
           <div class="btn-row">
             <button type="button" id="btnPauseSechoir">Pause</button>
             <button type="button" id="btnReprendreSechoir">Reprendre</button>
+            <button type="button" id="btnCommencerCycle">Commencer</button>
+            <button type="button" id="btnTerminerCycle">Terminer</button>
           </div>
         </div>
       </section>

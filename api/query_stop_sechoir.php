@@ -10,29 +10,19 @@ try {
 	$stmt = db_query(
 		$pdo,
 		"UPDATE etatSechoir
-		SET 
-		etatSechoir_ajoutMinute = etatSechoir_ajoutMinute + TIMESTAMPDIFF(MINUTE, etatSechoir_pauseDebut, NOW()),
+		SET etatSechoir_status = 'terminé', 
 		etatSechoir_pauseDebut = NULL,
-		etatSechoir_status = 'en cours',
 		etatSechoir_dataMaj = NOW()
-		WHERE etatSechoir_pauseDebut IS NOT NULL
-		AND etatSechoir_status = 'pause'"
+		WHERE etatSechoir_status = 'en cours'"
 	);
 
 	if ($stmt->rowCount() === 0) {
 		echo json_encode([
-		"status" => "ignored",
-		"message" => "Le séchoir doit être en pause pour pouvoir reprendre le séchage."
+			"status" => "ignored",
+			"message" => "Aucun séchoir n'est actuellement en cours pour pouvoir le terminer."
 		]);
 		exit;
 	}
-
-	db_query(
-		$pdo,
-		"UPDATE pause 
-		SET pause_dateHeureFin = NOW()
-		WHERE pause_dateHeureFin IS NULL"
-	);
 
 	echo json_encode([
 		"status" => "ok"
