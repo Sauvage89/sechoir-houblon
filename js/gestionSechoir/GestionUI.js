@@ -47,95 +47,69 @@ function updateEtagePrepareEtageMap(data) {
 }
 
 function updateTemperature(data) {
-	var capteurs = data.temperatures !== undefined ?? [] ? data.temperatures : [];
-	var valeurs = [];
-	var i;
-	var cap;
-	var valeur;
-	var heure;
 
-	for (i = 0; i < capteurs.length; i++) {
-		cap = capteurs[i];
-		var index = i + 1;
-		valeur = (cap.temperature_valeur !== null && cap.temperature_valeur !== undefined)
-			? parseFloat(cap.temperature_valeur)
-			: null;
-		heure = (cap.temperature_dateHeure !== undefined)
-			? cap.temperature_dateHeure
-			: null;
+	var valeurs = data.debug;
 
-		// ── Température ───────────────────────────────
-		var spanTemp = document.getElementById("capteur_" + index);
-		if (spanTemp !== null) {
-			spanTemp.textContent = (valeur !== null)
-			? valeur.toFixed(1)
-			: "--";
-		}
+	for (var i = 0; i < valeurs.length; i++)
+	{
+		var temperature = parseFloat(valeurs[i].temperature_valeur);
 
-		// ── Sous-titre (heure) ───────────────────────
-		var sub = document.getElementById("sub-" + index);
-		if (sub !== null) {
-			if (heure) {
-			sub.textContent = heure.slice(11, 16);
-			} else {
-			sub.textContent = "Aucune donnée";
-			}
-		}
+		var doc_capteur_temp = document.getElementById("capteur_" + (i + 1));
 
-		// ── Barre (15°C / 50°C) ──────────────────────
-		var bar = document.getElementById("bar-" + index);
-		if (bar !== null && valeur !== null) {
-
-			var pct = ((valeur - 15) / (50 - 15)) * 100;
-
-			if (pct < 0) pct = 0;
-			if (pct > 100) pct = 100;
-
-			bar.style.width = pct + "%";
-		}
-
-		// ── Stock valeurs ─────────────────────────────
-		if (valeur !== null) {
-			valeurs.push(valeur);
+		if (doc_capteur_temp)
+		{
+			doc_capteur_temp.textContent = temperature.toFixed(1);
 		}
 	}
+
 	updateTemperatureMoy(valeurs);
 }
 
 function updateTemperatureMoy(valeurs) {
+
 	var moyenne = document.getElementById("moyenne");
 
-	if (moyenne !== null) {
+	if (!moyenne) return;
 
-	if (valeurs.length > 0) {
-
-		var i;
-		var somme = 0;
-		var moy;
-
-		for (i = 0; i < valeurs.length; i++) {
-		somme = somme + valeurs[i];
-		}
-
-		moy = somme / valeurs.length;
-
-		moyenne.textContent = moy.toFixed(1) + " °C";
-
-	} else {
-
+	if (valeurs.length === 0)
+	{
 		moyenne.textContent = "-- °C";
+		return;
 	}
+
+	var somme = 0;
+
+	for (var i = 0; i < valeurs.length; i++)
+	{
+		somme += parseFloat(valeurs[i].temperature_valeur);
 	}
+
+	var moy = somme / valeurs.length;
+
+	moyenne.textContent = moy.toFixed(1) + " °C";
 }
 
 async function rafraichirStatus() {
 	await fetch("../api/get_status.php")
-		.then(r => {
-		return r.json();
-	})
-	.then(data => {
-		updateEtatCycle(data);
-		updateEtage(data);
-		updateTemperature(data);
-	})
+		.then(r => r.json())
+		.then(data => {
+			updateEtatCycle(data);
+			updateEtage(data);
+			if (typeof setPauseButtonsState === 'function') {
+				try {
+					setPauseButtonsState(data.etat_cycle);
+				} catch (e) {
+					console.error('Erreur en appliquant setPauseButtonsState:', e);
+				}
+			}
+		});
+
+	const response = await fetch("../api/get_temperature.php");
+	const data = await response.json();
+
+	console.log(data);
+	
+	updateTemperature(data);
+	
 }
+

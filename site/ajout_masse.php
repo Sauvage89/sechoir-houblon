@@ -1,25 +1,7 @@
 <?php
-// ======================================================
-// CONNEXION BDD
-// ======================================================
 
-try {
-    $pdo = new PDO(
-        "mysql:host=localhost;dbname=sechoir;charset=utf8mb4",
-        "singe",
-        "singe",
-        [
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
-        ]
-    );
-} catch (PDOException $e) {
-    die("Erreur PDO : " . $e->getMessage());
-}
-
-// ======================================================
-// TRAITEMENT AJAX : AJOUT DE MASSE
-// ======================================================
+require "api/lib/bdd.php";
+$pdo = db_connect();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     header("Content-Type: application/json; charset=utf-8");
@@ -57,26 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
     }
 
-
-
     try {
-        // ======================================================
-        // 🔴 METTRE TA REQUÊTE SQL ICI
-        // ======================================================
-        //
-        // Exemple :
-        //
-        // $stmt = $pdo->prepare("
-        //     INSERT INTO production_houblon (id_lot, masse)
-        //     VALUES (:id_lot, :masse)
-        // ");
-        //
-        // $stmt->execute([
-        //     ":id_lot" => $idLot,
-        //     ":masse" => $masse
-        // ]);
-        //
-        // ======================================================
         $pdo->beginTransaction();
         
         // 1. Insérer une seule masse finale
@@ -134,9 +97,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 // ======================================================
 
 try {
-    // ⚠️ ADAPTE cette requête à ta vraie table
-    // Exemple attendu :
-    // id_lot | nom_lot
     $stmtLots = $pdo->query("
     SELECT
         lot.id_lot,
@@ -229,44 +189,5 @@ try {
         </div>
 
     </div>
-
-<!-- OVERLAY DE CONFIRMATION -->
-<div id="overlay">
-    <div id="overlay-box">
-
-        <h2 id="overlayTitle">Confirmation</h2>
-
-        <button class="overlay-close" id="closeOverlay" type="button">
-            &times;
-        </button>
-
-        <div id="overlay-content">
-            <h2>Confirmer l'ajout</h2>
-
-            <p id="confirmText"></p>
-
-            <div class="info-block">
-                <div class="info-label">Lot sélectionné</div>
-                <div class="info-value" id="confirmLot"></div>
-            </div>
-
-            <div class="info-block">
-                <div class="info-label">Masse saisie</div>
-                <div class="info-value" id="confirmMasse"></div>
-            </div>
-        </div>
-
-        <div id="overlay-actions">
-            <button type="button" id="cancelBtn">
-                Annuler
-            </button>
-
-            <button type="button" id="confirmBtn">
-                Confirmer
-            </button>
-        </div>
-
-    </div>
-</div>
 
 <script src="js/ajoutMasse/index.js"></script>

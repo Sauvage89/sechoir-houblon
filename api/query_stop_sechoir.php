@@ -10,30 +10,20 @@ try {
 	$stmt = db_query(
 		$pdo,
 		"UPDATE etatSechoir
-		SET etatSechoir_status = 'pause', etatSechoir_pauseDebut = NOW(), etatSechoir_dataMaj = NOW()
-		WHERE etatSechoir_status != 'pause'
-		AND etatSechoir_status != 'terminé'"
+		SET etatSechoir_status = 'terminé', 
+		etatSechoir_pauseDebut = NULL,
+		etatSechoir_dataMaj = NOW()
+		WHERE etatSechoir_status = 'en cours'"
 	);
-
 
 	if ($stmt->rowCount() === 0) {
 		echo json_encode([
 			"status" => "ignored",
-			"message" => "Le séchoir est déjà en pause."
+			"message" => "Aucun séchoir n'est actuellement en cours pour pouvoir le terminer."
 		]);
 		exit;
 	}
-	db_query(
-		$pdo,
-		"INSERT INTO pause 
-		(pause_type,
-		pause_dateHeureDebut,
-		pause_dateHeureFin)
-		VALUES
-		('pause',
-		NOW(),
-		NULL)"
-	);
+
 	echo json_encode([
 		"status" => "ok"
 	]);

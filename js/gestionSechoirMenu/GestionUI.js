@@ -1,6 +1,7 @@
 // --------------------------- Bouton update/sauvegarde/delete lot --------START---------------------------------
 
 function handleLot() {
+	console.log("sa mache");
 	if (LOT)
 		updateLot();
 	else
@@ -12,6 +13,7 @@ async function updateLot() {
 	const REMPLISSAGE = document.getElementById("remplissageVal").textContent;
   	const TEMPSTHEO = document.getElementById("temps-theorique").value;
 
+	console.log("par ici");
 	// conversion
 	const tempsTheorique = parseTime(TEMPSTHEO);
 
@@ -41,6 +43,7 @@ async function updateLot() {
 }
 
 async function saveNewLot() {
+	console.log("ici");
 	if (!ID_ETAGE) return;
 
 	const VARIETE = document.getElementById("inputVariete").value;
@@ -279,6 +282,7 @@ async function descendre(idEtage, event)
 
 function afficherMenu(idEtage) {
 	ID_ETAGE = idEtage;
+	console.log(ID_ETAGE);
 	document.getElementById("menuTitre").textContent = "Étage " + idEtage;
 	document.getElementById("menu").style.display = "flex";
 	set_config_lot();

@@ -7,7 +7,7 @@ require "lib/bdd.php";
 // -------------------------------------------------------
 // Calcule la fin prévue en cascade avec les pauses
 // -------------------------------------------------------
-function calculerFinPrevue(PDO $pdo, string $dateEntree, int $dureeMinutes): string
+function calculerFinPrevue(PDO $pdo, string $dateEntree, int $dureeMinutes, ?string $pauseActifDebut = null, ?string $serverNow = null): string
 {
     $debut        = new DateTime($dateEntree);
     $fin          = (clone $debut)->modify("+{$dureeMinutes} minutes");
@@ -22,13 +22,28 @@ function calculerFinPrevue(PDO $pdo, string $dateEntree, int $dureeMinutes): str
              FROM pause
              WHERE pause_dateHeureDebut >= ?
              AND pause_dateHeureDebut < ?
-             AND pause_dateHeureFin IS NOT NULL
              ORDER BY pause_dateHeureDebut ASC",
             [
                 $debut->format("Y-m-d H:i:s"),
                 $fin->format("Y-m-d H:i:s")
             ]
         )->fetchAll(PDO::FETCH_ASSOC);
+
+        if ($pauseActifDebut !== null) {
+            $pauseActifAlreadyPresent = false;
+            foreach ($pauses as $pauseRow) {
+                if ($pauseRow['pause_dateHeureFin'] === null) {
+                    $pauseActifAlreadyPresent = true;
+                    break;
+                }
+            }
+            if (!$pauseActifAlreadyPresent) {
+                $pauses[] = [
+                    'pause_dateHeureDebut' => $pauseActifDebut,
+                    'pause_dateHeureFin'   => null
+                ];
+            }
+        }
 
         // Filtrer les pauses déjà comptées
         $nouvellesPauses = array_filter($pauses, function($p) use (&$pausesDejaComptees) {
@@ -46,8 +61,13 @@ function calculerFinPrevue(PDO $pdo, string $dateEntree, int $dureeMinutes): str
 
         foreach ($nouvellesPauses as $pause)
         {
-            $pauseDebut    = new DateTime($pause['pause_dateHeureDebut']);
-            $pauseFin      = new DateTime($pause['pause_dateHeureFin']);
+            $pauseDebut = new DateTime($pause['pause_dateHeureDebut']);
+            if ($pause['pause_dateHeureFin'] === null) {
+                // Pause en cours — considérer la fin comme le temps serveur
+                $pauseFin = $serverNow !== null ? new DateTime($serverNow) : new DateTime();
+            } else {
+                $pauseFin = new DateTime($pause['pause_dateHeureFin']);
+            }
             $dureeSecondes = $pauseFin->getTimestamp() - $pauseDebut->getTimestamp();
             $fin->modify("+{$dureeSecondes} seconds");
         }
@@ -86,13 +106,35 @@ try
         ORDER BY e.id_etage ASC"
     )->fetchAll(PDO::FETCH_ASSOC);
 
+    $pauseActifDebut = null;
+    $pauseActifRow = db_query(
+        $pdo,
+        "SELECT etatSechoir_pauseDebut
+         FROM etatSechoir
+         WHERE etatSechoir_status = 'pause'
+         AND etatSechoir_pauseDebut IS NOT NULL
+         ORDER BY id_etatSechoir DESC
+         LIMIT 1"
+    )->fetch(PDO::FETCH_ASSOC);
+    if ($pauseActifRow) {
+        $pauseActifDebut = $pauseActifRow['etatSechoir_pauseDebut'];
+    }
+
+    $serverNowRow = db_query(
+        $pdo,
+        "SELECT NOW() AS now"
+    )->fetch(PDO::FETCH_ASSOC);
+    $serverNow = $serverNowRow ? $serverNowRow['now'] : null;
+
     // Calcul de la fin prévue pour chaque étage (cascade pauses)
     foreach ($etages_actifs as &$etage)
     {
         $etage['date_fin'] = calculerFinPrevue(
             $pdo,
             $etage['date_entree'],
-            (int)$etage['duree_theorique']
+            (int)$etage['duree_theorique'],
+            $pauseActifDebut,
+            $serverNow
         );
 
         // On n'expose pas ces champs intermédiaires au frontend
@@ -127,14 +169,14 @@ try
         $pdo,
         "SELECT c.capteur_nom, t.temperature_valeur, t.temperature_dateHeure
          FROM capteur c
-         LEFT JOIN temperature t ON t.addresse_capteur = c.addresse_capteur
+         LEFT JOIN temperature t ON t.adresse_capteur = c.adresse_capteur
              AND t.id_temperature = (
                  SELECT MAX(t2.id_temperature)
                  FROM temperature t2
-                 WHERE t2.addresse_capteur = c.addresse_capteur
+                 WHERE t2.adresse_capteur = c.adresse_capteur
              )
          WHERE c.capteur_actif = 1
-         ORDER BY c.addresse_capteur ASC"
+         ORDER BY c.adresse_capteur ASC"
     )->fetchAll(PDO::FETCH_ASSOC);
 
     // 6. RÉPONSE

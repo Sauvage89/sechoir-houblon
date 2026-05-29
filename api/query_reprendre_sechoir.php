@@ -13,10 +13,9 @@ try {
 		SET 
 		etatSechoir_ajoutMinute = etatSechoir_ajoutMinute + TIMESTAMPDIFF(MINUTE, etatSechoir_pauseDebut, NOW()),
 		etatSechoir_pauseDebut = NULL,
-		etatSechoir_status = 'en_cours',
+		etatSechoir_status = 'en cours',
 		etatSechoir_dataMaj = NOW()
-		WHERE id_etatSechoir = 1
-		AND etatSechoir_pauseDebut IS NOT NULL
+		WHERE etatSechoir_pauseDebut IS NOT NULL
 		AND etatSechoir_status = 'pause'"
 	);
 
@@ -27,6 +26,13 @@ try {
 		]);
 		exit;
 	}
+
+	db_query(
+		$pdo,
+		"UPDATE pause 
+		SET pause_dateHeureFin = NOW()
+		WHERE pause_dateHeureFin IS NULL"
+	);
 
 	echo json_encode([
 		"status" => "ok"

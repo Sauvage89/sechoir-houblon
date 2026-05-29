@@ -27,6 +27,8 @@
           <div class="btn-row">
             <button type="button" id="btnPauseSechoir">Pause</button>
             <button type="button" id="btnReprendreSechoir">Reprendre</button>
+            <button type="button" id="btnCommencerCycle">Commencer</button>
+            <button type="button" id="btnTerminerCycle">Terminer</button>
           </div>
         </div>
       </section>
@@ -184,7 +186,10 @@
       <div class="col-6 col-md-4 col-lg-2">
         <div class="sensor-card" id="card-<?= $i ?>">
           <div class="sensor-label">Capteur <?= $i ?></div>
-          <div class="sensor-temp"><span id="capteur_<?= $i ?>">--</span><span class="unit">°C</span></div>
+          <div class="sensor-temp">
+            <span id="capteur_<?= $i ?>">--</span>
+            <span class="unit">°C</span>
+          </div>
           <div class="sensor-sub" id="sub-<?= $i ?>">Chargement...</div>
           <div class="sensor-bar"><div class="sensor-bar-fill" id="bar-<?= $i ?>" style="width:0%"></div></div>
         </div>
