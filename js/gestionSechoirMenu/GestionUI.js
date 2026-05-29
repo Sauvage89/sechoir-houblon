@@ -306,14 +306,3 @@ function ajustTime(delta) {
 }
 
 // --------------------------- TEMPS THEORIQUE --------STOP---------------------------------
-
-
-
-function afficherMenu(idEtage) {
-	document.getElementById("menuTitre").textContent = "Étage " + idEtage;
-	document.getElementById("menu").style.display = "flex";
-}
-
-function cacherMenu() {
-	document.getElementById("menu").style.display = "none";
-}
