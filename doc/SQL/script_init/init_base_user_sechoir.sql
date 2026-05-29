@@ -73,6 +73,17 @@ CREATE TABLE evenement(
 ) ENGINE=InnoDB;
 
 -- =========================
+-- TABLE PAUSE
+-- =========================
+CREATE TABLE pause(
+   id_pause INT AUTO_INCREMENT,
+   pause_type VARCHAR(64) NOT NULL,
+   pause_dateHeureDebut DATETIME NOT NULL,
+   pause_dateHeureFin DATETIME,
+   PRIMARY KEY(id_pause)
+);
+
+-- =========================
 -- TABLE LOT
 -- =========================
 CREATE TABLE lot(
