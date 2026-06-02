@@ -57,6 +57,5 @@
   </div>
 </section>
 
-<script src="/../js/accueil/GestionAPI.js" defer></script>
 <script src="/../js/accueil/GestionUI.js" defer></script>
 <script src="/../js/accueil/index.js" defer></script>

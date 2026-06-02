@@ -17,9 +17,12 @@ function selectType(type) {
 // --------------------------- TABLE --------START---------------------------------
 
 async function loadTable() {
-	const data = await apiFetch('api/query_get_lots_preview.php', {
-		action: 'preview', type_export: currentType, ...getFilters(true)
+	const data = await apiFetchPostFormJson('api/query_get_lots_preview.php', {
+		action: 'preview',
+		type_export: currentType,
+		...getFilters(true)
 	});
+
 	renderTable(data.rows, data.count);
 }
 
@@ -97,7 +100,7 @@ async function exportRow(numero_lot) {
 	try {
 		const filters = getFilters();
 
-		const data = await apiFetch("../api/query_export_csv.php", {
+		const data = await apiFetchPostFormJson("../api/query_export_csv.php", {
 			numero_lot,
 			type_export: currentType
 		});
@@ -126,7 +129,7 @@ async function exportRow(numero_lot) {
 async function getVariete() {
 	const select = document.getElementById("lot-variete"); // Le select contenant les différente variete
 	try {
-		const data = await apiFetch("../api/query_get_variete.php");
+		const data = await apiFetchPostFormJson("../api/query_get_variete.php");
 		data.forEach(v => {
 			const opt = document.createElement("option"); // Création d'une option
 			opt.value = v.id_variete; // ID associé à l'option

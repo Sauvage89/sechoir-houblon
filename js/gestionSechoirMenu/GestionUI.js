@@ -1,7 +1,6 @@
 // --------------------------- Bouton update/sauvegarde/delete lot --------START---------------------------------
 
 function handleLot() {
-	console.log("sa mache");
 	if (LOT)
 		updateLot();
 	else
@@ -13,27 +12,19 @@ async function updateLot() {
 	const REMPLISSAGE = document.getElementById("remplissageVal").textContent;
   	const TEMPSTHEO = document.getElementById("temps-theorique").value;
 
-	console.log("par ici");
 	// conversion
 	const tempsTheorique = parseTime(TEMPSTHEO);
 
 	document.getElementById("id-lot").textContent = "Chargement";
-	const res = await fetch("../api/query_update_lot_on_etage.php",
-	{
-		method: "POST",
-		headers:
-		{
-			"Content-Type": "application/x-www-form-urlencoded"
-		},
-		body: new URLSearchParams(
+	const data = await apiFetchPostForm(
+		"../api/query_update_lot_on_etage.php",
 		{
 			id_lot: LOT.id_lot,
 			variete: VARIETE,
 			remplissage: REMPLISSAGE,
 			temps_theorique: tempsTheorique
-		})
-	});
-	const data = await res.json();
+		}
+	);
 
 	if (data.status === "ok") {
 		set_config_lot();
@@ -43,7 +34,6 @@ async function updateLot() {
 }
 
 async function saveNewLot() {
-	console.log("ici");
 	if (!ID_ETAGE) return;
 
 	const VARIETE = document.getElementById("inputVariete").value;
@@ -55,7 +45,7 @@ async function saveNewLot() {
 	const remplissage = parseInt(REMPLISSAGE, 10);
 	const tempsTheorique = parseTime(TEMPSTHEO);
 
-	// validation simple
+	// validation
 	if (!varieteId || varieteId <= 0) {
 		showVarieteMessage("Veuillez sélectionner une variété");
 		return;
@@ -64,22 +54,18 @@ async function saveNewLot() {
 		console.error("Remplissage invalide");
 		return;
 	}
-
 	document.getElementById("id-lot").textContent = "Chargement";
-	const res = await fetch("../api/query_save_lot_on_etage.php",
-	{
-		method: "POST",
-		headers: {
-			"Content-Type": "application/x-www-form-urlencoded"
-		},
-		body: new URLSearchParams ({
+
+	const data = await apiFetchPostForm(
+		"../api/query_save_lot_on_etage.php",
+		{
 			etage: ID_ETAGE,
 			variete: varieteId,
 			remplissage: remplissage,
 			temps_theorique: tempsTheorique
-		})
-	});
-	const data = await res.json();
+		}
+	);
+
 	if (data.status == "ok")
 		set_config_lot();
 }
@@ -87,19 +73,12 @@ async function saveNewLot() {
 async function deleteLot() {
 	if (!ID_ETAGE || !LOT) return;
 
-	const res = await fetch("../api/query_delete_lot.php",
-	{
-		method: "POST",
-		headers:
-		{
-			"Content-Type": "application/x-www-form-urlencoded"
-		},
-		body: new URLSearchParams(
+	const data = await apiFetchPostForm(
+		"../api/query_delete_lot.php",
 		{
 			id_lot: LOT.id_lot
-		})
-	});
-  	const data = await res.json();
+		}
+	);
 
 	if (data.status === "ok") {
 		set_config_lot(); // refresh UI
@@ -157,13 +136,17 @@ function showDescenteError(btn, message) {
 async function set_config_lot() {
 	if (!ID_ETAGE) return;
 
-	LOT = await get_lot(ID_ETAGE);
 	const doc_info_lot = document.getElementById("info-lot");
 	const doc_id_lot = document.getElementById("id-lot");
 	const doc_remplissageVal = document.getElementById("remplissageVal");
 	const doc_variete = document.getElementById("inputVariete");
 	const doc_btn_save = document.getElementById("btn-lot-save");
 	const doc_temps_theorique = document.getElementById("temps-theorique");
+
+	const data = await apiFetchGetJSON(
+		`../api/query_get_lot.php?etage=${ID_ETAGE}`
+	);
+	LOT = data.lot;
 
 	if (LOT) {
 		doc_info_lot.textContent = "Cette étage contient un lot";
@@ -197,8 +180,7 @@ async function set_config_lot() {
 async function get_variete() {
 	const select = document.getElementById("inputVariete");
 	try {
-		const res = await fetch("../api/query_get_variete.php"); // Appel API vers une fonction php
-		const data = await res.json(); // Retour de l'API
+		const data = await apiFetchGetJSON("../api/query_get_variete.php");
 		data.forEach(v => {
 			const opt = document.createElement("option"); // Création d'une option
 			opt.value = v.id_variete; // ID associé à l'option
@@ -217,20 +199,12 @@ async function retirer(idEtage)
 {
 	if (!idEtage) return;
 
-	const res = await fetch("../api/query_retirer_lot.php",
-	{
-		method: "POST",
-		headers:
-		{
-			"Content-Type": "application/x-www-form-urlencoded"
-		},
-		body: new URLSearchParams(
+	const data = await apiFetchPostForm(
+		"../api/query_retirer_lot.php",
 		{
 			etage: idEtage
-		})
-	});
-
-	const data = await res.json();
+		}
+	);
 
 	if (data.status === "ok")
 	{
@@ -249,20 +223,12 @@ async function descendre(idEtage, event)
 	if (!idEtage) return;
 	const btn = event.target;
 
-	const res = await fetch("../api/query_descendre_lot.php",
-	{
-		method: "POST",
-		headers:
-		{
-			"Content-Type": "application/x-www-form-urlencoded"
-		},
-		body: new URLSearchParams(
+	const data = await apiFetchPostForm(
+		"../api/query_descendre_lot.php",
 		{
 			etage: idEtage
-		})
-	});
-
-	const data = await res.json();
+		}
+	);
 
 	if (data.status === "ok")
 	{

@@ -53,8 +53,8 @@
   </div>
 </section>
 
+<script src="/../js/fetchUTILS.js" defer></script>
 <script src="/../js/gestionSechoirMenu/GestionSTATE.js" defer></script>
 <script src="/../js/gestionSechoirMenu/GestionUTILS.js" defer></script>
-<script src="/../js/gestionSechoirMenu/GestionAPI.js" defer></script>
 <script src="/../js/gestionSechoirMenu/GestionUI.js" defer></script>
 <script src="/../js/gestionSechoirMenu/index.js" defer></script>
