@@ -24,13 +24,13 @@ const BADGE = {
 // Map chaque champ de filtre vers son id HTML
 const FILTER_IDS = {
 	lot: {
-	variete: 'lot-variete',
-	numero_lot: 'lot-numero',
-	temperature: 'chexbox-temperature',
-	evenement: 'chexbox-evenement'
+		variete: 'lot-variete',
+		numero_lot: 'lot-numero',
+		temperature: 'chexbox-temperature',
+		evenement: 'chexbox-evenement'
 	},
 	production: {
-	variete: 'prod-variete',
-	numero_prod: 'prod-numero'
+		variete: 'prod-variete',
+		numero_prod: 'prod-numero'
 	}
 };

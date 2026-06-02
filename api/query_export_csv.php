@@ -74,7 +74,7 @@ try
 			c.capteur_nom,
 			le.id_etage
 		FROM temperature t
-		JOIN capteur c ON c.addresse_capteur = t.addresse_capteur
+		JOIN capteur c ON c.adresse_capteur = t.adresse_capteur
 		JOIN lotEtage le
 			ON le.id_lot = ?
 			AND t.temperature_dateHeure >= le.lotEtage_dateDebut

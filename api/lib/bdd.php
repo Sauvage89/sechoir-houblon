@@ -4,7 +4,7 @@ function db_connect(): ?PDO
 {
 	$host	= "localhost";
 	$dbname	= "base_sechoir";
-	$user	= "user_sechoir";
+	$user	= "dbsechoir";
 	$pass	= "password";
 	$pdo	= null;
 

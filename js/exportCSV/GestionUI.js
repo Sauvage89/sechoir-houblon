@@ -43,7 +43,7 @@ function renderTable(rows, count) {
     <path d="M8 1v9M4 7l4 4 4-4M2 13h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
   </svg>`;
 
-  // Table desktop
+  // Affichage PC
   const table = `<table class="result-table">
     <thead><tr>${keys.map(k => `<th>${cols[k]}</th>`).join('')}<th></th></tr></thead>
     <tbody>${rows.map(row => `<tr>
@@ -52,7 +52,7 @@ function renderTable(rows, count) {
     </tr>`).join('')}</tbody>
   </table>`;
 
-  // Cards mobile
+  // Affichage portable
   const cards = `<div class="result-cards">${rows.map(row => `
     <div class="result-card">
       <div class="result-card-header">
@@ -92,60 +92,33 @@ function resetResults() {
 // --------------------------- EXPORT --------START---------------------------------
 
 async function exportRow(numero_lot) {
-	if (!currentType) return;
+	if (!currentType)
+		return;
 	try {
+		const filters = getFilters();
+
 		const data = await apiFetch("../api/query_export_csv.php", {
-			...getFilters(), numero_lot, type_export: currentType
+			numero_lot,
+			type_export: currentType
 		});
 
-		const filters = getFilters();
-		console.log(data.etages);
-		console.log(Array.isArray(data.etages));
+		console.log("DEBUG:in function 'exportRow':var 'filters'");
 		console.log(filters);
+		console.log("DEBUG:in function 'exportRow':var 'data'");
+		console.log(data);
+
+		// Trie en ordre décroisant les étage avec l'élement id_etage
 		const etagesSorted = [...data.etages].sort((a, b) => b.id_etage - a.id_etage);
 
-		const blocks = [
-		buildCsvBlock('LOT',
-			['id_lot','lot_remplissage','lot_dateHeureEntree','lot_dateHeureSortie','lot_dureeTheorique','variete_nom'],
-			[[data.lot.id_lot, data.lot.lot_remplissage, data.lot.lot_dateHeureEntree,
-			data.lot.lot_dateHeureSortie, data.lot.lot_dureeTheorique, data.lot.variete_nom]]
-		),
-		buildCsvBlock('ETAGES',
-			['id_lot','id_etage','lotEtage_dateHeureDebut','lotEtage_dateHeureFin','duree_minute'],
-			etagesSorted.map(e => [data.lot.id_lot, e.id_etage, e.lotEtage_dateDebut, e.lotEtage_dateFin, e.duree_minute])
-		)
-		];
-
-		if (filters.temperature == 1) {
-		blocks.push(buildCsvBlock('TEMPERATURES',
-			['id_lot','id_etage','temperature_valeur','temperature_dateHeure','capteur_nom'],
-			data.temperatures.map(t => [data.lot.id_lot, t.id_etage, t.temperature_valeur, t.temperature_dateHeure, t.capteur_nom])
-		));
-		}
-
-		if (filters.evenement == 1) {
-		blocks.push(buildCsvBlock('EVENEMENTS',
-			['id_pause','pause_type','pause_dateHeureDebut','pause_dateHeureFin'],
-			data.evenements.map(e => [e.id_pause, e.pause_type, e.pause_dateHeureDebut, e.pause_dateHeureFin])
-		));
-		}
-
+		// Construction du fichier CSV final
+		const blocks = constructCSVFile(data, filters, etagesSorted);
+		
+		// Export du fichier CSV, formatage en UTF-8
 		downloadFile("\uFEFF" + blocks.join("\n\n"), `export_${numero_lot}.csv`, "text/csv;charset=utf-8;");
 
 	} catch (e) {
-	console.error("Erreur export CSV :", e);
+		console.error("Erreur export CSV :", e);
 	}
-}
-
-function downloadFile(content, filename, type) {
-	const a = Object.assign(document.createElement('a'), {
-		href: URL.createObjectURL(new Blob([content], { type })),
-		download: filename
-	});
-	document.body.appendChild(a);
-	a.click();
-	a.remove();
-	URL.revokeObjectURL(a.href);
 }
 
 // --------------------------- EXPORT --------STOP---------------------------------

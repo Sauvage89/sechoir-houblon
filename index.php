@@ -28,6 +28,8 @@ $titles = [
 $title = $titles[$page];
 ?>
 
+
+
 <!DOCTYPE html>
 <html lang="fr">
 
