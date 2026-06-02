@@ -1,6 +1,8 @@
 // --------------------------- Bouton update/sauvegarde/delete lot --------START---------------------------------
 
 function handleLot() {
+	if (!ID_ETAGE)
+		return;
 	if (LOT)
 		updateLot();
 	else
@@ -11,31 +13,26 @@ async function updateLot() {
 	const VARIETE = document.getElementById("inputVariete").value;
 	const REMPLISSAGE = document.getElementById("remplissageVal").textContent;
   	const TEMPSTHEO = document.getElementById("temps-theorique").value;
+	const doc_id_lot = document.getElementById("id-lot");
 
-	// conversion
-	const tempsTheorique = parseTime(TEMPSTHEO);
-
-	document.getElementById("id-lot").textContent = "Chargement";
+	doc_id_lot.textContent = "Chargement";
 	const data = await apiFetchPostForm(
 		"../api/query_update_lot_on_etage.php",
 		{
 			id_lot: LOT.id_lot,
 			variete: VARIETE,
 			remplissage: REMPLISSAGE,
-			temps_theorique: tempsTheorique
+			temps_theorique: parseTime(TEMPSTHEO)
 		}
 	);
 
-	if (data.status === "ok") {
+	if (data.status === "ok")
 		set_config_lot();
-	} else {
+	else
 		console.error(data);
-	}
 }
 
 async function saveNewLot() {
-	if (!ID_ETAGE) return;
-
 	const VARIETE = document.getElementById("inputVariete").value;
 	const REMPLISSAGE = document.getElementById("remplissageVal").textContent;
 	const TEMPSTHEO = document.getElementById("temps-theorique").value;
@@ -143,9 +140,7 @@ async function set_config_lot() {
 	const doc_btn_save = document.getElementById("btn-lot-save");
 	const doc_temps_theorique = document.getElementById("temps-theorique");
 
-	const data = await apiFetchGetJSON(
-		`../api/query_get_lot.php?etage=${ID_ETAGE}`
-	);
+	const data = await apiFetchGetJson(`../api/query_get_lot.php?etage=${ID_ETAGE}`);
 	LOT = data.lot;
 
 	if (LOT) {
@@ -180,7 +175,7 @@ async function set_config_lot() {
 async function get_variete() {
 	const select = document.getElementById("inputVariete");
 	try {
-		const data = await apiFetchGetJSON("../api/query_get_variete.php");
+		const data = await apiFetchGetJson("../api/query_get_variete.php");
 		data.forEach(v => {
 			const opt = document.createElement("option"); // Création d'une option
 			opt.value = v.id_variete; // ID associé à l'option

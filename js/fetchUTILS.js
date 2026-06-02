@@ -1,5 +1,6 @@
 // --------------------------- METHOD POST --------START---------------------------------
 
+// Fait l'appel a l'API via des parametre formater et retourne un objet json
 async function apiFetchPostForm(url, data = {}) {
 	const res = await fetch(url, {
 		method: 'POST',
@@ -12,6 +13,7 @@ async function apiFetchPostForm(url, data = {}) {
 	return res.json();
 }
 
+// Fait l'appel a l'API via des parametre formater et retourne un objet json
 async function apiFetchPostJson(url, data = {}) {
 	const res = await fetch(url, {
 		method: 'POST',
@@ -35,7 +37,7 @@ function _buildUrl(url, params) {
 }
 
 // Fait l'appel a l'API
-async function _apiFetchGetJson(url, params = {}) {
+async function _apiFetchGet(url, params = {}) {
 	const fullUrl = _buildUrl(url, params);
 	return await fetch(fullUrl, {
 		method: 'GET',
@@ -47,19 +49,19 @@ async function _apiFetchGetJson(url, params = {}) {
 
 // Formate le retour de l'appel de l'API
 async function apiFetchGetJson(url, params = {}) {
-	const res = await _apiFetchGetJson(url, params);
+	const res = await _apiFetchGet(url, params);
 	return res.json();
 }
 
 // Formate le retour de l'appel de l'API
 async function apiFetchGetText(url, params = {}) {
-	const res = await _apiFetchGetJson(url, params);
+	const res = await _apiFetchGet(url, params);
 	return res.text();
 }
 
 // Formate le retour de l'appel de l'API
 async function apiFetchGetBlob(url, params = {}) {
-	const res = await _apiFetchGetJson(url, params);
+	const res = await _apiFetchGet(url, params);
 	return res.blob();
 }
 

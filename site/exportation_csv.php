@@ -96,8 +96,8 @@
 
 </div>
 
-<script src="/../js/exportCSV/GestionSTATE.js" defer></script>
 <script src="/../js/fetchUTILS.js" defer></script>
+<script src="/../js/exportCSV/GestionSTATE.js" defer></script>
 <script src="/../js/exportCSV/GestionUTILS.js" defer></script>
 <script src="/../js/exportCSV/GestionUI.js" defer></script>
 <script src="/../js/exportCSV/index.js" defer></script>
